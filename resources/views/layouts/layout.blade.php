@@ -13,7 +13,7 @@
 <body>
     <x-navbar></x-navbar>
     <div class="pt-20 relative">
-        <aside class="fixed top-0 bottom-0 hidden lg:flex h-full z-20 w-64 pt-20 flex-col flex-shrink-0 ">
+        <aside id="sidevar" class="fixed top-0 bottom-0 -translate-x-[300px] lg:translate-x-0 lg:flex h-full z-20 w-64 pt-20 flex-col flex-shrink-0 transition duration-300 ease-linear">
             <div class="p-3 border-r border-gray-200 min-h-0 flex flex-1 overflow-y-auto flex-col pt-6 divide-y bg-[#232323] h-full">
                 <ul class="space-y-3 pb-6">
                     <li>
@@ -71,9 +71,11 @@
             </div>
         </aside>
     </div>
-    <div class="p-8 lg:pl-72">
+    <div class="p-8 lg:pl-72 transition-all duration-300">
         @yield('content')
     </div>
+
+    <script src="{{ asset('js/index.js') }}"></script>
 </body>
 
 </html>
