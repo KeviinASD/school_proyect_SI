@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Route;
 // routes when the user is authenticated
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/', function () {return view('welcome');})->name('welcome');   
+    Route::get('/', function () {return view('welcome');})->name('welcome');
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
+    Route::get('/alumnos', function () {return view('pages.alumnos.index');})->name('alumnos');
 });
 
 // routes when the user is not authenticated
