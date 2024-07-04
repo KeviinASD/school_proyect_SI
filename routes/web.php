@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacidadController;
+use App\Http\Controllers\CursoController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,3 +21,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'postLogin']);
 });
+
+Route::resource('asignaturas', AsignaturaController::class);
+Route::resource('cursos', CursoController::class);
+
+Route::resource('capacidades', CapacidadController::class);
