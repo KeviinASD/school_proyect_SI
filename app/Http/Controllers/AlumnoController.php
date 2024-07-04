@@ -13,7 +13,7 @@ class AlumnoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public $timestamps = false;
+    
     public function index()
     {
         $alumnos = Alumno::with('sexo')->get(); // Recupera todos los alumnos
