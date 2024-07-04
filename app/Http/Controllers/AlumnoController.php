@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Alumno;
 use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
@@ -11,7 +11,9 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        //
+        $alumnos = Alumno::all(); // Recupera todos los alumnos
+
+        return view('pages.alumnos.index', compact('alumnos'));
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
 {
+
     protected $table = 'alumnos';
 
     protected $fillable = [
@@ -30,4 +31,5 @@ class Alumno extends Model
         'idEscala',
         'idSexo',
     ];
+
 }
