@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacidadController;
+use App\Http\Controllers\CursoController;
+use App\Http\Controllers\GradosController;
+use App\Http\Controllers\NivelesController;
+use App\Http\Controllers\ResumenXController;
+use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnoController;
 
@@ -11,7 +18,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {return view('welcome');})->name('welcome');
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
-    
+
+    Route::get('/gradosYSecciones', [ResumenXController::class, 'index'])->name('gradosYSecciones');
+    Route::resource('grados', GradosController::class);
+    Route::get('/api/grados/{nivelId}', [GradosController::class, 'getGradosByNivel']);
+    Route::resource('niveles', NivelesController::class);
+    Route::resource('secciones', SeccionesController::class);
 });
 
 // routes when the user is not authenticated
@@ -20,4 +32,3 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AuthController::class, 'postLogin']);
     
 });
-
