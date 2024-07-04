@@ -21,7 +21,7 @@ class NivelesController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.gradosYSecciones.nivel_create');
     }
 
     /**
@@ -34,23 +34,24 @@ class NivelesController extends Controller
         ]);
 
         Nivel::create($request->all());
-        return redirect()->route('grados.index');
+        return redirect()->route('niveles.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Nivel $nivel)
+    public function show()
     {
-        //
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Nivel $nivel)
+    public function edit($idNivel)
     {
-        
+        $nivel = Nivel::find($idNivel);
+        return view('pages.gradosYSecciones.nivel_edit', compact('nivel'));
     }
 
     /**
@@ -63,7 +64,7 @@ class NivelesController extends Controller
         ]);
 
         Nivel::where('idNivel', $idNivel)->update($data);
-        return redirect()->route('grados.index');
+        return redirect()->route('niveles.index');
     }
 
     /**

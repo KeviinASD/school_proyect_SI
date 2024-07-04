@@ -30,7 +30,8 @@ class GradosController extends Controller
      */
     public function create()
     {
-        //
+        $niveles = Nivel::all();
+        return view('pages.gradosYSecciones.grado_create', compact('niveles'));
     }
 
     /**
@@ -38,7 +39,17 @@ class GradosController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validatedData = $request->validate([
+            'nombreGrado' => 'required',
+            'idNivel' => 'required',
+        ]);
+        //Creamos nuevo grado
+        $grado = new Grado();
+        $grado->nombreGrado = $validatedData['nombreGrado'];
+        $grado->idNivel = $validatedData['idNivel'];
+        $grado->save();
+
+        return redirect()->route('grados.index')->with('success', 'Grado creado exitosamente');
     }
 
     /**
@@ -52,17 +63,29 @@ class GradosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Grado $grado)
+    public function edit($idGrado)
     {
-        //
+        $grado = Grado::find($idGrado);
+        $niveles = Nivel::all();
+        return view('pages.gradosYSecciones.grado_edit', compact('grado', 'niveles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Grado $grado)
+    public function update(Request $request, $idGrado)
     {
-        //
+        $validatedData = $request->validate([
+            'nombreGrado' => 'required',
+            'idNivel' => 'required',
+        ]);
+
+        $grado = Grado::findOrFail($idGrado);
+        $grado->nombreGrado = $validatedData['nombreGrado'];
+        $grado->idNivel = $validatedData['idNivel'];
+        $grado->save();
+
+        return redirect()->route('grados.index')->with('success', 'Grado actualizado exitosamente');
     }
 
     /**
@@ -71,5 +94,11 @@ class GradosController extends Controller
     public function destroy(Grado $grado)
     {
         //
+    }
+
+    public function getGradosByNivel($nivelId)
+    {
+        $grados = Grado::where('idNivel', $nivelId)->get();
+        return response()->json(['grados' => $grados]);
     }
 }

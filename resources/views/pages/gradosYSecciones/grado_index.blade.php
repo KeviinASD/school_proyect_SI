@@ -12,7 +12,12 @@
         </ul>
 </nav>
 <div>
-        <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+@if (session('success'))
+    <div id="success-message" class="bg-green-500 text-white p-2 rounded-md mb-4 opacity-100 transition-opacity duration-500 ease-out">
+        {{ session('success') }}
+    </div>
+@endif
+        <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md space-y-4">
             <div class="flex justify-between mb-4 items-start">
                 <div class="font-medium">DETALLES GRADOS</div>
                 <form action="{{ route('grados.index') }}" method="GET" class="flex items-center">
@@ -26,6 +31,9 @@
                     </select>
                     <button type="submit" class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Filtrar</button>
                 </form>
+            </div>
+            <div>
+                <button class="px-4 py-1 rounded bg-[#D8E2FD] font-semibold hover:bg-blue-200 transition duration-300 hover:translate-x-1"><a href=" {{route('grados.create')}}">CREAR GRADO</a></button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[460px]">
@@ -53,8 +61,8 @@
                                 <span class="text-[13px] font-medium text-emerald-500">{{$grado->nombreGrado}}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">EDITAR</button>
-                                <button class="inline-block p-2 rounded bg-red-400/10 text-red-500 font-medium text-[12px] leading-none">ELIMINAR</button>
+                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none  transition duration-300 hover:scale-105"><a href="{{ route('grados.edit', $grado->idGrado) }}">EDITAR</a></button>
+                                <button class="inline-block p-2 rounded bg-red-400/10 text-red-500 font-medium text-[12px] leading-none  transition duration-300 hover:scale-105">ELIMINAR</button>
                             </td>
                         </tr>
                         @endforeach
@@ -65,4 +73,17 @@
 </div>
 </section>
 
+<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = document.getElementById('success-message');
+                if (successMessage) {
+                    setTimeout(() => {
+                        successMessage.classList.add('opacity-0');
+                        setTimeout(() => {
+                            successMessage.remove();
+                        }, 500);  // Tiempo igual al de la transición de desvanecimiento
+                    }, 3000);  // Tiempo en milisegundos antes de comenzar el desvanecimiento (3 segundos)
+                }
+            });
+</script>
 @endsection

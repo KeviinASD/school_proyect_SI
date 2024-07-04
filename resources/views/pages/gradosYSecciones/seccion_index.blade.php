@@ -12,9 +12,12 @@
         </ul>
 </nav>
 <div>
-        <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+        <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md space-y-4">
             <div class="flex justify-between mb-4 items-start">
                 <div class="font-medium">DETALLES SECCIONES</div>
+            </div>
+            <div>
+                <button class="px-4 py-1 rounded bg-[#EEDBF1] font-semibold hover:bg-blue-200 transition duration-300 hover:translate-x-1"><a href=" {{route('secciones.create')}}">CREAR SECCION</a></button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[460px]">
@@ -40,13 +43,13 @@
                                 <span class="text-[13px] font-medium text-emerald-500">{{$seccion->nivel->nombreNivel}}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{$seccion->grado->nombreNivel}}</span>
+                                <span class="text-[13px] font-medium text-emerald-500">{{$seccion->grado->nombreGrado}}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
                                 <span class="text-[13px] font-medium text-emerald-500">{{$seccion->nombreSeccion}}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">EDITAR</button>
+                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none"><a href="{{ route('secciones.edit', $seccion->idSeccion) }}">EDITAR</a></button>
                                 <button class="inline-block p-2 rounded bg-red-400/10 text-red-500 font-medium text-[12px] leading-none">ELIMINAR</button>
                             </td>
                         </tr>

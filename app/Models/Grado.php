@@ -11,6 +11,7 @@ class Grado extends Model
     protected $table = 'grados';
     protected $primaryKey = 'idGrado';
     protected $fillable = ['idNivel', 'nombreGrado'];
+    public $timestamps = false;
 
     public function nivel()
     {
