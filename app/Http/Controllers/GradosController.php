@@ -91,9 +91,11 @@ class GradosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Grado $grado)
+    public function destroy($idGrado)
     {
-        //
+        $grado = Grado::find($idGrado);
+        $grado->delete();
+        return redirect()->route('grados.index')->with('success', 'Grado eliminado exitosamente');
     }
 
     public function getGradosByNivel($nivelId)

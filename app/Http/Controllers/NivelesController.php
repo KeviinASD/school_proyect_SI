@@ -70,8 +70,10 @@ class NivelesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Nivel $nivel)
+    public function destroy($idNivel)
     {
-        //
+        $grado = Nivel::find($idNivel);
+        $grado->delete();
+        return redirect()->route('niveles.index')->with('success', 'Nivel eliminado exitosamente');
     }
 }

@@ -90,8 +90,10 @@ class SeccionesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seccion $seccion)
+    public function destroy($idSeccion)
     {
-        //
+        $seccion = Seccion::find($idSeccion);
+        $seccion->delete();
+        return redirect()->route('secciones.index')->with('success', 'Sección eliminada exitosamente');
     }
 }
