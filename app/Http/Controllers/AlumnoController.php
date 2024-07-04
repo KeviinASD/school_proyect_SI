@@ -11,7 +11,7 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        $alumnos = Alumno::all(); // Recupera todos los alumnos
+        $alumnos = Alumno::with('sexo')->get(); // Recupera todos los alumnos
 
         return view('pages.alumnos.index', compact('alumnos'));
     }

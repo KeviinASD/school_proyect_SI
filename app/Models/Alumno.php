@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
 {
-
+    use HasFactory;
     protected $table = 'alumnos';
 
     protected $fillable = [
@@ -32,4 +32,24 @@ class Alumno extends Model
         'idSexo',
     ];
 
+    public function sexo()
+    {
+        return $this->belongsTo(Sexo::class, 'idSexo');
+    }
+    public function domicilio()
+    {
+        return $this->belongsTo(Domicilio::class, 'idDomicilio');
+    }
+    public function estadoCivil()
+    {
+        return $this->belongsTo(EstadoCivil::class, 'idEstadoCivil');
+    }
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class, 'idReligion');
+    }
+    public function escala()
+    {
+        return $this->belongsTo(Escala::class, 'idEscala');
+    }
 }
