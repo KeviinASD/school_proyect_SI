@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GradosController;
+use App\Http\Controllers\NivelesController;
+use App\Http\Controllers\ResumenXController;
+use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -10,6 +14,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {return view('welcome');})->name('welcome');   
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
+
+    Route::get('/gradosYSecciones', [ResumenXController::class, 'index'])->name('gradosYSecciones');
+    Route::resource('grados', GradosController::class);
+    Route::resource('niveles', NivelesController::class);
+    Route::resource('secciones', SeccionesController::class);
 });
 
 // routes when the user is not authenticated
