@@ -35,7 +35,7 @@
                         </td>
                         <td class="py-2 px-4 border-b border-b-gray-50">
                             <a href="{{ route('cursos.edit', $curso->idCurso) }}" class="inline-block p-2 rounded bg-blue-500 text-white font-medium text-[12px] leading-none hover:bg-blue-600">Editar</a>
-                            <form action="{{ route('cursos.destroy', $curso->idCurso) }}" method="POST" class="inline-block">
+                            <form action="{{ route('cursos.destroy', $curso->idCurso) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este curso?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-block p-2 rounded bg-red-400 text-red-500 font-medium text-[12px] leading-none hover:bg-red-500 hover:text-white ml-2">Eliminar</button>

@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacidadController;
+use App\Http\Controllers\CursoController;
+use App\Http\Controllers\GradosController;
+use App\Http\Controllers\NivelesController;
+use App\Http\Controllers\ResumenXController;
+use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,5 +33,5 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::resource('asignaturas', AsignaturaController::class);
 Route::resource('cursos', CursoController::class);
-
+Route::delete('/cursos/{idCurso}', [CursoController::class, 'destroy'])->name('cursos.destroy');
 Route::resource('capacidades', CapacidadController::class);

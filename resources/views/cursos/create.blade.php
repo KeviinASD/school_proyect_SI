@@ -9,14 +9,6 @@
         @csrf
 
         <div class="mb-4">
-            <label for="idCurso" class="block text-sm font-medium text-gray-700">ID del Curso</label>
-            <input type="text" id="idCurso" name="idCurso" value="{{ old('idCurso') }}" placeholder="ID del curso" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            @error('idCurso')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
             <label for="nombreCurso" class="block text-sm font-medium text-gray-700">Nombre del Curso</label>
             <input type="text" id="nombreCurso" name="nombreCurso" value="{{ old('nombreCurso') }}" placeholder="Ingrese el nombre del curso" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             @error('nombreCurso')
