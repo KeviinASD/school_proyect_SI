@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\LocationController;
 
 
 Route::resource('/alumnos', AlumnoController::class);
@@ -21,3 +22,7 @@ Route::group(['middleware' => 'guest'], function () {
     
 });
 
+Route::get('/countries', [LocationController::class, 'getCountries'])->name('countries');
+Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
+Route::get('/provincias/{geonameId}', [LocationController::class, 'getProvinces'])->name('provincias');
+Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts'])->name('distritos');

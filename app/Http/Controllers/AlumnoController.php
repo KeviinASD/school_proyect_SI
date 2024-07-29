@@ -63,10 +63,10 @@ class AlumnoController extends Controller
             'parroquiaDeBautizo' => 'nullable|string|max:30',
             'colegioProcedencia' => 'nullable|string|max:30',
             'idDomicilio' => 'nullable|integer|exists:domicilio,idDomicilio',
-            'idEstadoCivil' => 'required|integer|exists:estado_civil,idEstadoCivil',
-            'idReligion' => 'required|integer|exists:religion,idReligion',
-            'idEscala' => 'required|integer|exists:escala,idEscala',
-            'idSexo' => 'required|integer|exists:sexo,idSexo',
+            'idEstadoCivil' => 'nullable|integer|exists:estado_civil,idEstadoCivil',
+            'idReligion' => 'nullable|integer|exists:religion,idReligion',
+            'idEscala' => 'nullable|integer|exists:escala,idEscala',
+            'idSexo' => 'nullable|integer|exists:sexo,idSexo',
         ]);
 
         // Crear un nuevo alumno

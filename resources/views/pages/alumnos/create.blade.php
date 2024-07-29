@@ -57,24 +57,30 @@
                 </div>
         
                 <div class="mb-4">
+                    <label for="pais" class="block text-sm font-medium text-gray-700">País</label>
+                    <select id="pais" name="pais" class="form-select border border-gray-600 w-full h-8 rounded-md p-2 @error('pais') is-invalid @enderror">
+                        <option value="">Seleccionar País</option>
+                    </select>
+                    @error('pais')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <div class="mb-4">
                     <label for="departamento" class="block text-sm font-medium text-gray-700">Departamento</label>
-                    <input type="text" id="departamento" name="departamento" value="{{ old('departamento') }}" class="form-input border border-gray-600 w-full h-8 rounded-md p-2 @error('departamento') is-invalid @enderror">
+                    <select id="departamento" name="departamento" class="form-select border border-gray-600 w-full h-8 rounded-md p-2 @error('departamento') is-invalid @enderror">
+                        <option value="">Seleccionar Departamento</option>
+                    </select>
                     @error('departamento')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
                 </div>
         
                 <div class="mb-4">
-                    <label for="pais" class="block text-sm font-medium text-gray-700">País</label>
-                    <input type="text" id="pais" name="pais" value="{{ old('pais') }}" class="form-input border border-gray-600 w-full h-8 rounded-md p-2 @error('pais') is-invalid @enderror">
-                    @error('pais')
-                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                    @enderror
-                </div>
-        
-                <div class="mb-4">
                     <label for="provincia" class="block text-sm font-medium text-gray-700">Provincia</label>
-                    <input type="text" id="provincia" name="provincia" value="{{ old('provincia') }}" class="form-input border border-gray-600 w-full h-8 rounded-md p-2 @error('provincia') is-invalid @enderror">
+                    <select id="provincia" name="provincia" class="form-select border border-gray-600 w-full h-8 rounded-md p-2 @error('provincia') is-invalid @enderror">
+                        <option value="">Seleccionar Provincia</option>
+                    </select>
                     @error('provincia')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
@@ -82,7 +88,9 @@
         
                 <div class="mb-4">
                     <label for="distrito" class="block text-sm font-medium text-gray-700">Distrito</label>
-                    <input type="text" id="distrito" name="distrito" value="{{ old('distrito') }}" class="form-input border border-gray-600 w-full h-8 rounded-md p-2 @error('distrito') is-invalid @enderror">
+                    <select id="distrito" name="distrito" class="form-select border border-gray-600 w-full h-8 rounded-md p-2 @error('distrito') is-invalid @enderror">
+                        <option value="">Seleccionar Distrito</option>
+                    </select>
                     @error('distrito')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
@@ -202,4 +210,88 @@
     </div>
 
     
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paisSelect = document.getElementById('pais');
+        const departamentoSelect = document.getElementById('departamento');
+        const provinciaSelect = document.getElementById('provincia');
+        const distritoSelect = document.getElementById('distrito');
+        const countriesUrl = "{{ route('countries') }}";
+
+        // Cargar países
+        fetch(countriesUrl)
+            .then(response => response.json())
+            .then(paises => {
+                paises.sort((a, b) => a.countryName.localeCompare(b.countryName));
+                paises.forEach(pais => {
+                    const option = document.createElement('option');
+                    option.value = pais.geonameId;
+                    option.textContent = pais.countryName;
+                    paisSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching countries:', error));
+
+        // Evento para cargar departamentos
+        paisSelect.addEventListener('change', function() {
+            const countryId = this.value;
+            if (countryId) {
+                fetch(`/departamentos/${countryId}`)
+                    .then(response => response.json())
+                    .then(departamentos => {
+                        departamentoSelect.innerHTML = '<option value="">Seleccionar Departamento</option>';
+                        departamentos.forEach(depto => {
+                            const option = document.createElement('option');
+                            option.value = depto.geonameId;
+                            option.textContent = depto.name;
+                            departamentoSelect.appendChild(option);
+                        });
+                        provinciaSelect.innerHTML = '<option value="">Seleccionar Provincia</option>';
+                        distritoSelect.innerHTML = '<option value="">Seleccionar Distrito</option>';
+                    })
+                    .catch(error => console.error('Error fetching departamentos:', error));
+            }
+        });
+
+        // Evento para cargar provincias
+        departamentoSelect.addEventListener('change', function() {
+            const geonameId = this.value;
+            if (geonameId) {
+                fetch(`/provincias/${geonameId}`)
+                    .then(response => response.json())
+                    .then(provincias => {
+                        provinciaSelect.innerHTML = '<option value="">Seleccionar Provincia</option>';
+                        provincias.forEach(prov => {
+                            const option = document.createElement('option');
+                            option.value = prov.geonameId;
+                            option.textContent = prov.name;
+                            provinciaSelect.appendChild(option);
+                        });
+                        distritoSelect.innerHTML = '<option value="">Seleccionar Distrito</option>';
+                    })
+                    .catch(error => console.error('Error fetching provincias:', error));
+            }
+        });
+
+        // Evento para cargar distritos
+        provinciaSelect.addEventListener('change', function() {
+            const geonameId = this.value;
+            if (geonameId) {
+                fetch(`/distritos/${geonameId}`)
+                    .then(response => response.json())
+                    .then(distritos => {
+                        distritoSelect.innerHTML = '<option value="">Seleccionar Distrito</option>';
+                        distritos.forEach(dist => {
+                            const option = document.createElement('option');
+                            option.value = dist.geonameId;
+                            option.textContent = dist.name;
+                            distritoSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching distritos:', error));
+            }
+        });
+    });
+</script>
+
 @endsection
