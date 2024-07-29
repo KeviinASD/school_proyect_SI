@@ -219,7 +219,7 @@
         const countriesUrl = "{{ route('countries') }}";
 
         // Cargar países
-        fetch(countriesUrl)
+        fetch('/countries')
             .then(response => response.json())
             .then(paises => {
                 paises.sort((a, b) => a.countryName.localeCompare(b.countryName));

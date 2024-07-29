@@ -36,7 +36,7 @@
                     <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                         <i class="fas fa-edit"></i> Editar
                     </a>
-                    <form action="" method="POST" class="inline-block">
+                    <form action="{{ route('alumnos.destroy', $alumno->codigoAlumno) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este registro?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2">
