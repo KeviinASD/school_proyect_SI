@@ -10,9 +10,11 @@ class NivelesController extends Controller
     /**
      * Display a listing of the resource.
      */
+    const PAGINATION = 10;
+
     public function index()
     {
-        $niveles = Nivel::all();
+        $niveles = Nivel::where('estado', 1)->paginate(self::PAGINATION);
         return view('pages.gradosYSecciones.nivel_index', compact('niveles'));
     }
 

@@ -10,7 +10,7 @@ class Seccion extends Model
     use HasFactory;
     protected $table = 'secciones';
     protected $primaryKey = 'idSeccion';
-    protected $fillable = ['idGrado', 'idNivel', 'nombreSeccion'];
+    protected $fillable = ['idGrado', 'idNivel', 'nombreSeccion', 'estado'];
     public $timestamps = false;
 
     public function grado()

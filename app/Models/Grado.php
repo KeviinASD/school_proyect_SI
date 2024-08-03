@@ -10,7 +10,7 @@ class Grado extends Model
     use HasFactory;
     protected $table = 'grados';
     protected $primaryKey = 'idGrado';
-    protected $fillable = ['idNivel', 'nombreGrado'];
+    protected $fillable = ['idNivel', 'nombreGrado', 'estado'];
     public $timestamps = false;
 
     public function nivel()
