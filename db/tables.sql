@@ -50,6 +50,7 @@ CREATE TABLE ASIGNATURAS (
     idNivel INT,
     estado TINYINT(1) DEFAULT 1,
     FOREIGN KEY (idGrado, idNivel) REFERENCES GRADOS(idGrado, idNivel),
+    FOREIGN KEY (idCurso) REFERENCES CURSOS(idCurso),
 
     CONSTRAINT PK_Asignatura PRIMARY KEY (idAsignatura, idCurso)
 );
