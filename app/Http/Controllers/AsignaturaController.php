@@ -1,15 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
+use App\Models\Curso;
+use App\Models\Grado;
+use App\Models\Nivel;
 use Illuminate\Http\Request;
 
 class AsignaturaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $asignaturas = Asignatura::all();
@@ -18,34 +17,51 @@ class AsignaturaController extends Controller
 
     public function create()
     {
-        return view('asignaturas.create');
+        $cursos = Curso::all();
+        $grados = Grado::all();
+        $niveles = Nivel::all();
+        return view('asignaturas.create', compact('cursos', 'grados', 'niveles'));
     }
 
     public function store(Request $request)
     {
-        Asignatura::create($request->all());
-        return redirect()->route('asignaturas.index');
-    }
+        $validatedData = $request->validate([
+            'idCurso' => 'required',
+            'idGrado' => 'required',
+            'idNivel' => 'required',
+            'estado' => 'nullable',
+        ]);
 
-    public function show(Asignatura $asignatura)
-    {
-        return view('asignaturas.show', compact('asignatura'));
+        Asignatura::create($validatedData);
+
+        return redirect()->route('asignaturas.index')->with('success', 'Asignatura creada exitosamente.');
     }
 
     public function edit(Asignatura $asignatura)
     {
-        return view('asignaturas.edit', compact('asignatura'));
+        $cursos = Curso::all();
+        $grados = Grado::all();
+        $niveles = Nivel::all();
+        return view('asignaturas.edit', compact('asignatura', 'cursos', 'grados', 'niveles'));
     }
 
     public function update(Request $request, Asignatura $asignatura)
     {
-        $asignatura->update($request->all());
-        return redirect()->route('asignaturas.index');
+        $validatedData = $request->validate([
+            'idCurso' => 'required',
+            'idGrado' => 'required',
+            'idNivel' => 'required',
+            'estado' => 'nullable',
+        ]);
+
+        $asignatura->update($validatedData);
+
+        return redirect()->route('asignaturas.index')->with('success', 'Asignatura actualizada exitosamente.');
     }
 
     public function destroy(Asignatura $asignatura)
     {
         $asignatura->delete();
-        return redirect()->route('asignaturas.index');
+        return redirect()->route('asignaturas.index')->with('success', 'Asignatura eliminada exitosamente.');
     }
 }

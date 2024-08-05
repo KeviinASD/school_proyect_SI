@@ -9,18 +9,8 @@ class Curso extends Model
 {
     use HasFactory;
 
+    protected $table = 'cursos';
     protected $primaryKey = 'idCurso';
-
-    protected $fillable = [
-        'nombreCurso',
-        'idNivel',
-    ];
+    protected $fillable = ['nombreCurso', 'estado']; 
     public $timestamps = false;
-
-    public function nivel()
-    {
-        return $this->belongsTo(Nivel::class, 'idNivel');
-    }
-
-    
 }

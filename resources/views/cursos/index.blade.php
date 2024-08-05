@@ -15,7 +15,6 @@
                     <tr>
                         <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">ID Curso</th>
                         <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Nombre</th>
-                        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Nivel</th>
                         <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">Acciones</th>
                     </tr>
                 </thead>
@@ -29,9 +28,6 @@
                         </td>
                         <td class="py-2 px-4 border-b border-b-gray-50">
                             <span class="text-[13px] font-medium text-emerald-500">{{ $curso->nombreCurso }}</span>
-                        </td>
-                        <td class="py-2 px-4 border-b border-b-gray-50">
-                            <span class="text-[13px] font-medium">{{ $curso->nivel->nombreNivel }}</span>
                         </td>
                         <td class="py-2 px-4 border-b border-b-gray-50">
                             <a href="{{ route('cursos.edit', $curso->idCurso) }}" class="inline-block p-2 rounded bg-blue-500 text-white font-medium text-[12px] leading-none hover:bg-blue-600">Editar</a>

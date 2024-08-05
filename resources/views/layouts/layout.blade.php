@@ -16,6 +16,7 @@
         <aside id="sidevar" class="fixed top-0 bottom-0 -translate-x-[300px] lg:translate-x-0 lg:flex h-full z-20 w-64 pt-20 flex-col flex-shrink-0 transition duration-300 ease-linear">
             <div class="p-3 border-r border-gray-200 min-h-0 flex flex-1 overflow-y-auto flex-col pt-6 divide-y bg-[#1A1D1F] h-full">
                 <ul class="space-y-3 pb-6">
+                    <!-- Existing Menu Items -->
                     <li>
                         <a href="{{ route('welcome') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white hover:scale-105 group transition duration-150 ease-in-out">
                             <svg class="w-6 h-6 text-gray-400 group-hover:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,26 +44,9 @@
                             <span class="ml-3">Grados Y Secciones</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('dashboard') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
-                            <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3">Reportes</span>
-                        </a>
-                    </li>
+                    
                     
                     <li>
-                        <a href="{{ route('dashboard') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
-                            <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3">Tablas</span>
-                        </a>
-                    </li>
-                    <li>
-<<<<<<< HEAD
                         <a href="{{ route('cursos.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
                             <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
@@ -71,14 +55,39 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('dashboard') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
-=======
-                        <a href="{{ route('dashboard') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
->>>>>>> origin/kevin_rama
+                        <a href="#" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
                             <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                             </svg>
                             <span class="ml-3">Alumnos</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="{{ route('capacidades.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-3">Capacidades</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('catedras.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-3">Cátedras</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('asignaturas.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-3">Asignaturas</span>
                         </a>
                     </li>
                 </ul>
