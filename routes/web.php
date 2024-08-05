@@ -23,7 +23,7 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
-Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
+Route::put('/alumnos/{codigoAlumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
 
 Route::get('/countries', [LocationController::class, 'getCountries'])->name('countries');
 Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
