@@ -6,6 +6,7 @@ use App\Http\Controllers\AlumnoController;
 
 
 Route::resource('/alumnos', AlumnoController::class);
+Route::resource('/detalle-notas', AlumnoController::class);
 // routes when the user is authenticated
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
