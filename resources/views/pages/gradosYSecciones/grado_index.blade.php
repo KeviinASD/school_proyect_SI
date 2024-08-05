@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($grados as $grado)
+                        @foreach ($grados as $grado) 
 
                         <tr>
                             <td class="p-3 px-4 border-b border-b-gray-50">
