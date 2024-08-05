@@ -15,28 +15,17 @@
     </div>
     @endif
 
-    <form action="{{ route('capacidades.update', $capacidad) }}" method="POST">
+    <form action="{{ route('capacidades.update', $capacidad->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-4">
             <label for="idAsignatura" class="block text-sm font-medium text-gray-700">Asignatura</label>
             <select id="idAsignatura" name="idAsignatura" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
                 @foreach ($asignaturas as $asignatura)
-                <option value="{{ $asignatura->idAsignatura }}" {{ $capacidad->idAsignatura == $asignatura->idAsignatura ? 'selected' : '' }}>{{ $asignatura->nombreAsignatura }}</option>
+                <option value="{{ $asignatura->idAsignatura }}" {{ old('idAsignatura', $capacidad->idAsignatura) == $asignatura->idAsignatura ? 'selected' : '' }}>{{ $asignatura->nombreAsignatura }}</option>
                 @endforeach
             </select>
             @error('idAsignatura')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-        <div class="mb-4">
-            <label for="idCurso" class="block text-sm font-medium text-gray-700">Curso</label>
-            <select id="idCurso" name="idCurso" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                @foreach ($cursos as $curso)
-                <option value="{{ $curso->idCurso }}" {{ $capacidad->idCurso == $curso->idCurso ? 'selected' : '' }}>{{ $curso->nombreCurso }}</option>
-                @endforeach
-            </select>
-            @error('idCurso')
             <p class="text-sm text-red-500">{{ $message }}</p>
             @enderror
         </div>

@@ -30,5 +30,10 @@ class Grado extends Model
         return $this->hasMany(Seccion::class, 'idGrado', 'idGrado');
     }
 
+    public function asignaturas()
+{
+    return $this->hasMany(Asignatura::class, ['idGrado', 'idNivel'], ['idGrado', 'idNivel']);
+}
+
 
 }

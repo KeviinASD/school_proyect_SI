@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Capacidad extends Model
 {
     protected $table = 'CAPACIDADES';
-    protected $primaryKey = ['idCapacidad', 'idAsignatura', 'idCurso'];
+    protected $primaryKey = 'idCapacidad'; // Ajusta según tu esquema si no usas una clave primaria compuesta
     public $incrementing = false;
     public $timestamps = false;
 
@@ -15,16 +15,17 @@ class Capacidad extends Model
         'descripcion',
         'abreviatura',
         'orden',
-        'estado',
+        'idAsignatura',
+        'idCurso'
     ];
 
     public function asignatura()
     {
-        return $this->belongsTo(Asignatura::class, 'idAsignatura', 'idAsignatura')->where('idCurso', $this->idCurso);
+        return $this->belongsTo(Asignatura::class, 'idAsignatura', 'idAsignatura');
     }
 
     public function curso()
     {
-        return $this->belongsTo(Curso::class, 'idCurso');
+        return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
     }
 }
