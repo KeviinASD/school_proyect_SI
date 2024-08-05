@@ -35,6 +35,12 @@ class NivelesController extends Controller
             'nombreNivel' => 'required'
         ]);
 
+        // verificar que noe exista el mismo nombre
+        $nivelFound = Nivel::where('nombreNivel', $request->nombreNivel)->where('estado', 1)->first();
+        if ($nivelFound) {
+            return redirect()->route('niveles.index')->with('error', 'El nivel ya existe');
+        }
+
         Nivel::create($request->all());
         return redirect()->route('niveles.index');
     }
@@ -65,6 +71,12 @@ class NivelesController extends Controller
             'nombreNivel' => 'required'
         ]);
 
+        $nivelFound = Nivel::where('nombreNivel', $data['nombreNivel'])->where('estado', 1)->first();
+
+        if ($nivelFound) {
+            return redirect()->route('niveles.index')->with('error', 'El nivel ya existe');
+        }
+
         Nivel::where('idNivel', $idNivel)->update($data);
         return redirect()->route('niveles.index');
     }
@@ -75,7 +87,8 @@ class NivelesController extends Controller
     public function destroy($idNivel)
     {
         $grado = Nivel::find($idNivel);
-        $grado->delete();
+        $grado->estado = 0;
+        $grado->save();
         return redirect()->route('niveles.index')->with('success', 'Nivel eliminado exitosamente');
     }
 }

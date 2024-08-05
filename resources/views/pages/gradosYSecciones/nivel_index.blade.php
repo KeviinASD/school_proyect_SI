@@ -17,6 +17,11 @@
             {{ session('success') }}
         </div>
         @endif
+        @if (session('error'))
+        <div id="success-message" class=" p-4 rounded bg-[#FDE2E2] font-semibold hover:bg-blue-200 transition duration-300 hover:translate-x-1">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md space-y-4">
             <div class="flex justify-between items-start">
                 <div class="font-medium">DETALLES NIVELES</div>
@@ -46,13 +51,13 @@
                                 <span class="text-[13px] font-semibold text-black-primary-200">{{$nivel->nombreNivel}}</span>
                             </td>
                             <td class="py-3 px-4 border-b border-b-gray-200 space-x-2">
-                                <button class="inline-block p-2 transition duration-300 hover:scale-105 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
+                                <button class="inline-block p-2 transition duration-300 hover:scale-105 rounded bg-emerald-200 font-medium text-[12px] leading-none">
                                     <a href=" {{ route('niveles.edit', $nivel->idNivel) }} ">EDITAR</a>
                                 </button>
                                 <form action="{{ route('niveles.destroy', $nivel->idNivel) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este nivel?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400/10 text-red-500 font-medium text-[12px] leading-none">Eliminar</button>
+                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400 font-medium text-[12px] leading-none">ELIMINAR</button>
                                 </form>
                             </td>
                         </tr>
