@@ -31,9 +31,9 @@
                 <td class="border px-4 py-2">{{ $alumno->codigoAlumno }}</td>
                 <td class="border px-4 py-2">{{ $alumno->nombres }} {{ $alumno->apellidos }}</td>
                 <td class="border px-4 py-2">{{ $alumno->DNI }}</td>
-                <td class="border px-4 py-2">{{ $alumno->sexo->nombreSexo }}</td>
+                <td class="border px-4 py-2">{{ $alumno->sexo?->nombreSexo ?? 'No Especifica'}}</td>
                 <td class="border px-4 py-2">
-                    <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                    <a href="{{ route('alumnos.edit', $alumno->codigoAlumno) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                         <i class="fas fa-edit"></i> Editar
                     </a>
                     <form action="{{ route('alumnos.destroy', $alumno->codigoAlumno) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este registro?');">
