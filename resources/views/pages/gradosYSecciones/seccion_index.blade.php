@@ -46,20 +46,20 @@
                                 </div>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{ $seccion->nivel->nombreNivel }}</span>
+                                <span class="text-[13px] font-medium ">{{ $seccion->nivel->nombreNivel }}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{ $seccion->grado->nombreGrado }}</span>
+                                <span class="text-[13px] font-medium ">{{ $seccion->grado->nombreGrado }}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{ $seccion->nombreSeccion }}</span>
+                                <span class="text-[13px] font-medium ">{{ $seccion->nombreSeccion }}</span>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
-                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none"><a href="{{ route('secciones.edit', $seccion->idSeccion) }}">EDITAR</a></button>
+                                <button class="inline-block p-2 rounded bg-emerald-200 font-medium text-[12px] leading-none"><a href="{{ route('secciones.edit', $seccion->idSeccion) }}">EDITAR</a></button>
                                 <form action="{{ route('secciones.destroy', $seccion->idSeccion) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta seccion?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400/10 text-red-500 font-medium text-[12px] leading-none">Eliminar</button>
+                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400 font-medium text-[12px] leading-none">ELIMINAR</button>
                                 </form>
                             </td>
                         </tr>

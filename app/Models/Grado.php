@@ -10,7 +10,14 @@ class Grado extends Model
     use HasFactory;
     protected $table = 'grados';
     protected $primaryKey = 'idGrado';
-    protected $fillable = ['idNivel', 'nombreGrado'];
+    protected $keyType = 'int';
+    protected $fillable = [
+        'idGrado',
+        'idNivel',
+        'nombreGrado',
+        'estado'
+    ];
+
     public $timestamps = false;
 
     public function nivel()
@@ -20,6 +27,8 @@ class Grado extends Model
 
     public function secciones()
     {
-        return $this->hasMany(Seccion::class, 'idGrado');
+        return $this->hasMany(Seccion::class, 'idGrado', 'idGrado');
     }
+
+
 }

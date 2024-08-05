@@ -13,8 +13,13 @@
     </nav>
     <div>
         @if (session('success'))
-        <div id="success-message" class="p-4 rounded bg-[#DEF4DB] font-semibold hover:bg-blue-200 transition duration-300 hover:translate-x-1">
+        <div id="success-message" class="p-4 rounded bg-[#DEF4DB] font-semibold transition duration-300 hover:translate-x-1">
             {{ session('success') }}
+        </div>
+        @endif
+        @if (session('error'))
+        <div id="success-message" class="p-4 rounded bg-[#FDE2E2] font-semibold transition duration-300 hover:translate-x-1">
+            {{ session('error') }}
         </div>
         @endif
         <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md space-y-4">
@@ -38,34 +43,34 @@
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[460px]">
                     <thead>
-                        <tr>
-                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">IDGRADO</th>
-                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">NIVEL</th>
-                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">GRADO</th>
-                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">Status</th>
+                        <tr class="rounded-md">
+                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left rounded-tl-md rounded-bl-md">IDGRADO</th>
+                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left"><span class="border-l-gray-500 border-l pl-2">NIVEL</span></th>
+                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left"><span class="border-l-gray-500 border-l pl-2">GRADO</span></th>
+                            <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left"><span class="border-l-gray-500 border-l pl-2">STATUS</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($grados as $grado)
 
                         <tr>
-                            <td class="py-2 px-4 border-b border-b-gray-50">
+                            <td class="p-3 px-4 border-b border-b-gray-50">
                                 <div class="flex items-center">
                                     <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">{{$grado->idGrado}}</a>
                                 </div>
                             </td>
-                            <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{$grado->nivel->nombreNivel}}</span>
+                            <td class="py-3 px-4 border-b border-b-gray-50">
+                                <span class="text-[13px] font-medium">{{$grado->nivel->nombreNivel}}</span>
                             </td>
-                            <td class="py-2 px-4 border-b border-b-gray-50">
-                                <span class="text-[13px] font-medium text-emerald-500">{{$grado->nombreGrado}}</span>
+                            <td class="py-3 px-4 border-b border-b-gray-50">
+                                <span class="text-[13px] font-medium">{{$grado->nombreGrado}}</span>
                             </td>
-                            <td class="py-2 px-4 border-b border-b-gray-50">
-                                <button class="inline-block p-2 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none  transition duration-300 hover:scale-105"><a href="{{ route('grados.edit', $grado->idGrado) }}">EDITAR</a></button>
+                            <td class="py-3 px-4 border-b border-b-gray-50 space-x-2">
+                                <button class="inline-block p-2 rounded bg-emerald-200 font-medium text-[12px] leading-none  transition duration-300 hover:scale-105"><a href="{{ route('grados.edit', $grado->idGrado) }}">EDITAR</a></button>
                                 <form action="{{ route('grados.destroy', $grado->idGrado) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este grado?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400/10 text-red-500 font-medium text-[12px] leading-none">Eliminar</button>
+                                    <button type="submit" class="inline-block p-2 rounded transition duration-300 hover:scale-105 bg-red-400 font-medium text-[12px] leading-none">ELIMINAR</button>
                                 </form>
                             </td>
                         </tr>

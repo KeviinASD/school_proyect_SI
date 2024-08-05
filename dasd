@@ -1,0 +1,47 @@
+[33mcommit 8d64c555640eee910f3c1b39339ccc7a94c8040e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkevin_rama[m[33m, [m[1;31morigin/kevin_rama[m[33m)[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Thu Jul 4 01:09:45 2024 -0500
+
+    terminando cruds grados, secciones y niveles
+
+[33mcommit e9262e52b6f2136a79888e4db74f6c2d34a5f14d[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Thu Jul 4 00:14:58 2024 -0500
+
+    agregando todas las cruds menos el eliminar de niveles, secciones y grados
+
+[33mcommit 1538698ef04ef68bb3e48cb80ce51ae1274aca3c[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Wed Jul 3 20:54:41 2024 -0500
+
+    added the routes grados, niveles and secciones with their blade templates
+
+[33mcommit b0999ed0150704295ce10a812914fb607ee10ab5[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Sun Jun 30 20:09:50 2024 -0500
+
+    Implementando js para el aside
+
+[33mcommit 90c1a059d7dbfdbb55357e6cf0f35fd1e12c579a[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Sun Jun 30 17:14:07 2024 -0500
+
+    add the work space like navabar, aside, etc to work with data base and make the cruds
+
+[33mcommit 38bbd4189e313b73521d1d121ea143ed38dabd48[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Sun Jun 30 02:04:15 2024 -0500
+
+    add the login and all about the authentication
+
+[33mcommit b90cdd55b022dc5f959bc0974edda29248bb8783[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Sat Jun 29 01:19:10 2024 -0500
+
+    Install Pest
+
+[33mcommit b72151d0145f24c2affcdae2a00330e1c7e4b853[m
+Author: Kevin Rivas <kevinabril093@gmail.com>
+Date:   Sat Jun 29 01:18:43 2024 -0500
+
+    Set up a fresh Laravel app

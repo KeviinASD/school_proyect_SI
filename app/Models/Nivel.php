@@ -10,7 +10,7 @@ class Nivel extends Model
     use HasFactory;
     protected $table = 'niveles';
     protected $primaryKey = 'idNivel';
-    protected $fillable = ['nombreNivel'];
+    protected $fillable = ['nombreNivel', 'estado'];
     public $timestamps = false;
 
     public function grados()

@@ -14,7 +14,7 @@ class SeccionesController extends Controller
      */
     public function index()
     {
-        $secciones = Seccion::all();
+        $secciones = Seccion::where('estado', 1)->get();
         return view('pages.gradosYSecciones.seccion_index', compact('secciones'));
     }
 
@@ -23,8 +23,8 @@ class SeccionesController extends Controller
      */
     public function create()
     {
-        $grados = Grado::all();
-        $niveles = Nivel::all();
+        $grados = Grado::where('estado', 1)->get();
+        $niveles = Nivel::where('estado', 1)->get();
         return view('pages.gradosYSecciones.seccion_create', compact('grados', 'niveles'));
     }
 
@@ -38,6 +38,16 @@ class SeccionesController extends Controller
             'idNivel' => 'required|integer|exists:niveles,idNivel',
             'idGrado' => 'required|integer|exists:grados,idGrado'
         ]);
+
+        $seccionFound = Seccion::where('nombreSeccion', $request->nombreSeccion)
+            ->where('idNivel', $request->idNivel)
+            ->where('idGrado', $request->idGrado)
+            ->where('estado', 1)
+            ->first();
+
+        if ($seccionFound) {
+            return redirect()->route('secciones.index')->with('error', 'La sección ya existe');
+        }
 
         Seccion::create([
             'nombreSeccion' => $request->input('nombreSeccion'),
@@ -78,6 +88,16 @@ class SeccionesController extends Controller
             'idNivel' => 'required',
         ]);
 
+        $seccionFound = Seccion::where('nombreSeccion', $request['nombreSeccion'])
+            ->where('idNivel', $request['idNivel'])
+            ->where('idGrado', $request['idGrado'])
+            ->where('estado', 1)
+            ->first();
+
+        if ($seccionFound) {
+            return redirect()->route('secciones.index')->with('error', 'La sección ya existe');
+        }
+
         $seccion = Seccion::findOrFail($idSeccion);
         $seccion->nombreSeccion = $request['nombreSeccion'];
         $seccion->idGrado = $request['idGrado'];
@@ -93,7 +113,8 @@ class SeccionesController extends Controller
     public function destroy($idSeccion)
     {
         $seccion = Seccion::find($idSeccion);
-        $seccion->delete();
+        $seccion->estado = 0;
+        $seccion->save();
         return redirect()->route('secciones.index')->with('success', 'Sección eliminada exitosamente');
     }
 }
