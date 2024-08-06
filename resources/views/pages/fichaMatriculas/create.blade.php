@@ -56,9 +56,7 @@
                 <select name="idNivel" id="idNivel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     <option value="">Seleccione un nivel</option>
                     @foreach ($niveles as $nivel)
-                        <option value="{{ $nivel->idNivel }}" {{ old('idNivel') == $nivel->idNivel ? 'selected' : '' }}>
-                            {{ $nivel->nombreNivel }}
-                        </option>
+                        <option value="{{ $nivel->idNivel }}">{{ $nivel->nombreNivel }}</option>
                     @endforeach
                 </select>
                 @error('idNivel')
@@ -72,11 +70,6 @@
                 </label>
                 <select name="idGrado" id="idGrado" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     <option value="">Seleccione un grado</option>
-                    @foreach ($grados as $grado)
-                        <option value="{{ $grado->idGrado }}" {{ old('idGrado') == $grado->idGrado ? 'selected' : '' }}>
-                            {{ $grado->nombreGrado }}
-                        </option>
-                    @endforeach
                 </select>
                 @error('idGrado')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -88,12 +81,7 @@
                     Sección
                 </label>
                 <select name="idSeccion" id="idSeccion" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="">Seleccione una sección</option>
-                    @foreach ($secciones as $seccion)
-                        <option value="{{ $seccion->idSeccion }}" {{ old('idSeccion') == $seccion->idSeccion ? 'selected' : '' }}>
-                            {{ $seccion->nombreSeccion }}
-                        </option>
-                    @endforeach
+                    <option value="">Seleccione una Sección</option>
                 </select>
                 @error('idSeccion')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -123,4 +111,51 @@
             </div>
         </form>
     </div>
+
+    <script>
+    function actualizarSecciones() {
+        const gradoId = document.getElementById('idGrado').value;
+        if (gradoId) {
+            fetch(`/api/secciones/${gradoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const seccionSelect = document.getElementById('idSeccion');
+                    seccionSelect.innerHTML = '<option value="">Seleccione una Sección</option>';
+                    data.secciones.forEach(seccion => {
+                        seccionSelect.innerHTML += `<option value="${seccion.idSeccion}">${seccion.nombreSeccion}</option>`;
+                    });
+                });
+        } else {
+            // Si no hay grado seleccionado, vacía las secciones
+            const seccionSelect = document.getElementById('idSeccion');
+            seccionSelect.innerHTML = '<option value="">Seleccione una Sección</option>';
+        }
+    }
+
+    // Actualiza el listado de grados basado en el nivel seleccionado
+    document.getElementById('idNivel').addEventListener('change', function() {
+        const nivelId = this.value;
+        fetch(`/api/grados/${nivelId}`)
+            .then(response => response.json())
+            .then(data => {
+                const gradoSelect = document.getElementById('idGrado');
+                gradoSelect.innerHTML = '<option value="">Seleccione un Grado</option>';
+                data.grados.forEach(grado => {
+                    gradoSelect.innerHTML += `<option value="${grado.idGrado}">${grado.nombreGrado}</option>`;
+                });
+                // Limpia las secciones cuando se cambie el nivel
+                document.getElementById('idSeccion').innerHTML = '<option value="">Seleccione una Sección</option>';
+            });
+    });
+
+    // Actualiza el listado de secciones basado en el grado seleccionado
+    document.getElementById('idGrado').addEventListener('change', function() {
+        actualizarSecciones();
+    });
+
+    // Ejecuta la función al cargar la página si ya hay un grado seleccionado
+    document.addEventListener('DOMContentLoaded', function() {
+        actualizarSecciones();
+    });
+    </script>
 @endsection

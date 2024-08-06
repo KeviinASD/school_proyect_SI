@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\FichaMatriculasController;
 use App\Http\Controllers\TipoDocenteController;
+use App\Http\Controllers\GradosController;
+use App\Http\Controllers\SeccionesController;
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -15,12 +17,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('docentes', DocenteController::class);
     Route::resource('fichaMatriculas', FichaMatriculasController::class);
     Route::resource('tipoDocente', TipoDocenteController::class);    
+    
+    Route::get('/api/grados/{nivelId}', [GradosController::class, 'getGradosByNivel']);  
+    Route::get('/api/secciones/{gradoId}', [SeccionesController::class, 'getSeccionesByGrado']);  
 });
 
 // routes when the user is not authenticated
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'postLogin']);
-    
+    Route::post('/login', [AuthController::class, 'postLogin']); 
 });
 
