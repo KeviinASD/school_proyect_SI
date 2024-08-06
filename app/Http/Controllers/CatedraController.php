@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Catedra;
+use App\Models\Seccion;
+use App\Models\Grado;
+use App\Models\Nivel;
+use App\Models\Curso;
+use App\Models\Asignatura;
+use App\Models\AñoEscolar;
+use App\Models\Docente;
+use App\Models\DocenteProvicional;
 use Illuminate\Http\Request;
 
 class CatedraController extends Controller
@@ -13,38 +21,86 @@ class CatedraController extends Controller
         return view('catedras.index', compact('catedras'));
     }
 
+    // Método para mostrar el formulario de creación
     public function create()
     {
-        return view('catedras.create');
+        $docentes = DocenteProvicional::all();
+        $secciones = Seccion::all();
+        $grados = Grado::all();
+        $niveles = Nivel::all();
+        $cursos = Curso::all();
+        $asignaturas = Asignatura::all();
+        $añosEscolares = AñoEscolar::all();
+
+        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
+
+    // Método para buscar un docente por código
+    public function buscarDocente(Request $request)
+    {
+        $codigoDocente = $request->input('codigo_docente');
+
+        $docente = DocenteProvicional::where('codigo_docente', $codigoDocente)->first();
+
+        if ($docente) {
+            return response()->json([
+                'success' => true,
+                'nombre_docente' => $docente->nombres . ' ' . $docente->apellidos
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró el docente con el código proporcionado.'
+            ]);
+        }
+    }
+
+
 
     public function store(Request $request)
     {
-        $request->validate([
-            'idCatedra' => 'required',
-            'codigo_docente' => 'required',
-            'idSeccion' => 'required',
-            'idGrado' => 'required',
-            'idNivel' => 'required',
-            'idAsignatura' => 'required',
-            'idCurso' => 'required',
-            'añoEscolar' => 'required',
+        // Validar la solicitud
+        $validated = $request->validate([
+            'codigo_docente' => 'required|string',
+            'idSeccion' => 'required|integer',
+            'idGrado' => 'required|integer',
+            'idNivel' => 'required|integer',
+            'idCurso' => 'required|integer',
+            'idAsignatura' => 'required|integer',
+            'añoEscolar' => 'required|string',
         ]);
 
-        Catedra::create($request->all() + ['estado' => 1]);
+        // Crear la nueva cátedra
+        $catedra = new Catedra();
+        $catedra->codigo_docente = $validated['codigo_docente'];
+        $catedra->idSeccion = $validated['idSeccion'];
+        $catedra->idGrado = $validated['idGrado'];
+        $catedra->idNivel = $validated['idNivel'];
+        $catedra->idCurso = $validated['idCurso'];
+        $catedra->idAsignatura = $validated['idAsignatura'];
+        $catedra->añoEscolar = $validated['añoEscolar'];
+        $catedra->save();
 
+        // Redirigir con un mensaje de éxito
         return redirect()->route('catedras.index')->with('success', 'Cátedra creada exitosamente.');
     }
 
-    public function edit(Catedra $catedra)
+    public function edit($id)
     {
-        return view('catedras.edit', compact('catedra'));
+        $docentes = DocenteProvicional::all();
+        $secciones = Seccion::all();
+        $grados = Grado::all();
+        $niveles = Nivel::all();
+        $cursos = Curso::all();
+        $asignaturas = Asignatura::all();
+        $añosEscolares = AñoEscolar::all();
+
+        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
 
     public function update(Request $request, Catedra $catedra)
     {
         $request->validate([
-            'idCatedra' => 'required',
             'codigo_docente' => 'required',
             'idSeccion' => 'required',
             'idGrado' => 'required',

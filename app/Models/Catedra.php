@@ -9,61 +9,60 @@ class Catedra extends Model
 {
     use HasFactory;
 
-    // Define el nombre de la tabla asociada
     protected $table = 'CATEDRAS';
+    // Especifica el nombre de la clave primaria
+    protected $primaryKey = 'idCatedra'; // Ajusta esto según el nombre real de la columna
 
-    // Define las claves primarias compuestas
-    protected $primaryKey = ['idCatedra', 'codigo_docente'];
+    // Si la clave primaria no es un entero autoincrementable
+    protected $keyType = 'int'; // o 'string' si es una cadena
+    public $incrementing = true; // o false si no es autoincrementable
 
-    // Indica que la clave primaria es compuesta
-    public $incrementing = false;
-
-    // Define el tipo de clave primaria
-    protected $keyType = 'int';
-
-    // Define qué campos pueden ser asignados masivamente
     protected $fillable = [
-        'idCatedra',
         'codigo_docente',
         'idSeccion',
         'idGrado',
         'idNivel',
-        'idAsignatura',
         'idCurso',
+        'idAsignatura',
         'añoEscolar',
     ];
 
-    // Define las relaciones con otros modelos
+    // Si usas timestamps, desactívalos si no se utilizan
+    public $timestamps = false;
 
-    /**
-     * Relación con el modelo Docente.
-     */
+    // Definir las relaciones
     public function docente()
     {
-        return $this->belongsTo(Docente::class, 'codigo_docente', 'codigo_docente');
+        return $this->belongsTo(DocenteProvicional::class, 'codigo_docente', 'codigo_docente');
     }
 
-    /**
-     * Relación con el modelo Seccion.
-     */
     public function seccion()
     {
-        return $this->belongsTo(Seccion::class, ['idSeccion', 'idGrado', 'idNivel'], ['idSeccion', 'idGrado', 'idNivel']);
+        return $this->belongsTo(Seccion::class, 'idSeccion', 'idSeccion');
     }
 
-    /**
-     * Relación con el modelo Asignatura.
-     */
+    public function grado()
+    {
+        return $this->belongsTo(Grado::class, 'idGrado', 'idGrado');
+    }
+
+    public function nivel()
+    {
+        return $this->belongsTo(Nivel::class, 'idNivel', 'idNivel');
+    }
+
+    public function curso()
+    {
+        return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
+    }
+
     public function asignatura()
     {
-        return $this->belongsTo(Asignatura::class, ['idAsignatura', 'idCurso'], ['idAsignatura', 'idCurso']);
+        return $this->belongsTo(Asignatura::class, 'idAsignatura', 'idAsignatura');
     }
 
-    /**
-     * Relación con el modelo AnioEscolar.
-     */
-    public function anioEscolar()
+    public function añoEscolar()
     {
-        return $this->belongsTo(AnioEscolar::class, 'añoEscolar', 'añoEscolar');
+        return $this->belongsTo(AñoEscolar::class, 'añoEscolar', 'añoEscolar');
     }
 }

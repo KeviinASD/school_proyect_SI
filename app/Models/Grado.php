@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Grado extends Model
 {
     use HasFactory;
+
     protected $table = 'grados';
     protected $primaryKey = 'idGrado';
     protected $keyType = 'int';
@@ -22,7 +23,7 @@ class Grado extends Model
 
     public function nivel()
     {
-        return $this->hasOne(Nivel::class, 'idNivel', 'idNivel');
+        return $this->belongsTo(Nivel::class, 'idNivel', 'idNivel');
     }
 
     public function secciones()
@@ -31,9 +32,7 @@ class Grado extends Model
     }
 
     public function asignaturas()
-{
-    return $this->hasMany(Asignatura::class, ['idGrado', 'idNivel'], ['idGrado', 'idNivel']);
-}
-
-
+    {
+        return $this->hasMany(Asignatura::class, 'idGrado', 'idGrado');
+    }
 }

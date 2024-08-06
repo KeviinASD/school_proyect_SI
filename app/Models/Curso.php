@@ -11,6 +11,11 @@ class Curso extends Model
 
     protected $table = 'cursos';
     protected $primaryKey = 'idCurso';
-    protected $fillable = ['nombreCurso', 'estado']; 
+    protected $fillable = ['nombreCurso', 'estado'];
     public $timestamps = false;
+
+    public function asignaturas()
+    {
+        return $this->hasMany(Asignatura::class, 'idCurso', 'idCurso');
+    }
 }

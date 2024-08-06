@@ -19,7 +19,7 @@ use App\Http\Controllers\TipoDocenteController;
 
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotasController;
-
+use App\Models\Catedra;
 
 Route::resource('/alumnos', AlumnoController::class);
 // routes when the user is authenticated
@@ -59,13 +59,7 @@ Route::resource('cursos', CursoController::class);
 Route::delete('/cursos/{idCurso}', [CursoController::class, 'destroy'])->name('cursos.destroy');
 Route::resource('capacidades', CapacidadController::class);
 
-
-// Catedras Routes
 Route::resource('catedras', CatedraController::class);
-
-
-
-
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
 Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
@@ -74,4 +68,13 @@ Route::get('/countries', [LocationController::class, 'getCountries'])->name('cou
 Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
 Route::get('/provincias/{geonameId}', [LocationController::class, 'getProvinces'])->name('provincias');
 Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts'])->name('distritos');
+
+
+
+
+
+
+
+
+
 

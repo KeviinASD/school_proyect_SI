@@ -10,13 +10,10 @@ class Asignatura extends Model
     use HasFactory;
 
     protected $table = 'asignaturas';
-    protected $primaryKey = 'idAsignatura'; // Define la clave primaria
-    public $timestamps = false; // Desactiva los timestamps automáticos
-    // En App\Models\Asignatura.php
+    protected $primaryKey = 'idAsignatura';
+    public $timestamps = false;
     protected $fillable = ['idCurso', 'idGrado', 'idNivel', 'nombreAsignatura', 'estado'];
 
-
-    // Definir las relaciones
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
