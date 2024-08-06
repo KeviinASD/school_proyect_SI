@@ -85,5 +85,7 @@
                 }, 3000); // Tiempo en milisegundos antes de comenzar el desvanecimiento (3 segundos)
             }
         });
+
+        
     </script>
     @endsection

@@ -1,14 +1,25 @@
 <?php
 
+use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacidadController;
+use App\Http\Controllers\CatedraController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\GradosController;
 use App\Http\Controllers\NivelesController;
 use App\Http\Controllers\ResumenXController;
 use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnoController;
+
+use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\EstadoCivilController;
+use App\Http\Controllers\TipoDocenteController;
+
+
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotasController;
+use App\Models\Catedra;
 
 Route::resource('/alumnos', AlumnoController::class);
 // routes when the user is authenticated
@@ -17,11 +28,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {return view('welcome');})->name('welcome');
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
 
+
     Route::get('/gradosYSecciones', [ResumenXController::class, 'index'])->name('gradosYSecciones');
     Route::resource('grados', GradosController::class);
     Route::get('/api/grados/{nivelId}', [GradosController::class, 'getGradosByNivel']);
     Route::resource('niveles', NivelesController::class);
     Route::resource('secciones', SeccionesController::class);
+
+
+    Route::resource('tiposDocentes', TipoDocenteController::class);
+    Route::resource('estadosCiviles', EstadoCivilController::class);
+    Route::resource('docentes', DocenteController::class);
+
+    
 
     Route::get('/notas', [NotasController::class, 'index'])->name('notas.index');
     Route::get('/notas/registro/{codigo_Docente}', [NotasController::class, 'registro'])->name('notas.registro');
@@ -31,8 +50,16 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'postLogin']);
-    
+
 });
+
+
+Route::resource('asignaturas', AsignaturaController::class);
+Route::resource('cursos', CursoController::class);
+Route::delete('/cursos/{idCurso}', [CursoController::class, 'destroy'])->name('cursos.destroy');
+Route::resource('capacidades', CapacidadController::class);
+
+Route::resource('catedras', CatedraController::class);
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
 Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
@@ -41,3 +68,13 @@ Route::get('/countries', [LocationController::class, 'getCountries'])->name('cou
 Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
 Route::get('/provincias/{geonameId}', [LocationController::class, 'getProvinces'])->name('provincias');
 Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts'])->name('distritos');
+
+
+
+
+
+
+
+
+
+
