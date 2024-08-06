@@ -50,18 +50,18 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="idSeccion">
-                    Sección
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="idNivel">
+                    Nivel
                 </label>
-                <select name="idSeccion" id="idSeccion" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="">Seleccione una sección</option>
-                    @foreach ($secciones as $seccion)
-                        <option value="{{ $seccion->idSeccion }}" {{ old('idSeccion') == $seccion->idSeccion ? 'selected' : '' }}>
-                            {{ $seccion->nombreSeccion }}
+                <select name="idNivel" id="idNivel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <option value="">Seleccione un nivel</option>
+                    @foreach ($niveles as $nivel)
+                        <option value="{{ $nivel->idNivel }}" {{ old('idNivel') == $nivel->idNivel ? 'selected' : '' }}>
+                            {{ $nivel->nombreNivel }}
                         </option>
                     @endforeach
                 </select>
-                @error('idSeccion')
+                @error('idNivel')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
@@ -84,18 +84,18 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="idNivel">
-                    Nivel
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="idSeccion">
+                    Sección
                 </label>
-                <select name="idNivel" id="idNivel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="">Seleccione un nivel</option>
-                    @foreach ($niveles as $nivel)
-                        <option value="{{ $nivel->idNivel }}" {{ old('idNivel') == $nivel->idNivel ? 'selected' : '' }}>
-                            {{ $nivel->nombreNivel }}
+                <select name="idSeccion" id="idSeccion" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <option value="">Seleccione una sección</option>
+                    @foreach ($secciones as $seccion)
+                        <option value="{{ $seccion->idSeccion }}" {{ old('idSeccion') == $seccion->idSeccion ? 'selected' : '' }}>
+                            {{ $seccion->nombreSeccion }}
                         </option>
                     @endforeach
                 </select>
-                @error('idNivel')
+                @error('idSeccion')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
