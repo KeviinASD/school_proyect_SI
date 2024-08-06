@@ -12,9 +12,11 @@ class SeccionesController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    const PAGINATION = 10;
     public function index()
     {
-        $secciones = Seccion::where('estado', 1)->get();
+        $secciones = Seccion::where('estado', 1)->paginate(self::PAGINATION);
         return view('pages.gradosYSecciones.seccion_index', compact('secciones'));
     }
 

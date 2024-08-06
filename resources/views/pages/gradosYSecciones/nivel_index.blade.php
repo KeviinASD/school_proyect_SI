@@ -64,7 +64,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div>
+                <div class="mt-5">
                     {{ $niveles->links('vendor.pagination.tailwind') }}
                 </div>
             </div>

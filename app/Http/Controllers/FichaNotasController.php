@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class FichaMatriculaController extends Controller
+class FichaNotasController extends Controller
 {
     /**
      * Display a listing of the resource.

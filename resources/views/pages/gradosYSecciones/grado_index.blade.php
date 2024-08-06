@@ -77,6 +77,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-5">
+                    {{ $grados->links('vendor.pagination.tailwind') }}
+                </div>
             </div>
         </div>
     </div>
