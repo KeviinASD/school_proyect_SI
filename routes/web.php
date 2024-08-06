@@ -25,7 +25,7 @@ Route::resource('/alumnos', AlumnoController::class);
 // routes when the user is authenticated
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/', function () {return view('welcome');})->name('welcome');
+    Route::get('/', [ResumenXController::class, 'welcome'])->name('welcome');
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
 
 
@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/notas', [NotasController::class, 'index'])->name('notas.index');
     Route::get('/notas/registro/{codigo_Docente}', [NotasController::class, 'registro'])->name('notas.registro');
+    Route::get('/notas/crear_ficha_notas/{idCatedra}', [NotasController::class, 'crear_ficha_notas'])->name('notas.crear_ficha_notas');
 });
 
 // routes when the user is not authenticated

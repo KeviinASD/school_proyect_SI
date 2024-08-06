@@ -6,12 +6,17 @@
     <div class="space-y-4">
         <h1 class="font-bold">REGISTRO DE NOTAS POR DOCENTE</h1>
         <div>
-           <select name="" id="" class="w-full rounded-lg border-2 px-5 py-2">
-                <option value="">Seleccione un docente</option>
-                @foreach($docentes as $docente)
-                    <option value="{{ $docente->codigo_docente }}">{{ $docente->apellidos }}, {{ $docente->nombres }}</option>
-                @endforeach
-            </select>
+            <form action="{{ route('notas.registro', $docente->codigo_docente) }}" method="GET" class="flex items-center">
+                <select name="añoEscolar" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500">
+                    <option value="">Todos los Años Escolares</option>
+                    @foreach ($añosEscolares as $año)
+                        <option value="{{ $año }}" {{ request('añoEscolar') == $año ? 'selected' : '' }}>
+                            {{ $año }}
+                        </option>
+                    @endforeach
+                </select>
+                <button type="submit" class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Filtrar</button>
+            </form>
         </div>
         <div class="grid grid-cols-3 gap-6">
             <div class="bg-sky-700/10 rounded-lg flex justify-start items-center shadow-md">
@@ -31,6 +36,7 @@
                         <tr>
                             <th>Asignatura</th>
                             <th>Curso ID</th>
+                            <th>Año Escolar</th>
                             {{-- <th>Nivel</th>
                             <th>Grado</th>
                             <th>Seccion</th> --}}
@@ -45,13 +51,14 @@
                         @else
                         @foreach($catedras as $catedra)
                             <tr>
-                                <td class="p-2 border-l">{{ $catedra->nombreAsignatura }}</td>
-                                <td class="p-2 border-l">{{ $catedra->idCurso }}</td>
+                                <td class="p-2 border-l">{{ $catedra->asignatura->nombreAsignatura }}</td>
+                                <td class="p-2 border-l">{{ $catedra->curso->nombreCurso }}</td>
+                                <td class="p-2 border-l">{{ $catedra->añoEscolar }}</td>
                                 {{-- <td class="p-2 border-l">{{ $catedra->idNivel }}</td>
                                 <td class="p-2 border-l">{{ $catedra->idGrado }}</td>
                                 <td class="p-2 border-l">{{ $catedra->idSeccion }}</td> --}}
                                 <td class="p-2 pl-4 border-l text-center">
-                                    <a href="{{ route('notas.registro', $docente->codigo_docente) }}" class="bg-black-primary-100 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded duration-300 animate-none">Registrar</a>
+                                    <a href="{{ route('notas.crear_ficha_notas', $catedra->idCatedra) }}" class="bg-black-primary-100 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded duration-300 animate-none">Registrar</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -68,7 +75,7 @@
                         <div class="w-full">
                             <img src="https://www.w3schools.com/css/img_forest.jpg" alt="" class="w-full rounded-t-lg h-[200px] object-cover">
                             <div class="p-4 space-y-2">
-                                {{ $catedra->nombreAsignatura }} (  {{ $catedra->idNivel }} - {{$catedra->idGrado}} - {{$catedra->idSeccion}} )
+                                {{ $catedra->asignatura->nombreAsignatura }} (  {{ $catedra->nivel->nombreNivel }} - {{$catedra->grado->nombreGrado}} - {{$catedra->seccion->nombreSeccion}} )
                                 <p class="rounded-x">
                                     <span class="inline-block w-full rounded-xl bg-gray-200 h-2 relative">
                                         <span class="rounded-xl inline-block h-2 bg-sky-700 w-5 absolute top-0"></span>

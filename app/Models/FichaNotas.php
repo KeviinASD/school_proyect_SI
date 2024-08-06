@@ -17,7 +17,7 @@ class FichaNotas extends Model
         'idCurso',
         'codigo_Docente',
         'fecha',
-        'idSeccion',
+        '   ',
         'idGrado',
         'idNivel',
         'añoEscolar',
