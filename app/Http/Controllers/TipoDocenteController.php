@@ -12,7 +12,8 @@ class TipoDocenteController extends Controller
      */
     public function index()
     {
-        $tipoDocentes = TipoDocente::where('estado', 1)->get();
+        // Cambiar `get()` por `paginate()` para la paginación
+        $tipoDocentes = TipoDocente::where('estado', 1)->paginate(10); // Puedes ajustar el número de elementos por página según tus necesidades
         return view('pages.tipoDocente.index', compact('tipoDocentes'));
     }
 

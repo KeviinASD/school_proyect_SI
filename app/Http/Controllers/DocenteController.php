@@ -22,7 +22,8 @@ class DocenteController extends Controller
             });
         }
 
-        $docentes = $docentesQuery->get();
+        // Paginación: muestra 10 registros por página
+        $docentes = $docentesQuery->paginate(8);
 
         return view('pages.docentes.index', compact('docentes'));
     }

@@ -14,9 +14,22 @@ use Illuminate\Http\Request;
 class FichaMatriculasController extends Controller
 {
     // Mostrar una lista de todas las fichas de matrícula
-    public function index()
+    public function index(Request $request)
     {
-        $fichasMatriculas = FichaMatriculas::all();
+        // Obtener el término de búsqueda
+        $buscarPor = $request->input('buscarpor');
+
+        // Construir la consulta
+        $query = FichaMatriculas::query();
+
+        // Filtrar por código de alumno si se proporciona un término de búsqueda
+        if ($buscarPor) {
+            $query->where('codigoAlumno', 'like', '%' . $buscarPor . '%');
+        }
+
+        // Obtener los registros con paginación
+        $fichasMatriculas = $query->paginate(8); // Cambia 10 por el número de registros por página que desees
+
         return view('pages.fichaMatriculas.index', compact('fichasMatriculas'));
     }
 
