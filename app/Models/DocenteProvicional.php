@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class DocenteProvicional extends Model
 {
-
     use HasFactory;
     protected $table = 'docentes';
     protected $primaryKey = 'codigo_docente';
+    protected $keyType = 'string';
     public $timestamps = false;
     protected $fillable = [
         'codigo_docente',

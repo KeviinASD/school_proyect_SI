@@ -1,7 +1,6 @@
 @extends('layouts.layout')
 @section('title', 'Alumnos')
 @section('content')
-@section('content')
 <div class="container mx-auto">
     <h3 class="text-lg font-bold my-4">LISTADO DE ALUMNOS</h3>
     <div class="my-4">

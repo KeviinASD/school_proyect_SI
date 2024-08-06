@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('secciones', SeccionesController::class);
 
     Route::get('/notas', [NotasController::class, 'index'])->name('notas.index');
+    Route::get('/notas/registro/{codigo_Docente}', [NotasController::class, 'registro'])->name('notas.registro');
 });
 
 // routes when the user is not authenticated

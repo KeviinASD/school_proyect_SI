@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Notas')
+@section('title', 'Notas Por Docente')
 
 @section('content')
 <section class="space-y-8">
@@ -28,7 +28,7 @@
                     <td class="p-4 border-l">{{ $docente->tipoDocente->nombreTipo }}</td>
                     <td class="p-4 border-l">{{ $docente->estadoCivil->nombreEstadoCivil }}</td>
                     <td class="p-4 border-l">
-                        <a href="{{ route('notas.index', $docente->codigo_docente) }}" class="bg-black-primary-100 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded duration-300 animate-none">Editar Notas</a>
+                        <a href="{{ route('notas.registro', $docente->codigo_docente) }}" class="bg-black-primary-100 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded duration-300 animate-none">Editar Notas</a>
                     </td>
                 </tr>
             @endforeach
