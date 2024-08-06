@@ -11,9 +11,14 @@ use App\Http\Controllers\ResumenXController;
 use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnoController;
+
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\EstadoCivilController;
 use App\Http\Controllers\TipoDocenteController;
+
+
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NotasController;
 
 
 Route::resource('/alumnos', AlumnoController::class);
@@ -30,11 +35,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles', NivelesController::class);
     Route::resource('secciones', SeccionesController::class);
 
+
     Route::resource('tiposDocentes', TipoDocenteController::class);
     Route::resource('estadosCiviles', EstadoCivilController::class);
     Route::resource('docentes', DocenteController::class);
 
     
+
+    Route::get('/notas', [NotasController::class, 'index'])->name('notas.index');
+
 });
 
 // routes when the user is not authenticated
@@ -43,6 +52,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AuthController::class, 'postLogin']);
 
 });
+
 
 Route::resource('asignaturas', AsignaturaController::class);
 Route::resource('cursos', CursoController::class);
@@ -55,4 +65,13 @@ Route::resource('catedras', CatedraController::class);
 
 
 
+
+
+Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
+Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
+
+Route::get('/countries', [LocationController::class, 'getCountries'])->name('countries');
+Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
+Route::get('/provincias/{geonameId}', [LocationController::class, 'getProvinces'])->name('provincias');
+Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts'])->name('distritos');
 

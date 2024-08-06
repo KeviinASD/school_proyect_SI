@@ -11,6 +11,9 @@ class GradosController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    const PAGINATION = 10;
+
     public function index(Request $request)
     {
         $niveles = Nivel::where('estado', 1)->get();
@@ -20,7 +23,7 @@ class GradosController extends Controller
         }
 
         $query->where('estado', 1);
-        $grados = $query->get();
+        $grados = $query->paginate(self::PAGINATION);
 
         return view('pages.gradosYSecciones.grado_index', compact('grados', 'niveles'));
     }

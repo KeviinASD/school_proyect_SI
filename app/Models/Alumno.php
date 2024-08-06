@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Alumno extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
     protected $table = 'alumnos';
 
     protected $fillable = [
@@ -31,6 +33,7 @@ class Alumno extends Model
         'idEscala',
         'idSexo',
     ];
+    protected $primaryKey = 'codigoAlumno';
 
     public function sexo()
     {

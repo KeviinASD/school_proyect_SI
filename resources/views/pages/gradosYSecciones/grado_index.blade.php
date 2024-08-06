@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($grados as $grado)
+                        @foreach ($grados as $grado) 
 
                         <tr>
                             <td class="p-3 px-4 border-b border-b-gray-50">
@@ -77,6 +77,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-5">
+                    {{ $grados->links('vendor.pagination.tailwind') }}
+                </div>
             </div>
         </div>
     </div>
