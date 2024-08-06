@@ -17,15 +17,14 @@ class Catedra extends Model
     protected $keyType = 'int'; // o 'string' si es una cadena
     public $incrementing = true; // o false si no es autoincrementable
 
-    protected $fillable = [
-        'codigo_docente',
-        'idSeccion',
-        'idGrado',
-        'idNivel',
-        'idCurso',
-        'idAsignatura',
-        'añoEscolar',
-    ];
+    // Añadir el campo de estado a los atributos que son asignables en masa
+    protected $fillable = ['codigo_docente', 'idSeccion', 'idGrado', 'idNivel', 'idCurso', 'idAsignatura', 'idAñoEscolar', 'estado'];
+
+    // Definir el scope para filtrar registros activos
+    public function scopeActive($query)
+    {
+        return $query->where('estado', 1);
+    }
 
     // Si usas timestamps, desactívalos si no se utilizan
     public $timestamps = false;

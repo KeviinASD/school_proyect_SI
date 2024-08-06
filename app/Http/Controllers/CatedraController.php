@@ -18,6 +18,7 @@ class CatedraController extends Controller
     public function index()
     {
         $catedras = Catedra::where('estado', 1)->get();
+
         return view('catedras.index', compact('catedras'));
     }
 
@@ -115,9 +116,16 @@ class CatedraController extends Controller
         return redirect()->route('catedras.index')->with('success', 'Cátedra actualizada exitosamente.');
     }
 
-    public function destroy(Catedra $catedra)
+    public function destroy($id)
     {
-        $catedra->update(['estado' => 0]);
-        return redirect()->route('catedras.index')->with('success', 'Cátedra eliminada exitosamente.');
+        // Encuentra el registro por ID
+        $catedra = Catedra::findOrFail($id);
+
+        // Cambia el estado a 0 en lugar de eliminar el registro
+        $catedra->estado = 0;
+        $catedra->save();
+
+        // Redirige con un mensaje de éxito
+        return redirect()->route('catedras.index')->with('success', 'Cátedra eliminada correctamente.');
     }
 }
