@@ -60,6 +60,14 @@
                             <span class="ml-3">Docentes</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('fichaMatriculas.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#434343] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M528 160l0 256c0 8.8-7.2 16-16 16l-192 0c0-44.2-35.8-80-80-80l-64 0c-44.2 0-80 35.8-80 80l-32 0c-8.8 0-16-7.2-16-16l0-256 480 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l448 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM272 256a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zm104-48c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0z"/>
+                            </svg>
+                            <span class="ml-3">Fichas de Matriculas</span>
+                        </a>
+                    </li>
                 </ul>
                 <div class="space-y-2 pt-6">
                     <a href="{{ route('logout') }}" class="text-base text-gray-400 font-normal rounded-lg hover:bg-[#434343] flex items-center p-2 group hover:scale-105 group transition duration-150 ease-in-out">

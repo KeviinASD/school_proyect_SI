@@ -1,5 +1,7 @@
 @extends('layouts.layout')
 
+@section('title', 'Editar Docente')
+
 @section('content')
     <div class="container mx-auto py-8">
         <h2 class="text-2xl font-semibold mb-4">Editar Docente</h2>
