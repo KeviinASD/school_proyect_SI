@@ -59,6 +59,7 @@ Route::resource('cursos', CursoController::class);
 Route::delete('/cursos/{idCurso}', [CursoController::class, 'destroy'])->name('cursos.destroy');
 Route::resource('capacidades', CapacidadController::class);
 
+
 Route::resource('catedras', CatedraController::class);
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');

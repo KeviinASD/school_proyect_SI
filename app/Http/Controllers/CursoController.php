@@ -11,12 +11,12 @@ class CursoController extends Controller
     {
         // Obtén solo los cursos activos
         $cursos = Curso::where('estado', 1)->get();
-        return view('cursos.index', compact('cursos'));
+        return view('pages.cursos.index', compact('cursos'));
     }
 
     public function create()
     {
-        return view('cursos.create');
+        return view('pages.cursos.create');
     }
 
     public function store(Request $request)
@@ -30,10 +30,10 @@ class CursoController extends Controller
                 'nombreCurso' => $validated['nombreCurso'],
                 'estado' => 1, 
             ]);
-            return redirect()->route('cursos.index')->with('success', 'Curso creado exitosamente.');
+            return redirect()->route('pages.cursos.index')->with('success', 'Curso creado exitosamente.');
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() == '23000') {
-                return redirect()->route('cursos.index')
+                return redirect()->route('pages.cursos.index')
                     ->with('error', 'Error al crear el curso. Inténtalo de nuevo.');
             }
             return redirect()->route('cursos.index')
@@ -44,7 +44,7 @@ class CursoController extends Controller
     public function edit($idCurso)
     {
         $curso = Curso::findOrFail($idCurso);
-        return view('cursos.edit', compact('curso'));
+        return view('pages.cursos.edit', compact('curso'));
     }
 
     public function update(Request $request, $idCurso)
@@ -59,7 +59,7 @@ class CursoController extends Controller
             'estado' => $curso->estado, // Mantén el estado actual
         ]);
 
-        return redirect()->route('cursos.index')->with('success', 'Curso actualizado correctamente.');
+        return redirect()->route('pages.cursos.index')->with('success', 'Curso actualizado correctamente.');
     }
 
     public function destroy($idCurso)

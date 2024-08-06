@@ -19,7 +19,7 @@ class CatedraController extends Controller
     {
         $catedras = Catedra::where('estado', 1)->get();
 
-        return view('catedras.index', compact('catedras'));
+        return view('pages.catedras.index', compact('catedras'));
     }
 
     // Método para mostrar el formulario de creación
@@ -33,7 +33,7 @@ class CatedraController extends Controller
         $asignaturas = Asignatura::all();
         $añosEscolares = AñoEscolar::all();
 
-        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
 
     // Método para buscar un docente por código
@@ -96,7 +96,7 @@ class CatedraController extends Controller
         $asignaturas = Asignatura::all();
         $añosEscolares = AñoEscolar::all();
 
-        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
 
     public function update(Request $request, Catedra $catedra)
@@ -113,7 +113,7 @@ class CatedraController extends Controller
 
         $catedra->update($request->all());
 
-        return redirect()->route('catedras.index')->with('success', 'Cátedra actualizada exitosamente.');
+        return redirect()->route('pages.catedras.index')->with('success', 'Cátedra actualizada exitosamente.');
     }
 
     public function destroy($id)
@@ -126,6 +126,6 @@ class CatedraController extends Controller
         $catedra->save();
 
         // Redirige con un mensaje de éxito
-        return redirect()->route('catedras.index')->with('success', 'Cátedra eliminada correctamente.');
+        return redirect()->route('pages.catedras.index')->with('success', 'Cátedra eliminada correctamente.');
     }
 }
