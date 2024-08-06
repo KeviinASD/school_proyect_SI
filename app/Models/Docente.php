@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Docente extends Model
-{ 
+{
     public $timestamps = false;
     protected $table = 'DOCENTES';
     protected $primaryKey = 'codigo_docente';
-    public $incrementing = false; // Añadir esta línea
+    public $incrementing = false;
 
     protected $fillable = [
-        'codigo_docente', 'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'idEstadoCivil'
+        'codigo_docente', 'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'idEstadoCivil', 'estado'
     ];
 
     public function tipoDocente()

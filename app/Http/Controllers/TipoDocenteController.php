@@ -7,53 +7,78 @@ use Illuminate\Http\Request;
 
 class TipoDocenteController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $tiposDocentes = TipoDocente::all();
-        return view('pages.tiposDocentes.index', compact('tiposDocentes'));
+        $tipoDocentes = TipoDocente::where('estado', 1)->get();
+        return view('pages.tipoDocente.index', compact('tipoDocentes'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('pages.tiposDocentes.create');
+        return view('pages.tipoDocente.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
             'nombreTipo' => 'required|string|max:255',
         ]);
 
-        TipoDocente::create($request->all());
+        TipoDocente::create(array_merge($request->all(), ['estado' => 1]));
 
-        return redirect()->route('tiposDocentes.index')->with('success', 'Tipo de docente creado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente creado exitosamente.');
     }
 
-    public function show(TipoDocente $tipoDocente)
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
     {
-        return view('pages.tiposDocentes.show', compact('tipoDocente'));
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
+        return view('pages.tipoDocente.show', compact('tipoDocente'));
     }
 
-    public function edit(TipoDocente $tipoDocente)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
     {
-        return view('pages.tiposDocentes.edit', compact('tipoDocente'));
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
+        return view('pages.tipoDocente.edit', compact('tipoDocente'));
     }
 
-    public function update(Request $request, TipoDocente $tipoDocente)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombreTipo' => 'required|string|max:255',
         ]);
 
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
         $tipoDocente->update($request->all());
 
-        return redirect()->route('tiposDocentes.index')->with('success', 'Tipo de docente actualizado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente actualizado exitosamente.');
     }
 
-    public function destroy(TipoDocente $tipoDocente)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
     {
-        $tipoDocente->delete();
+        $tipoDocente = TipoDocente::findOrFail($id);
+        $tipoDocente->update(['estado' => 0]);
 
-        return redirect()->route('tiposDocentes.index')->with('success', 'Tipo de docente eliminado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente eliminado exitosamente.');
     }
 }

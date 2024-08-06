@@ -11,13 +11,10 @@ class DocenteController extends Controller
 {
     public function index(Request $request)
     {
-        // Obtener el término de búsqueda de la solicitud
         $search = $request->input('buscarpor');
 
-        // Consulta para obtener docentes con la opción de búsqueda
-        $docentesQuery = Docente::with('tipoDocente', 'estadoCivil');
+        $docentesQuery = Docente::with('tipoDocente', 'estadoCivil')->where('estado', 1);
 
-        // Si hay un término de búsqueda, filtrar por nombre
         if ($search) {
             $docentesQuery->where(function ($query) use ($search) {
                 $query->where('nombres', 'LIKE', "%{$search}%")
@@ -50,14 +47,12 @@ class DocenteController extends Controller
             'idEstadoCivil' => 'required|exists:ESTADO_CIVIL,idEstadoCivil',
         ]);
 
-        // Generar codigo_docente
         $nombres = $request->input('nombres');
         $apellidos = $request->input('apellidos');
         $dni = $request->input('DNI');
         $codigo_docente = strtoupper(substr($nombres, 0, 1) . $dni . substr($apellidos, 0, 1));
 
-        // Crear el docente 
-        Docente::create(array_merge($request->all(), ['codigo_docente' => $codigo_docente]));
+        Docente::create(array_merge($request->all(), ['codigo_docente' => $codigo_docente, 'estado' => 1]));
 
         return redirect()->route('docentes.index')
             ->with('success', 'Docente creado exitosamente.');
@@ -91,7 +86,7 @@ class DocenteController extends Controller
 
     public function destroy(Docente $docente)
     {
-        $docente->delete();
+        $docente->update(['estado' => 0]);
 
         return redirect()->route('docentes.index')
             ->with('success', 'Docente eliminado exitosamente.');

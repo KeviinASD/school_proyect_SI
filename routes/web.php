@@ -14,7 +14,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('docentes', DocenteController::class);
     Route::resource('fichaMatriculas', FichaMatriculasController::class);
-    Route::resource('tiposDocentes', TipoDocenteController::class);    
+    Route::resource('tipoDocente', TipoDocenteController::class);    
 });
 
 // routes when the user is not authenticated

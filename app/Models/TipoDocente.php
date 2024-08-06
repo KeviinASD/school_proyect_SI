@@ -9,7 +9,7 @@ class TipoDocente extends Model
     protected $table = 'TIPO_DOCENTE';
     protected $primaryKey = 'id_tipo_docente';
 
-    protected $fillable = ['nombreTipo'];
+    protected $fillable = ['nombreTipo', 'estado'];
     public $timestamps = false;
 
     public function docentes()
