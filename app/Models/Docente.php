@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Docente extends Model
-{
+{ 
+    public $timestamps = false;
     protected $table = 'DOCENTES';
     protected $primaryKey = 'codigo_docente';
+    public $incrementing = false; // Añadir esta línea
 
     protected $fillable = [
-        'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'id_estado_civil'
+        'codigo_docente', 'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'idEstadoCivil'
     ];
 
     public function tipoDocente()
@@ -20,6 +22,6 @@ class Docente extends Model
 
     public function estadoCivil()
     {
-        return $this->belongsTo(EstadoCivil::class, 'id_estado_civil', 'id_estado_civil');
+        return $this->belongsTo(EstadoCivil::class, 'idEstadoCivil', 'idEstadoCivil');
     }
 }

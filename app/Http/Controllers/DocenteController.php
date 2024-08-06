@@ -9,17 +9,32 @@ use Illuminate\Http\Request;
 
 class DocenteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $docentes = Docente::with('tipoDocente', 'estadoCivil')->get();
-        return view('docentes.index', compact('docentes'));
+        // Obtener el término de búsqueda de la solicitud
+        $search = $request->input('buscarpor');
+
+        // Consulta para obtener docentes con la opción de búsqueda
+        $docentesQuery = Docente::with('tipoDocente', 'estadoCivil');
+
+        // Si hay un término de búsqueda, filtrar por nombre
+        if ($search) {
+            $docentesQuery->where(function ($query) use ($search) {
+                $query->where('nombres', 'LIKE', "%{$search}%")
+                      ->orWhere('apellidos', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $docentes = $docentesQuery->get();
+
+        return view('pages.docentes.index', compact('docentes'));
     }
 
     public function create()
     {
         $tiposDocentes = TipoDocente::all();
         $estadosCiviles = EstadoCivil::all();
-        return view('docentes.create', compact('tiposDocentes', 'estadosCiviles'));
+        return view('pages.docentes.create', compact('tiposDocentes', 'estadosCiviles'));
     }
 
     public function store(Request $request)
@@ -29,12 +44,20 @@ class DocenteController extends Controller
             'apellidos' => 'required|string|max:255',
             'nombres' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
+            'seguroSocial' => 'nullable|string|max:255',
             'fechaIngreso' => 'required|date',
             'id_tipo_docente' => 'required|exists:TIPO_DOCENTE,id_tipo_docente',
-            'id_estado_civil' => 'required|exists:ESTADO_CIVIL,id_estado_civil',
+            'idEstadoCivil' => 'required|exists:ESTADO_CIVIL,idEstadoCivil',
         ]);
 
-        Docente::create($request->all());
+        // Generar codigo_docente
+        $nombres = $request->input('nombres');
+        $apellidos = $request->input('apellidos');
+        $dni = $request->input('DNI');
+        $codigo_docente = strtoupper(substr($nombres, 0, 1) . $dni . substr($apellidos, 0, 1));
+
+        // Crear el docente 
+        Docente::create(array_merge($request->all(), ['codigo_docente' => $codigo_docente]));
 
         return redirect()->route('docentes.index')
             ->with('success', 'Docente creado exitosamente.');
@@ -44,7 +67,7 @@ class DocenteController extends Controller
     {
         $tiposDocentes = TipoDocente::all();
         $estadosCiviles = EstadoCivil::all();
-        return view('docentes.edit', compact('docente', 'tiposDocentes', 'estadosCiviles'));
+        return view('pages.docentes.edit', compact('docente', 'tiposDocentes', 'estadosCiviles'));
     }
 
     public function update(Request $request, Docente $docente)
@@ -54,9 +77,10 @@ class DocenteController extends Controller
             'apellidos' => 'required|string|max:255',
             'nombres' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
+            'seguroSocial' => 'nullable|string|max:255',
             'fechaIngreso' => 'required|date',
             'id_tipo_docente' => 'required|exists:TIPO_DOCENTE,id_tipo_docente',
-            'id_estado_civil' => 'required|exists:ESTADO_CIVIL,id_estado_civil',
+            'idEstadoCivil' => 'required|exists:ESTADO_CIVIL,idEstadoCivil',
         ]);
 
         $docente->update($request->all());
