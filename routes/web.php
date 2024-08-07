@@ -8,6 +8,7 @@ use App\Http\Controllers\TipoDocenteController;
 use App\Http\Controllers\GradosController;
 use App\Http\Controllers\SeccionesController;
 
+use App\Http\Controllers\AlumnosMatriculadosController;
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -27,4 +28,6 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'postLogin']); 
 });
+
+Route::get('/alumnosMatriculados', [AlumnosMatriculadosController::class, 'index'])->name('alumnosMatriculados.index');
 
