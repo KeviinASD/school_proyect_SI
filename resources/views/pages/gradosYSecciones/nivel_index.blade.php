@@ -5,10 +5,10 @@
 <section>
     <nav class="mb-10">
         <ul class="flex gap-8 border-b py-4">
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('gradosYSecciones') }}">RESUMEN</a></li>
-            <li class="text-red-700 font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('niveles.index') }}">NIVELES</a></li>
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('grados.index') }}">GRADOS</a></li>
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('secciones.index') }}">SECCIONES</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('gradosYSecciones') }}">RESUMEN</a></li>
+            <li class="text-red-700 font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('niveles.index') }}">NIVELES</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('grados.index') }}">GRADOS</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('secciones.index') }}">SECCIONES</a></li>
         </ul>
     </nav>
     <div>
@@ -27,7 +27,7 @@
                 <div class="font-medium">DETALLES NIVELES</div>
             </div>
             <div>
-                <button class="px-4 py-1 rounded bg-[#DEF4DB] font-semibold hover:bg-green-300 transition duration-300 hover:translate-x-1"><a href=" {{route('niveles.create')}}">CREAR NIVEL</a></button>
+                <button class="px-4 py-2 rounded bg-black-primary-200 text-white font-semibold hover:bg-black-primary-100 transition duration-300"><a href=" {{route('niveles.create')}}">CREAR NIVEL</a></button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[460px]">

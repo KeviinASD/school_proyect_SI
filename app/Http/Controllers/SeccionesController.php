@@ -36,7 +36,7 @@ class SeccionesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombreSeccion' => 'required|string|max:4',
+            'nombreSeccion' => 'required|string|max:255',
             'idNivel' => 'required|integer|exists:niveles,idNivel',
             'idGrado' => 'required|integer|exists:grados,idGrado'
         ]);

@@ -28,11 +28,11 @@ class Grado extends Model
 
     public function secciones()
     {
-        return $this->hasMany(Seccion::class, 'idGrado', 'idGrado');
+        return $this->hasMany(Seccion::class, 'idGrado', 'idGrado')->where('estado', 1);
     }
 
     public function asignaturas()
     {
-        return $this->hasMany(Asignatura::class, 'idGrado', 'idGrado');
+        return $this->hasMany(Asignatura::class, 'idGrado', 'idGrado')->where('estado', 1);
     }
 }

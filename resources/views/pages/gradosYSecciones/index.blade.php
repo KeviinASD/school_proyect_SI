@@ -11,24 +11,24 @@
     @endphp
     <nav class="">
         <ul class="flex gap-8 border-b py-4">
-            <li class="text-red-700 font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('gradosYSecciones') }}">RESUMEN</a></li>
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('niveles.index') }}">NIVELES</a></li>
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('grados.index') }}">GRADOS</a></li>
-            <li class="font-semibold hover:text-[#434343] hover:scale-110 transition duration-300"><a href="{{ route('secciones.index') }}">SECCIONES</a></li>
+            <li class="text-red-700 font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('gradosYSecciones') }}">RESUMEN</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('niveles.index') }}">NIVELES</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('grados.index') }}">GRADOS</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('secciones.index') }}">SECCIONES</a></li>
         </ul>
     </nav>
     <div class="container">
         <h1 class="text-2xl font-bold mb-4">Cantidades</h1>
         <div class="grid grid-cols-3 min-w-[200px] gap-4">
-            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#DEF4DB]">
+            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#DEF4DB] shadow-md">
                 <h1>Niveles</h1>
                 <p>{{count($niveles)}}</p>
             </div>
-            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#D8E2FD]">
+            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#D8E2FD] shadow-md">
                 <h1>Grados</h1>
                 <p>{{count($grados)}}</p>
             </div>
-            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#EEDBF1]">
+            <div class="columns-1 space-y-2 border p-4 rounded-md bg-[#EEDBF1] shadow-md">
                 <h1>Secciones</h1>
                 <p>{{count($secciones)}}</p>
             </div>
@@ -62,7 +62,7 @@
                 </tr>
             </thead>
                 @foreach ($niveles as $nivel)
-                <tr class="{{$isGris ? 'bg-gray-50':''}}">
+                <tr class="bg-[#DEF4DB]">
                     <td >
                         <button class="toggle-btn w-full h-full py-7 pl-4 flex justify-start items-center gap-2">
                             <svg class="h-5 w-5 inline-block text-gray-400"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="5" y1="12" x2="19" y2="12" /></svg>

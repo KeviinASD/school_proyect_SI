@@ -10,7 +10,7 @@ class NivelesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    const PAGINATION = 2;
+    const PAGINATION = 10;
 
     public function index()
     {

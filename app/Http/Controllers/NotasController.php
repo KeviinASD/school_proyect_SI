@@ -13,12 +13,26 @@ class NotasController extends Controller
 
     const PAGINATION = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $docentes = DocenteProvicional::where('estado', 1)->paginate(self::PAGINATION);
-        return view('pages.notas.index', compact('docentes'));
+        $query = Catedra::where('estado', 1);
+        
+        $añosEscolares = Catedra::select('añoEscolar')
+            ->distinct()
+            ->orderBy('añoEscolar', 'desc') // Ordenar de mayor a menor
+            ->pluck('añoEscolar');
+        
+        if ($request->has('añoEscolar') && $request->añoEscolar != '') {
+            $query->where('añoEscolar', $request->añoEscolar);
+        }
+    
+        $docenteCodes = $query->pluck('codigo_docente')->unique();
+    
+        $docentes = DocenteProvicional::whereIn('codigo_docente', $docenteCodes)->paginate(self::PAGINATION);
+    
+        return view('pages.notas.index', compact('docentes', 'añosEscolares'));
     }
-
+                                    
     public function registro(Request $request, $codigo_Docente)
     {
         $docente = DocenteProvicional::where('codigo_Docente', $codigo_Docente)->where('estado', 1)->first();
