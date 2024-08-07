@@ -55,4 +55,8 @@ class Alumno extends Model
     {
         return $this->belongsTo(Escala::class, 'idEscala');
     }
+    public function notasCapacidades()
+    {
+        return $this->hasMany(NotaCapacidad::class, 'codigoAlumno', 'codigoAlumno');
+    }
 }
