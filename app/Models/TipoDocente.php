@@ -9,6 +9,9 @@ class TipoDocente extends Model
     protected $table = 'TIPO_DOCENTE';
     protected $primaryKey = 'id_tipo_docente';
 
+    protected $fillable = ['nombreTipo', 'estado'];
+    public $timestamps = false;
+
     public function docentes()
     {
         return $this->hasMany(Docente::class, 'id_tipo_docente', 'id_tipo_docente');

@@ -28,4 +28,9 @@ class Seccion extends Model
     {
         return $this->hasOne(Nivel::class, 'idNivel', 'idNivel');
     }
+
+    public function fichaMatriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'idSeccion', 'idSeccion');
+    }
 }

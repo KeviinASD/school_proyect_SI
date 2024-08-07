@@ -22,4 +22,9 @@ class Nivel extends Model
     {
         return $this->hasMany(Curso::class, 'idNivel', 'idNivel')->where('estado', 1);
     }
+
+    public function secciones()
+    {
+        return $this->hasMany(Seccion::class, 'idNivel', 'idNivel');
+    }
 }

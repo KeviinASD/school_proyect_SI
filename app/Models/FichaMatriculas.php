@@ -36,6 +36,6 @@ class FichaMatriculas extends Model
 
     public function anioEscolar()
     {
-        return $this->belongsTo(AnioEscolar::class, 'añoEscolar', 'anioEscolar');
+        return $this->belongsTo(AñoEscolar::class, 'añoEscolar', 'anioEscolar');
     }
 }

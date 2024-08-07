@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class EstadoCivil extends Model
 {
+    public $timestamps = false;
     protected $table = 'ESTADO_CIVIL';
-    protected $primaryKey = 'id_estado_civil';
+    protected $primaryKey = 'idEstadoCivil';
 
     public function docentes()
     {
-        return $this->hasMany(Docente::class, 'id_estado_civil', 'id_estado_civil');
+        return $this->hasMany(Docente::class, 'idEstadoCivil', 'idEstadoCivil');
     }
 }

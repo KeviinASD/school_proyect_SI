@@ -26,4 +26,9 @@ class AñoEscolar extends Model
 
     // Desactiva los timestamps si no se usan
     public $timestamps = false;
+
+    public function fichaMatriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'añoEscolar', 'añoEscolar');
+    }
 }

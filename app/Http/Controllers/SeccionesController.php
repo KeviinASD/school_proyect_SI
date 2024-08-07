@@ -36,7 +36,7 @@ class SeccionesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombreSeccion' => 'required|string|max:255',
+            'nombreSeccion' => 'required|string|max:4',
             'idNivel' => 'required|integer|exists:niveles,idNivel',
             'idGrado' => 'required|integer|exists:grados,idGrado'
         ]);
@@ -118,5 +118,11 @@ class SeccionesController extends Controller
         $seccion->estado = 0;
         $seccion->save();
         return redirect()->route('secciones.index')->with('success', 'Sección eliminada exitosamente');
+    }
+
+    public function getSeccionesByGrado($gradoId)
+    {
+        $secciones = Seccion::where('idGrado', $gradoId)->where('estado', 1)->get();
+        return response()->json(['secciones' => $secciones]);
     }
 }

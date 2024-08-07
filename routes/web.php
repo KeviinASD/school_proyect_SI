@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnoController;
 
 use App\Http\Controllers\DocenteController;
-use App\Http\Controllers\EstadoCivilController;
+use App\Http\Controllers\FichaMatriculasController;
 use App\Http\Controllers\TipoDocenteController;
+use App\Http\Controllers\AlumnosMatriculadosController;
+use App\Http\Controllers\EstadoCivilController;
 
 use App\Http\Controllers\DetalleNotasController;
 
@@ -44,7 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tiposDocentes', TipoDocenteController::class);
     Route::resource('estadosCiviles', EstadoCivilController::class);
     Route::resource('docentes', DocenteController::class);
-
+    Route::resource('fichaMatriculas', FichaMatriculasController::class);
+    Route::resource('tipoDocente', TipoDocenteController::class);    
     
 
     Route::get('/notas', [NotasController::class, 'index'])->name('notas.index');
@@ -97,4 +100,6 @@ Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts']
 
 
 
+
+Route::get('/alumnosMatriculados', [AlumnosMatriculadosController::class, 'index'])->name('alumnosMatriculados.index');
 

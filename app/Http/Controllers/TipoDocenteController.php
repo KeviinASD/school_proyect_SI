@@ -10,7 +10,7 @@ class TipoDocenteController extends Controller
     public function index()
     {
         $tiposDocentes = TipoDocente::all();
-        return view('tiposDocentes.index', compact('tiposDocentes'));
+        return view('tiposDocente.index', compact('tiposDocentes'));
     }
 
     public function create()

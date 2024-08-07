@@ -35,4 +35,9 @@ class Grado extends Model
     {
         return $this->hasMany(Asignatura::class, 'idGrado', 'idGrado')->where('estado', 1);
     }
+
+    public function fichaMatriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'idGrado', 'idGrado');
+    }
 }
