@@ -7,51 +7,79 @@ use Illuminate\Http\Request;
 
 class TipoDocenteController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $tiposDocentes = TipoDocente::all();
-        return view('tiposDocente.index', compact('tiposDocentes'));
+        // Cambiar `get()` por `paginate()` para la paginación
+        $tipoDocentes = TipoDocente::where('estado', 1)->paginate(10); // Puedes ajustar el número de elementos por página según tus necesidades
+        return view('pages.tipoDocente.index', compact('tipoDocentes'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('tiposDocentes.create');
+        return view('pages.tipoDocente.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
             'nombreTipo' => 'required|string|max:255',
         ]);
 
-        TipoDocente::create($request->all());
+        TipoDocente::create(array_merge($request->all(), ['estado' => 1]));
 
-        return redirect()->route('tipos-docentes.index')
-            ->with('success', 'Tipo de docente creado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente creado exitosamente.');
     }
 
-    public function edit(TipoDocente $tipoDocente)
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
     {
-        return view('tiposDocentes.edit', compact('tipoDocente'));
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
+        return view('pages.tipoDocente.show', compact('tipoDocente'));
     }
 
-    public function update(Request $request, TipoDocente $tipoDocente)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
+        return view('pages.tipoDocente.edit', compact('tipoDocente'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombreTipo' => 'required|string|max:255',
         ]);
 
+        $tipoDocente = TipoDocente::where('estado', 1)->findOrFail($id);
         $tipoDocente->update($request->all());
 
-        return redirect()->route('tipos-docentes.index')
-            ->with('success', 'Tipo de docente actualizado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente actualizado exitosamente.');
     }
 
-    public function destroy(TipoDocente $tipoDocente)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
     {
-        $tipoDocente->delete();
+        $tipoDocente = TipoDocente::findOrFail($id);
+        $tipoDocente->update(['estado' => 0]);
 
-        return redirect()->route('tipos-docentes.index')
-            ->with('success', 'Tipo de docente eliminado exitosamente.');
+        return redirect()->route('tipoDocente.index')->with('success', 'Tipo de Docente eliminado exitosamente.');
     }
 }

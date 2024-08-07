@@ -12,7 +12,7 @@ importers:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.39)
       axios:
-        specifier: ^1.6.4
+        specifier: ^1.7.2
         version: 1.7.2
       laravel-vite-plugin:
         specifier: ^1.0
