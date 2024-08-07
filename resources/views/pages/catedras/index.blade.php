@@ -3,7 +3,7 @@
 @section('title', 'Lista de Cátedras')
 
 @section('content')
-<div class="bg-white border border-gray-100 shadow-md p-6 rounded-md">
+<div class="bg-white border border-gray-100 shadow-md py-6   rounded-md">
     <h2 class="text-xl font-medium mb-4">Lista de Cátedras</h2>
     <a href="{{ route('catedras.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-4">
         Agregar Nueva Cátedra
@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código Docente</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Docente</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sección</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel</th>
@@ -25,6 +26,7 @@
             @foreach($catedras as $catedra)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $catedra->codigo_docente }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->docente ? $catedra->docente->nombres . ' ' . $catedra->docente->apellidos : 'No disponible' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->seccion->nombreSeccion }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->grado->nombreGrado }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->nivel->nombreNivel }}</td>

@@ -18,7 +18,7 @@
         <!-- Campo de Nombre de la Asignatura -->
         <div class="mb-4">
             <label for="nombreAsignatura" class="block text-gray-700">Nombre Asignatura</label>
-            <input type="text" id="nombreAsignatura" name="nombreAsignatura" value="{{ old('nombreAsignatura') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+            <input type="text" id="nombreAsignatura" name="nombreAsignatura" value="{{ old('nombreAsignatura') }}" class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
             @error('nombreAsignatura')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -28,6 +28,7 @@
         <div class="mb-4">
             <label for="idCurso" class="block text-gray-700">Curso</label>
             <select id="idCurso" name="idCurso" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+                <option value="" disabled selected>Seleccionar</option>
                 @foreach($cursos as $curso)
                     <option value="{{ $curso->idCurso }}" {{ old('idCurso') == $curso->idCurso ? 'selected' : '' }}>
                         {{ $curso->nombreCurso }}
@@ -39,25 +40,11 @@
             @enderror
         </div>
 
-        <!-- Campo de Grado -->
-        <div class="mb-4">
-            <label for="idGrado" class="block text-gray-700">Grado</label>
-            <select id="idGrado" name="idGrado" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
-                @foreach($grados as $grado)
-                    <option value="{{ $grado->idGrado }}" {{ old('idGrado') == $grado->idGrado ? 'selected' : '' }}>
-                        {{ $grado->nombreGrado }}
-                    </option>
-                @endforeach
-            </select>
-            @error('idGrado')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
         <!-- Campo de Nivel -->
         <div class="mb-4">
             <label for="idNivel" class="block text-gray-700">Nivel</label>
             <select id="idNivel" name="idNivel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+                <option value="" disabled selected>Seleccionar</option>
                 @foreach($niveles as $nivel)
                     <option value="{{ $nivel->idNivel }}" {{ old('idNivel') == $nivel->idNivel ? 'selected' : '' }}>
                         {{ $nivel->nombreNivel }}
@@ -69,6 +56,19 @@
             @enderror
         </div>
 
+        <!-- Campo de Grado -->
+        <div class="mb-4">
+            <label for="idGrado" class="block text-gray-700">Grado</label>
+            <select id="idGrado" name="idGrado" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+                <option value="" disabled selected>Seleccionar</option>
+            </select>
+            @error('idGrado')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        
+
         <div class="mt-6">
             <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-60 transition">
                 Crear Asignatura
@@ -79,6 +79,28 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var nivelSelect = document.getElementById('idNivel');
+        var gradoSelect = document.getElementById('idGrado');
+
+        nivelSelect.addEventListener('change', function () {
+            var nivelId = this.value;
+
+            if (nivelId) {
+                fetch(`/api/grados/${nivelId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        gradoSelect.innerHTML = '<option value="" disabled selected>Seleccionar</option>';
+                        data.grados.forEach(grado => {
+                            gradoSelect.innerHTML += `<option value="${grado.idGrado}">${grado.nombreGrado}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                gradoSelect.innerHTML = '<option value="" disabled selected>Seleccionar</option>';
+            }
+        });
+
+        // Mensaje de éxito
         var successMessage = document.getElementById('success-message');
         if (successMessage) {
             setTimeout(function () {

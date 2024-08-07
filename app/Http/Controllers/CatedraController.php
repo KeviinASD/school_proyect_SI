@@ -19,7 +19,7 @@ class CatedraController extends Controller
     {
         $catedras = Catedra::where('estado', 1)->get();
 
-        return view('catedras.index', compact('catedras'));
+        return view('pages.catedras.index', compact('catedras'));
     }
 
     // Método para mostrar el formulario de creación
@@ -33,7 +33,7 @@ class CatedraController extends Controller
         $asignaturas = Asignatura::all();
         $añosEscolares = AñoEscolar::all();
 
-        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
 
     // Método para buscar un docente por código
@@ -88,29 +88,29 @@ class CatedraController extends Controller
 
     public function edit($id)
     {
+        $catedra = Catedra::findOrFail($id);
         $docentes = DocenteProvicional::all();
-        $secciones = Seccion::all();
-        $grados = Grado::all();
         $niveles = Nivel::all();
         $cursos = Curso::all();
-        $asignaturas = Asignatura::all();
         $añosEscolares = AñoEscolar::all();
 
-        return view('catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.edit', compact('catedra', 'docentes', 'niveles', 'cursos', 'añosEscolares'));
     }
 
-    public function update(Request $request, Catedra $catedra)
+
+    public function update(Request $request, $id)
     {
         $request->validate([
             'codigo_docente' => 'required',
-            'idSeccion' => 'required',
-            'idGrado' => 'required',
             'idNivel' => 'required',
-            'idAsignatura' => 'required',
+            'idGrado' => 'required',
+            'idSeccion' => 'required',
             'idCurso' => 'required',
+            'idAsignatura' => 'required',
             'añoEscolar' => 'required',
         ]);
 
+        $catedra = Catedra::findOrFail($id);
         $catedra->update($request->all());
 
         return redirect()->route('catedras.index')->with('success', 'Cátedra actualizada exitosamente.');
@@ -127,5 +127,23 @@ class CatedraController extends Controller
 
         // Redirige con un mensaje de éxito
         return redirect()->route('catedras.index')->with('success', 'Cátedra eliminada correctamente.');
+    }
+
+    public function getGradosByNivel($nivelId)
+    {
+        $grados = Grado::where('idNivel', $nivelId)->get();
+        return response()->json($grados);
+    }
+
+    public function getSeccionesByGrado($gradoId)
+    {
+        $secciones = Seccion::where('idGrado', $gradoId)->get();
+        return response()->json($secciones);
+    }
+
+    public function getAsignaturasByCurso($cursoId)
+    {
+        $asignaturas = Asignatura::where('idCurso', $cursoId)->get();
+        return response()->json($asignaturas);
     }
 }

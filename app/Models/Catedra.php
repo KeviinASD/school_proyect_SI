@@ -35,33 +35,33 @@ class Catedra extends Model
         return $this->belongsTo(DocenteProvicional::class, 'codigo_docente', 'codigo_docente');
     }
 
-    public function seccion()
+    public function añoEscolar()
     {
-        return $this->belongsTo(Seccion::class, 'idSeccion', 'idSeccion');
-    }
-
-    public function grado()
-    {
-        return $this->belongsTo(Grado::class, 'idGrado', 'idGrado');
+        return $this->belongsTo(AñoEscolar::class, 'añoEscolar', 'añoEscolar');
     }
 
     public function nivel()
     {
-        return $this->belongsTo(Nivel::class, 'idNivel', 'idNivel');
+        return $this->belongsTo(Nivel::class, 'idNivel');
+    }
+
+    public function grado()
+    {
+        return $this->belongsTo(Grado::class, 'idGrado');
+    }
+
+    public function seccion()
+    {
+        return $this->belongsTo(Seccion::class, 'idSeccion');
     }
 
     public function curso()
     {
-        return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
+        return $this->belongsTo(Curso::class, 'idCurso');
     }
 
     public function asignatura()
     {
-        return $this->belongsTo(Asignatura::class, 'idAsignatura', 'idAsignatura');
-    }
-
-    public function añoEscolar()
-    {
-        return $this->belongsTo(AñoEscolar::class, 'añoEscolar', 'añoEscolar');
+        return $this->belongsTo(Asignatura::class, 'idAsignatura');
     }
 }

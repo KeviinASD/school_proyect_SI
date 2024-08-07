@@ -34,6 +34,8 @@ class DocenteProvicional extends Model
     {
         return $this->hasOne(EstadoCivil::class, 'idEstadoCivil', 'idEstadoCivil');
     }
-
-
+    public function scopeFindByCodigo($query, $codigo)
+    {
+        return $query->where('codigo_docente', $codigo)->first();
+    }
 }

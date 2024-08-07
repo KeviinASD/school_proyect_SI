@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curso;
+use App\Models\Nivel;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -11,12 +12,14 @@ class CursoController extends Controller
     {
         // Obtén solo los cursos activos
         $cursos = Curso::where('estado', 1)->get();
-        return view('cursos.index', compact('cursos'));
+        return view('pages.cursos.index', compact('cursos'));
     }
 
     public function create()
     {
-        return view('cursos.create');
+        // Obtener niveles para la vista de creación
+        $niveles = Nivel::all();
+        return view('pages.cursos.create', compact('niveles'));
     }
 
     public function store(Request $request)
@@ -44,7 +47,8 @@ class CursoController extends Controller
     public function edit($idCurso)
     {
         $curso = Curso::findOrFail($idCurso);
-        return view('cursos.edit', compact('curso'));
+        $niveles = Nivel::all(); // Obtener niveles para la vista de edición
+        return view('pages.cursos.edit', compact('curso', 'niveles'));
     }
 
     public function update(Request $request, $idCurso)
