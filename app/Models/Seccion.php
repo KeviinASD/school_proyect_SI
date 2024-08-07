@@ -10,16 +10,22 @@ class Seccion extends Model
     use HasFactory;
     protected $table = 'secciones';
     protected $primaryKey = 'idSeccion';
-    protected $fillable = ['idGrado', 'idNivel', 'nombreSeccion'];
+    protected $fillable = [
+        'idSeccion',
+        'idGrado',
+        'idNivel',
+        'nombreSeccion',
+        'estado'
+    ];
     public $timestamps = false;
 
     public function grado()
     {
-        return $this->belongsTo(Grado::class, 'idGrado');
+        return $this->hasOne(Grado::class, 'idGrado', 'idGrado');
     }
-    
+
     public function nivel()
     {
-        return $this->belongsTo(Nivel::class, 'idNivel');
+        return $this->hasOne(Nivel::class, 'idNivel', 'idNivel');
     }
 }

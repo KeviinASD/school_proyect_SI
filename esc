@@ -1,0 +1,10 @@
+[33m8d40205[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkevin_rama[m[33m, [m[1;31morigin/kevin_rama[m[33m)[m corrigiendo cruds grados, niveles y secciones
+[33m13247d7[m mejorando secciones
+[33m8d64c55[m terminando cruds grados, secciones y niveles
+[33me9262e5[m agregando todas las cruds menos el eliminar de niveles, secciones y grados
+[33m1538698[m added the routes grados, niveles and secciones with their blade templates
+[33mb0999ed[m Implementando js para el aside
+[33m90c1a05[m add the work space like navabar, aside, etc to work with data base and make the cruds
+[33m38bbd41[m add the login and all about the authentication
+[33mb90cdd5[m Install Pest
+[33mb72151d[m Set up a fresh Laravel app

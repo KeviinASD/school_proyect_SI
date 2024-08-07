@@ -2,48 +2,134 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Capacidad;
+use App\Models\Asignatura;
 use Illuminate\Http\Request;
+use App\Models\Capacidad;
+use App\Models\Curso;
 
 class CapacidadController extends Controller
 {
     public function index()
     {
-        $capacidades = Capacidad::all();
-        return view('capacidades.index', compact('capacidades'));
+        // Obtener todas las capacidades activas
+        $capacidades = Capacidad::where('estado', 1)->get();
+        return view('pages.capacidades.index', compact('capacidades'));
     }
 
     public function create()
     {
-        return view('capacidades.create');
+        // Obtén todos los cursos para el dropdown
+        $cursos = Curso::where('estado', 1)->get();
+
+        // Si estás editando una capacidad existente, obtén la capacidad
+        $capacidad = null; // O la lógica para obtener la capacidad existente
+
+        return view('pages.capacidades.create', compact('cursos', 'capacidad'));
     }
 
     public function store(Request $request)
     {
-        Capacidad::create($request->all());
-        return redirect()->route('capacidades.index');
+        // Validar los datos
+        $validatedData = $request->validate([
+            'descripcion' => 'required|string|max:255',
+            'idAsignatura' => 'required|integer',
+            'idCurso' => 'required|integer',
+            'orden' => 'required|integer',
+            'estado' => 'nullable|boolean'
+        ]);
+
+        // Establecer el estado por defecto a 1 si no está presente
+        if (!isset($validatedData['estado'])) {
+            $validatedData['estado'] = 1;
+        }
+
+        // Verificar si la asignatura está en el curso
+        $asignatura = Asignatura::where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('idCurso', $validatedData['idCurso'])
+            ->first();
+
+        if (!$asignatura) {
+            // Si la asignatura no está en el curso, redirigir con un mensaje de error
+            return redirect()->route('capacidades.create')
+                ->withErrors(['idAsignatura' => 'La asignatura no se encuentra dentro del curso.'])
+                ->withInput(); // Mantener los datos de entrada
+        }
+
+        // Crear una nueva capacidad si la asignatura es válida
+        Capacidad::create($validatedData);
+
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad creada correctamente');
     }
 
-    public function show(Capacidad $capacidad)
+
+    public function edit($id)
     {
-        return view('capacidades.show', compact('capacidad'));
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
+
+        // Obtener todas las asignaturas y cursos para el dropdown
+        $asignaturas = Asignatura::all();
+        $cursos = Curso::all();
+
+        // Pasar las variables a la vista
+        return view('pages.capacidades.edit', compact('capacidad', 'asignaturas', 'cursos'));
     }
 
-    public function edit(Capacidad $capacidad)
+
+    public function update(Request $request, $id)
     {
-        return view('capacidades.edit', compact('capacidad'));
+        // Validar los datos
+        $validatedData = $request->validate([
+            'descripcion' => 'required|string|max:255',
+            'idAsignatura' => 'required|integer',
+            'idCurso' => 'required|integer',
+            'orden' => 'required|integer',
+            'estado' => 'nullable|boolean'
+        ]);
+
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
+
+        // Verificar si la asignatura está en el curso
+        $asignatura = Asignatura::where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('idCurso', $validatedData['idCurso'])
+            ->first();
+
+        if (!$asignatura) {
+            // Si la asignatura no está en el curso, redirigir con un mensaje de error
+            return redirect()->route('capacidades.edit', $id)
+                ->withErrors(['idAsignatura' => 'La asignatura no se encuentra dentro del curso.'])
+                ->withInput();
+        }
+
+        // Si la asignatura es válida, actualizar la capacidad con los datos validados
+        $capacidad->update([
+            'descripcion' => $validatedData['descripcion'],
+            'idAsignatura' => $validatedData['idAsignatura'],
+            'idCurso' => $validatedData['idCurso'],
+            'orden' => $validatedData['orden'],
+            'estado' => $validatedData['estado'] ?? $capacidad->estado,
+        ]);
+
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad actualizada correctamente');
     }
 
-    public function update(Request $request, Capacidad $capacidad)
+
+    public function destroy($id)
     {
-        $capacidad->update($request->all());
-        return redirect()->route('capacidades.index');
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
+
+        // Cambiar el estado a 0 (inactivo) en lugar de eliminar
+        $capacidad->estado = 0;
+        $capacidad->save();
+
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad eliminada correctamente');
     }
 
-    public function destroy(Capacidad $capacidad)
+    public function getAsignaturas($idCurso)
     {
-        $capacidad->delete();
-        return redirect()->route('capacidades.index');
+        $asignaturas = Asignatura::where('idCurso', $idCurso)->where('estado', 1)->get();
+        return response()->json(['asignaturas' => $asignaturas]);
     }
 }
-

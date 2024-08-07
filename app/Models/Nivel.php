@@ -10,11 +10,16 @@ class Nivel extends Model
     use HasFactory;
     protected $table = 'niveles';
     protected $primaryKey = 'idNivel';
-    protected $fillable = ['nombreNivel'];
+    protected $fillable = ['nombreNivel', 'estado'];
     public $timestamps = false;
 
     public function grados()
     {
-        return $this->hasMany(Grado::class, 'idNivel', 'idNivel');
+        return $this->hasMany(Grado::class, 'idNivel', 'idNivel')->where('estado', 1);
+
+    }
+    public function cursos()
+    {
+        return $this->hasMany(Curso::class, 'idNivel', 'idNivel')->where('estado', 1);
     }
 }
