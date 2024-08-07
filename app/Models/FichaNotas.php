@@ -17,7 +17,7 @@ class FichaNotas extends Model
         'idCurso',
         'codigo_Docente',
         'fecha',
-        '   ',
+        'idSeccion',
         'idGrado',
         'idNivel',
         'añoEscolar',
@@ -48,7 +48,7 @@ class FichaNotas extends Model
     }
 
     public function docente(){
-        return $this->hasOne(DocenteProvicional::class, 'codigo_docente', 'codigo_docente');
+        return $this->hasOne(DocenteProvicional::class, 'codigo_docente', 'codigo_Docente');
     }
 
     public function detalle_notas(){
@@ -56,7 +56,7 @@ class FichaNotas extends Model
     }
 
     public function asignatura(){
-        
+        return $this->belongsTo(Asignatura::class, 'idAsignatura');
     }
 
 }

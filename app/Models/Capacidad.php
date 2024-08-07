@@ -28,4 +28,9 @@ class Capacidad extends Model
     {
         return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
     }
+
+    public function notasCapacidad()
+    {
+        return $this->hasMany(NotaCapacidad::class, 'idCapacidad', 'idCapacidad');
+    }
 }

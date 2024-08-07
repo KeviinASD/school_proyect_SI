@@ -28,4 +28,8 @@ class Asignatura extends Model
     {
         return $this->belongsTo(Nivel::class, 'idNivel', 'idNivel');
     }
+    public function capacidades()
+    {
+        return $this->hasMany(Capacidad::class, 'idAsignatura');
+    }
 }

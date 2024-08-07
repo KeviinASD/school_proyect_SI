@@ -16,9 +16,11 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\EstadoCivilController;
 use App\Http\Controllers\TipoDocenteController;
 
+use App\Http\Controllers\DetalleNotasController;
 
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotasController;
+use App\Http\Controllers\NotaCapacidadController;
 use App\Models\Catedra;
 
 Route::resource('/alumnos', AlumnoController::class);
@@ -26,6 +28,8 @@ Route::resource('/alumnos', AlumnoController::class);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', [ResumenXController::class, 'welcome'])->name('welcome');
+    Route::get('/detalle-notas', [DetalleNotasController::class, 'index'])->name('detalle-notas.index');
+    Route::post('/nota-capacidad', [NotaCapacidadController::class, 'store'])->name('nota-capacidad.store');
     Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
 
 

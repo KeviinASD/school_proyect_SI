@@ -83,7 +83,7 @@ class NotasController extends Controller
                 'ficha3' => $fichas->where('periodo', 3)->first()->idFicha,
             ]);
     
-            return redirect()->route('welcome');
+            return redirect()->route('detalle-notas.index');
         } else {
             // Crear los tres periodos de la ficha de notas
             $ficha1 = FichaNotas::create([
@@ -132,7 +132,7 @@ class NotasController extends Controller
                 'ficha3' => $ficha3->idFicha,
             ]);
     
-            return redirect()->route('welcome');
+            return redirect()->route('detalle-notas.index');
         }
     }
 
