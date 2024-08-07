@@ -3,13 +3,13 @@
 @section('content')
 <div class="container mx-auto">
     <h3 class="text-lg font-bold my-4">LISTADO DE ALUMNOS</h3>
-    <div class="my-4">
-        <a href="{{ route('alumnos.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <div class="my-4 flex justify-between items-center">
+        <a href="{{ route('alumnos.create') }}" class="bg-blue-500 hover:bg-blue-700 h-10 text-white font-bold py-2 px-4 rounded">
             <i class="fas fa-plus"></i> Nuevo Registro
         </a>
         <nav class="float-right">
-            <form class="form-inline my-2 my-lg-0" method="GET">
-                <input name="buscarpor" class="form-input mr-2" type="search" placeholder="Búsqueda por nombre" aria-label="Search" value="">
+            <form class="form-inline my-2 my-lg-0 h-10" method="GET">
+                <input name="buscarpor" class="form-input mr-2 border border-gray-700 p-2 w-80 rounded-md" type="search" placeholder="Búsqueda por nombre-apellido-código" aria-label="Search" value="">
                 <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Buscar</button>
             </form>
         </nav>

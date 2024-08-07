@@ -82,7 +82,7 @@ Route::get('asignaturas-by-curso/{cursoId}', [CatedraController::class, 'getAsig
 
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
-Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
+Route::put('/alumnos/{codigoAlumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
 
 Route::get('/countries', [LocationController::class, 'getCountries'])->name('countries');
 Route::get('/departamentos/{countryCode}', [LocationController::class, 'getDepartments'])->name('departamentos');
