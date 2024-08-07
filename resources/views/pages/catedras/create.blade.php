@@ -24,36 +24,6 @@
         </div>
 
         <div class="mb-4">
-            <label for="idSeccion" class="block text-sm font-medium text-gray-700">Sección</label>
-            <select id="idSeccion" name="idSeccion" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">Seleccione una sección</option>
-                @foreach($secciones as $seccion)
-                <option value="{{ $seccion->idSeccion }}" {{ old('idSeccion') == $seccion->idSeccion ? 'selected' : '' }}>
-                    {{ $seccion->nombreSeccion }}
-                </option>
-                @endforeach
-            </select>
-            @error('idSeccion')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
-            <label for="idGrado" class="block text-sm font-medium text-gray-700">Grado</label>
-            <select id="idGrado" name="idGrado" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">Seleccione un grado</option>
-                @foreach($grados as $grado)
-                <option value="{{ $grado->idGrado }}" {{ old('idGrado') == $grado->idGrado ? 'selected' : '' }}>
-                    {{ $grado->nombreGrado }}
-                </option>
-                @endforeach
-            </select>
-            @error('idGrado')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
             <label for="idNivel" class="block text-sm font-medium text-gray-700">Nivel</label>
             <select id="idNivel" name="idNivel" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione un nivel</option>
@@ -64,6 +34,26 @@
                 @endforeach
             </select>
             @error('idNivel')
+            <p class="text-sm text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="idGrado" class="block text-sm font-medium text-gray-700">Grado</label>
+            <select id="idGrado" name="idGrado" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">Seleccione un grado</option>
+            </select>
+            @error('idGrado')
+            <p class="text-sm text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="idSeccion" class="block text-sm font-medium text-gray-700">Sección</label>
+            <select id="idSeccion" name="idSeccion" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">Seleccione una sección</option>
+            </select>
+            @error('idSeccion')
             <p class="text-sm text-red-500">{{ $message }}</p>
             @enderror
         </div>
@@ -87,11 +77,6 @@
             <label for="idAsignatura" class="block text-sm font-medium text-gray-700">Asignatura</label>
             <select id="idAsignatura" name="idAsignatura" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione una asignatura</option>
-                @foreach($asignaturas as $asignatura)
-                <option value="{{ $asignatura->idAsignatura }}" {{ old('idAsignatura') == $asignatura->idAsignatura ? 'selected' : '' }}>
-                    {{ $asignatura->nombreAsignatura }}
-                </option>
-                @endforeach
             </select>
             @error('idAsignatura')
             <p class="text-sm text-red-500">{{ $message }}</p>
@@ -113,11 +98,61 @@
             @enderror
         </div>
 
-        <div class="flex items-center justify-end">
-            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                Guardar
-            </button>
-        </div>
+        <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Guardar
+        </button>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nivelSelect = document.getElementById('idNivel');
+    const gradoSelect = document.getElementById('idGrado');
+    const seccionSelect = document.getElementById('idSeccion');
+    const cursoSelect = document.getElementById('idCurso');
+    const asignaturaSelect = document.getElementById('idAsignatura');
+
+    nivelSelect.addEventListener('change', function() {
+        const nivelId = this.value;
+        if (nivelId) {
+            fetch(`/grados-by-nivel/${nivelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    gradoSelect.innerHTML = '<option value="">Seleccione un grado</option>';
+                    data.forEach(grado => {
+                        gradoSelect.innerHTML += `<option value="${grado.idGrado}">${grado.nombreGrado}</option>`;
+                    });
+                });
+        }
+    });
+
+    gradoSelect.addEventListener('change', function() {
+        const gradoId = this.value;
+        if (gradoId) {
+            fetch(`/secciones-by-grado/${gradoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
+                    data.forEach(seccion => {
+                        seccionSelect.innerHTML += `<option value="${seccion.idSeccion}">${seccion.nombreSeccion}</option>`;
+                    });
+                });
+        }
+    });
+
+    cursoSelect.addEventListener('change', function() {
+        const cursoId = this.value;
+        if (cursoId) {
+            fetch(`/asignaturas-by-curso/${cursoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    asignaturaSelect.innerHTML = '<option value="">Seleccione una asignatura</option>';
+                    data.forEach(asignatura => {
+                        asignaturaSelect.innerHTML += `<option value="${asignatura.idAsignatura}">${asignatura.nombreAsignatura}</option>`;
+                    });
+                });
+        }
+    });
+});
+</script>
 @endsection

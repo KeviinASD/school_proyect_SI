@@ -12,18 +12,16 @@ use Illuminate\Validation\ValidationException;
 class AsignaturaController extends Controller
 {
     public function index()
-{
-    $asignaturas = Asignatura::with(['curso', 'grado', 'nivel'])->where('estado', 1)->get();
-    return view('asignaturas.index', compact('asignaturas'));
-}
+    {
+        $asignaturas = Asignatura::with(['curso', 'grado', 'nivel'])->where('estado', 1)->get();
+        return view('pages.asignaturas.index', compact('asignaturas'));
+    }
 
     public function create()
     {
-        $cursos = Curso::all();
-        $grados = Grado::all();
-        $niveles = Nivel::all();
-
-        return view('asignaturas.create', compact('cursos', 'grados', 'niveles'));
+        $niveles = Nivel::where('estado', 1)->get();
+        $cursos = Curso::where('estado', 1)->get();
+        return view('pages.asignaturas.create', compact('niveles', 'cursos'));
     }
 
     public function store(Request $request)
@@ -55,13 +53,12 @@ class AsignaturaController extends Controller
         return redirect()->route('asignaturas.index')->with('success', 'Asignatura creada exitosamente.');
     }
 
-    public function edit(Asignatura $asignatura)
+    public function edit($id)
     {
-        $cursos = Curso::all();
-        $grados = Grado::all();
-        $niveles = Nivel::all();
-
-        return view('asignaturas.edit', compact('asignatura', 'cursos', 'grados', 'niveles'));
+        $asignatura = Asignatura::findOrFail($id);
+        $niveles = Nivel::where('estado', 1)->get();
+        $cursos = Curso::where('estado', 1)->get();
+        return view('pages.asignaturas.edit', compact('asignatura', 'niveles', 'cursos'));
     }
 
     public function update(Request $request, $id)
@@ -103,6 +100,12 @@ class AsignaturaController extends Controller
     public function deleted()
     {
         $asignaturas = Asignatura::where('estado', 0)->get();
-        return view('asignaturas.deleted', compact('asignaturas'));
+        return view('pages.asignaturas.deleted', compact('asignaturas'));
+    }
+
+    public function getGradosByNivel($nivelId)
+    {
+        $grados = Grado::where('idNivel', $nivelId)->where('estado', 1)->get(['idGrado', 'nombreGrado']);
+        return response()->json(['grados' => $grados]);
     }
 }

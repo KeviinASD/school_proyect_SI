@@ -20,9 +20,10 @@ use App\Http\Controllers\TipoDocenteController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotasController;
 use App\Models\Catedra;
+use App\Models\Grado;
 
 Route::resource('/alumnos', AlumnoController::class);
-// routes when the user is authenticated
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {return view('welcome');})->name('welcome');
@@ -35,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles', NivelesController::class);
     Route::resource('secciones', SeccionesController::class);
 
-
+    Route::resource('capacidades', CapacidadController::class);
     Route::resource('tiposDocentes', TipoDocenteController::class);
     Route::resource('estadosCiviles', EstadoCivilController::class);
     Route::resource('docentes', DocenteController::class);
@@ -58,9 +59,22 @@ Route::resource('asignaturas', AsignaturaController::class);
 Route::resource('cursos', CursoController::class);
 Route::delete('/cursos/{idCurso}', [CursoController::class, 'destroy'])->name('cursos.destroy');
 Route::resource('capacidades', CapacidadController::class);
+Route::put('capacidades/{id}', [CapacidadController::class, 'update'])->name('capacidades.update');
 
+Route::get('/api/asignaturas/{idCurso}', [CapacidadController::class, 'getAsignaturas']);
 
+Route::get('/get-grados-by-nivel/{nivelId}', [AsignaturaController::class, 'getGradosByNivel']);
+
+//CATEDRAS
 Route::resource('catedras', CatedraController::class);
+
+Route::get('grados-by-nivel/{nivelId}', [CatedraController::class, 'getGradosByNivel']);
+Route::get('secciones-by-grado/{gradoId}', [CatedraController::class, 'getSeccionesByGrado']);
+Route::get('asignaturas-by-curso/{cursoId}', [CatedraController::class, 'getAsignaturasByCurso']);
+
+
+
+
 
 Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumnos.edit');
 Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');

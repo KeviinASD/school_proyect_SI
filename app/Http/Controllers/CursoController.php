@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curso;
+use App\Models\Nivel;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -16,7 +17,9 @@ class CursoController extends Controller
 
     public function create()
     {
-        return view('pages.cursos.create');
+        // Obtener niveles para la vista de creación
+        $niveles = Nivel::all();
+        return view('pages.cursos.create', compact('niveles'));
     }
 
     public function store(Request $request)
@@ -30,10 +33,10 @@ class CursoController extends Controller
                 'nombreCurso' => $validated['nombreCurso'],
                 'estado' => 1, 
             ]);
-            return redirect()->route('pages.cursos.index')->with('success', 'Curso creado exitosamente.');
+            return redirect()->route('cursos.index')->with('success', 'Curso creado exitosamente.');
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() == '23000') {
-                return redirect()->route('pages.cursos.index')
+                return redirect()->route('cursos.index')
                     ->with('error', 'Error al crear el curso. Inténtalo de nuevo.');
             }
             return redirect()->route('cursos.index')
@@ -44,7 +47,8 @@ class CursoController extends Controller
     public function edit($idCurso)
     {
         $curso = Curso::findOrFail($idCurso);
-        return view('pages.cursos.edit', compact('curso'));
+        $niveles = Nivel::all(); // Obtener niveles para la vista de edición
+        return view('pages.cursos.edit', compact('curso', 'niveles'));
     }
 
     public function update(Request $request, $idCurso)
@@ -59,7 +63,7 @@ class CursoController extends Controller
             'estado' => $curso->estado, // Mantén el estado actual
         ]);
 
-        return redirect()->route('pages.cursos.index')->with('success', 'Curso actualizado correctamente.');
+        return redirect()->route('cursos.index')->with('success', 'Curso actualizado correctamente.');
     }
 
     public function destroy($idCurso)

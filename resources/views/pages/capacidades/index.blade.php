@@ -29,14 +29,14 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $capacidad->curso->nombreCurso }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $capacidad->orden }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex items-center space-x-2">
-                        <a href="{{ route('capacidades.edit', $capacidad) }}" class="flex items-center text-blue-600 hover:text-blue-900">
+                        <a href="{{ route('capacidades.edit', $capacidad->idCapacidad) }}" class="flex items-center text-blue-600 hover:text-blue-900">
                             <!-- Icono de editar -->
                             <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7H5"></path>
                             </svg>
                             Editar
                         </a>
-                        <form action="{{ route('capacidades.destroy', $capacidad) }}" method="POST" class="inline">
+                        <form action="{{ route('capacidades.destroy', $capacidad->idCapacidad) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="flex items-center text-red-600 hover:text-red-900">

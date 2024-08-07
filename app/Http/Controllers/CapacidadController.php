@@ -13,14 +13,18 @@ class CapacidadController extends Controller
     {
         // Obtener todas las capacidades activas
         $capacidades = Capacidad::where('estado', 1)->get();
-        return view('capacidades.index', compact('capacidades'));
+        return view('pages.capacidades.index', compact('capacidades'));
     }
 
     public function create()
     {
-        $asignaturas = Asignatura::all();
-        $cursos = Curso::all();
-        return view('capacidades.create', compact('asignaturas', 'cursos'));
+        // Obtén todos los cursos para el dropdown
+        $cursos = Curso::where('estado', 1)->get();
+
+        // Si estás editando una capacidad existente, obtén la capacidad
+        $capacidad = null; // O la lógica para obtener la capacidad existente
+
+        return view('pages.capacidades.create', compact('cursos', 'capacidad'));
     }
 
     public function store(Request $request)
@@ -68,7 +72,7 @@ class CapacidadController extends Controller
         $cursos = Curso::all();
 
         // Pasar las variables a la vista
-        return view('asignaturas.edit', compact('capacidad', 'asignaturas', 'cursos'));
+        return view('pages.capacidades.edit', compact('capacidad', 'asignaturas', 'cursos'));
     }
 
 
@@ -121,5 +125,11 @@ class CapacidadController extends Controller
         $capacidad->save();
 
         return redirect()->route('capacidades.index')->with('success', 'Capacidad eliminada correctamente');
+    }
+
+    public function getAsignaturas($idCurso)
+    {
+        $asignaturas = Asignatura::where('idCurso', $idCurso)->where('estado', 1)->get();
+        return response()->json(['asignaturas' => $asignaturas]);
     }
 }

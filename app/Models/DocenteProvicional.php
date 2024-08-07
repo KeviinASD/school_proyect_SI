@@ -11,7 +11,7 @@ class DocenteProvicional extends Model
     use HasFactory;
     protected $table = 'docentes';
     protected $primaryKey = 'codigo_docente';
-    protected $keyType ='String';
+    protected $keyType = 'String';
     public $timestamps = false;
     protected $fillable = [
         'codigo_docente',
@@ -35,6 +35,8 @@ class DocenteProvicional extends Model
     {
         return $this->hasOne(EstadoCivil::class, 'idEstadoCivil', 'idEstadoCivil');
     }
-
-
+    public function scopeFindByCodigo($query, $codigo)
+    {
+        return $query->where('codigo_docente', $codigo)->first();
+    }
 }

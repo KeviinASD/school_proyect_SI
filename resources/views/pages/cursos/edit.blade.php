@@ -20,6 +20,7 @@
         <div class="mb-4">
             <label for="idNivel" class="block text-sm font-medium text-gray-700">Nivel</label>
             <select id="idNivel" name="idNivel" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="" disabled selected>Seleccionar nivel</option>
                 @foreach ($niveles as $nivel)
                 <option value="{{ $nivel->idNivel }}" {{ $nivel->idNivel == old('idNivel', $curso->idNivel) ? 'selected' : '' }}>
                     {{ $nivel->nombreNivel }}
@@ -31,8 +32,10 @@
             @enderror
         </div>
 
-        <div>
-            <button type="submit" class="inline-block px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Actualizar Curso</button>
+        <div class="flex justify-end">
+            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-60 transition">
+                Actualizar Curso
+            </button>
         </div>
     </form>
 </div>
