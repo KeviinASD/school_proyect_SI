@@ -21,7 +21,17 @@ class DetalleNotasController extends Controller
     {
         $bimestre = $request->input('bimestre', '1');
 
-        $ficha = FichaNotas::where('periodo', $bimestre)->first();
+        $idFicha = Session::get('ficha1');
+        
+        if ($bimestre == '1') {
+            $idFicha = Session::get('ficha1');
+        } elseif ($bimestre == '2') {
+            $idFicha = Session::get('ficha2');
+        } elseif ($bimestre == '3') {
+            $idFicha = Session::get('ficha3');
+        }
+
+        $ficha = FichaNotas::where('periodo', $bimestre)->where('idFicha', $idFicha)->first();
         //dd($ficha);
 
         // Obtener los alumnos matriculados que coinciden con los criterios de la ficha
