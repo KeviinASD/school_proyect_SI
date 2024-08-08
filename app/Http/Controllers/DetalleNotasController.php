@@ -19,7 +19,7 @@ class DetalleNotasController extends Controller
 
     public function index(Request $request)
     {
-        $bimestre = $request->input('bimestre', '2');
+        $bimestre = $request->input('bimestre', '1');
 
         $ficha = FichaNotas::where('periodo', $bimestre)->first();
         //dd($ficha);
