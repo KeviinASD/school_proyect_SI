@@ -18,13 +18,15 @@ class CapacidadController extends Controller
 
     public function create()
     {
-        // Obtén todos los cursos para el dropdown
+        // Obtener solo los cursos activos
         $cursos = Curso::where('estado', 1)->get();
+        // Obtener solo las asignaturas activas
+        $asignaturas = Asignatura::where('estado', 1)->get();
 
         // Si estás editando una capacidad existente, obtén la capacidad
         $capacidad = null; // O la lógica para obtener la capacidad existente
 
-        return view('pages.capacidades.create', compact('cursos', 'capacidad'));
+        return view('pages.capacidades.create', compact('cursos', 'asignaturas', 'capacidad'));
     }
 
     public function store(Request $request)
@@ -46,6 +48,7 @@ class CapacidadController extends Controller
         // Verificar si la asignatura está en el curso
         $asignatura = Asignatura::where('idAsignatura', $validatedData['idAsignatura'])
             ->where('idCurso', $validatedData['idCurso'])
+            ->where('estado', 1) // Asegurarse de que la asignatura esté activa
             ->first();
 
         if (!$asignatura) {
@@ -72,21 +75,18 @@ class CapacidadController extends Controller
         return redirect()->route('capacidades.index')->with('success', 'Capacidad creada correctamente');
     }
 
-
-
     public function edit($id)
     {
         // Obtener la capacidad por su ID
         $capacidad = Capacidad::findOrFail($id);
 
-        // Obtener todas las asignaturas y cursos para el dropdown
-        $asignaturas = Asignatura::all();
-        $cursos = Curso::all();
+        // Obtener solo las asignaturas y cursos activos para el dropdown
+        $asignaturas = Asignatura::where('estado', 1)->get();
+        $cursos = Curso::where('estado', 1)->get();
 
         // Pasar las variables a la vista
         return view('pages.capacidades.edit', compact('capacidad', 'asignaturas', 'cursos'));
     }
-
 
     public function update(Request $request, $id)
     {
@@ -105,6 +105,7 @@ class CapacidadController extends Controller
         // Verificar si la asignatura está en el curso
         $asignatura = Asignatura::where('idAsignatura', $validatedData['idAsignatura'])
             ->where('idCurso', $validatedData['idCurso'])
+            ->where('estado', 1) // Asegurarse de que la asignatura esté activa
             ->first();
 
         if (!$asignatura) {
@@ -137,9 +138,6 @@ class CapacidadController extends Controller
 
         return redirect()->route('capacidades.index')->with('success', 'Capacidad actualizada correctamente');
     }
-
-
-
 
     public function destroy($id)
     {

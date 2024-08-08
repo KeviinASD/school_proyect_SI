@@ -25,12 +25,29 @@ class CursoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombreCurso' => 'required|string|max:255|unique:cursos,nombreCurso',
-        ], [
-            'nombreCurso.unique' => 'El nombre del curso ya existe.',
+            'nombreCurso' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    // Verificar si existe un curso activo con el mismo nombre
+                    $cursoActivo = Curso::where('nombreCurso', $value)->where('estado', 1)->exists();
+                    if ($cursoActivo) {
+                        $fail('El nombre del curso ya está en uso por un curso activo.');
+                    }
+
+                    // Opcionalmente, puedes informar si el curso está inactivo, si lo deseas
+                    $cursoInactivo = Curso::where('nombreCurso', $value)->where('estado', 0)->exists();
+                    if ($cursoInactivo) {
+                        // Puedes personalizar el mensaje si quieres notificar sobre la existencia de un curso inactivo
+                        // En este caso, no hacemos nada para prevenir la creación del curso.
+                    }
+                },
+            ],
         ]);
 
         try {
+            // Crear un nuevo curso con estado 1
             Curso::create([
                 'nombreCurso' => $validated['nombreCurso'],
                 'estado' => 1,
@@ -41,6 +58,8 @@ class CursoController extends Controller
                 ->with('error', 'Error al crear el curso. Inténtalo de nuevo.');
         }
     }
+
+
     public function edit($idCurso)
     {
         $curso = Curso::findOrFail($idCurso);
@@ -50,20 +69,43 @@ class CursoController extends Controller
 
     public function update(Request $request, $idCurso)
     {
-        $request->validate([
-            'nombreCurso' => 'required|max:255|unique:cursos,nombreCurso,' . $idCurso . ',idCurso',
-        ], [
-            'nombreCurso.unique' => 'El nombre del curso ya existe.',
+        $validated = $request->validate([
+            'nombreCurso' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($idCurso) {
+                    // Verificar si existe un curso activo con el mismo nombre
+                    $cursoActivo = Curso::where('nombreCurso', $value)->where('estado', 1)->where('idCurso', '!=', $idCurso)->exists();
+                    if ($cursoActivo) {
+                        $fail('El nombre del curso ya está en uso por un curso activo.');
+                    }
+
+                    // Opcionalmente, puedes informar si el curso está inactivo, si lo deseas
+                    $cursoInactivo = Curso::where('nombreCurso', $value)->where('estado', 0)->where('idCurso', '!=', $idCurso)->exists();
+                    if ($cursoInactivo) {
+                        // Puedes personalizar el mensaje si quieres notificar sobre la existencia de un curso inactivo
+                        // En este caso, no hacemos nada para prevenir la edición del curso.
+                    }
+                },
+            ],
         ]);
 
-        $curso = Curso::findOrFail($idCurso);
-        $curso->update([
-            'nombreCurso' => $request->nombreCurso,
-            'estado' => $curso->estado, // Mantén el estado actual
-        ]);
+        try {
+            $curso = Curso::findOrFail($idCurso);
+            $curso->update([
+                'nombreCurso' => $validated['nombreCurso'],
+                // Mantener el estado actual del curso
+                'estado' => $curso->estado,
+            ]);
 
-        return redirect()->route('cursos.index')->with('success', 'Curso actualizado correctamente.');
+            return redirect()->route('cursos.index')->with('success', 'Curso actualizado correctamente.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->route('cursos.index')
+                ->with('error', 'Error al actualizar el curso. Inténtalo de nuevo.');
+        }
     }
+
 
     public function destroy($idCurso)
     {
