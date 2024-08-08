@@ -25,6 +25,7 @@ use App\Http\Controllers\NotasController;
 use App\Http\Controllers\NotaCapacidadController;
 use App\Models\Catedra;
 use App\Models\Grado;
+use App\Http\Controllers\ReporteNotasController;
 
 Route::resource('/alumnos', AlumnoController::class);
 
@@ -95,12 +96,14 @@ Route::get('/distritos/{geonameId}', [LocationController::class, 'getDistricts']
 
 
 
-
-
-
-
-
-
-
 Route::get('/alumnosMatriculados', [AlumnosMatriculadosController::class, 'index'])->name('alumnosMatriculados.index');
 
+
+
+Route::get('/reporte-notas', [ReporteNotasController::class, 'index'])->name('reporteDeNotas.index');
+Route::get('/reporte-notas/pdf', [ReporteNotasController::class, 'pdfNotas'])->name('notas.pdf');
+
+Route::post('/reporte-notas', [ReporteNotasController::class, 'reportePorAsignatura'])->name('reporteDeNotas.generar');
+
+Route::get('/docentesByAñoEscolar/{añoEscolar}', [ReporteNotasController::class, 'docentesByAñoEscolar'])->name('docentesByAñoEscolar');
+Route::get('/asignaturasByDocente/{codigoDocente}', [ReporteNotasController::class, 'asignaturasByDocente'])->name('asignaturasByDocente');

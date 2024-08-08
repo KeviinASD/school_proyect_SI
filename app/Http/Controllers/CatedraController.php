@@ -9,7 +9,6 @@ use App\Models\Nivel;
 use App\Models\Curso;
 use App\Models\Asignatura;
 use App\Models\AñoEscolar;
-use App\Models\Docente;
 use App\Models\DocenteProvicional;
 use Illuminate\Http\Request;
 
@@ -18,30 +17,29 @@ class CatedraController extends Controller
     public function index()
     {
         $catedras = Catedra::where('estado', 1)->get();
-
         return view('pages.catedras.index', compact('catedras'));
     }
 
-    // Método para mostrar el formulario de creación
     public function create()
     {
-        $docentes = DocenteProvicional::all();
-        $secciones = Seccion::all();
-        $grados = Grado::all();
-        $niveles = Nivel::all();
-        $cursos = Curso::all();
-        $asignaturas = Asignatura::all();
-        $añosEscolares = AñoEscolar::all();
+        $docentes = DocenteProvicional::where('estado', 1)->get();
+        $secciones = Seccion::where('estado', 1)->get();
+        $grados = Grado::where('estado', 1)->get();
+        $niveles = Nivel::where('estado', 1)->get();
+        $cursos = Curso::where('estado', 1)->get();
+        $asignaturas = Asignatura::where('estado', 1)->get();
+        $añosEscolares = AñoEscolar::where('estado', 1)->get();
 
         return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'cursos', 'asignaturas', 'añosEscolares'));
     }
 
-    // Método para buscar un docente por código
     public function buscarDocente(Request $request)
     {
         $codigoDocente = $request->input('codigo_docente');
 
-        $docente = DocenteProvicional::where('codigo_docente', $codigoDocente)->first();
+        $docente = DocenteProvicional::where('codigo_docente', $codigoDocente)
+            ->where('estado', 1) // Solo buscar docentes activos
+            ->first();
 
         if ($docente) {
             return response()->json([
@@ -56,8 +54,6 @@ class CatedraController extends Controller
         }
     }
 
-
-
     public function store(Request $request)
     {
         // Validar la solicitud
@@ -71,6 +67,19 @@ class CatedraController extends Controller
             'añoEscolar' => 'required|string',
         ]);
 
+        // Verificar si ya existe una cátedra con el mismo docente, sección y asignatura
+        $exists = Catedra::where('codigo_docente', $validated['codigo_docente'])
+            ->where('idSeccion', $validated['idSeccion'])
+            ->where('idAsignatura', $validated['idAsignatura'])
+            ->where('estado', 1) // Solo verificar las cátedras activas
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withInput()->withErrors([
+                'codigo_docente' => 'El docente ya está asignado a la misma asignatura en esta sección.'
+            ]);
+        }
+
         // Crear la nueva cátedra
         $catedra = new Catedra();
         $catedra->codigo_docente = $validated['codigo_docente'];
@@ -80,41 +89,71 @@ class CatedraController extends Controller
         $catedra->idCurso = $validated['idCurso'];
         $catedra->idAsignatura = $validated['idAsignatura'];
         $catedra->añoEscolar = $validated['añoEscolar'];
+        $catedra->estado = 1; // Asegúrate de establecer el estado a 1
         $catedra->save();
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('catedras.index')->with('success', 'Cátedra creada exitosamente.');
     }
 
+
+
     public function edit($id)
     {
         $catedra = Catedra::findOrFail($id);
-        $docentes = DocenteProvicional::all();
-        $niveles = Nivel::all();
-        $cursos = Curso::all();
-        $añosEscolares = AñoEscolar::all();
+        $docentes = DocenteProvicional::where('estado', 1)->get();
+        $niveles = Nivel::where('estado', 1)->get();
+        $cursos = Curso::where('estado', 1)->get();
+        $añosEscolares = AñoEscolar::where('estado', 1)->get();
 
         return view('pages.catedras.edit', compact('catedra', 'docentes', 'niveles', 'cursos', 'añosEscolares'));
     }
 
-
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'codigo_docente' => 'required',
-            'idNivel' => 'required',
-            'idGrado' => 'required',
-            'idSeccion' => 'required',
-            'idCurso' => 'required',
-            'idAsignatura' => 'required',
-            'añoEscolar' => 'required',
+        // Validar la solicitud
+        $validated = $request->validate([
+            'codigo_docente' => 'required|string',
+            'idSeccion' => 'required|integer',
+            'idGrado' => 'required|integer',
+            'idNivel' => 'required|integer',
+            'idCurso' => 'required|integer',
+            'idAsignatura' => 'required|integer',
+            'añoEscolar' => 'required|string',
         ]);
 
-        $catedra = Catedra::findOrFail($id);
-        $catedra->update($request->all());
+        // Obtener la cátedra que se está editando
+        $catedra = Catedra::find($id);
 
+        // Verificar si ya existe una cátedra con el mismo docente, sección y asignatura, excluyendo la cátedra actual
+        $exists = Catedra::where('codigo_docente', $validated['codigo_docente'])
+            ->where('idSeccion', $validated['idSeccion'])
+            ->where('idAsignatura', $validated['idAsignatura'])
+            ->where('estado', 1) // Solo verificar las cátedras activas
+            ->where('id', '<>', $id) // Excluir la cátedra actual
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withInput()->withErrors([
+                'codigo_docente' => 'El docente ya está asignado a la misma asignatura en esta sección.'
+            ]);
+        }
+
+        // Actualizar la cátedra
+        $catedra->codigo_docente = $validated['codigo_docente'];
+        $catedra->idSeccion = $validated['idSeccion'];
+        $catedra->idGrado = $validated['idGrado'];
+        $catedra->idNivel = $validated['idNivel'];
+        $catedra->idCurso = $validated['idCurso'];
+        $catedra->idAsignatura = $validated['idAsignatura'];
+        $catedra->añoEscolar = $validated['añoEscolar'];
+        $catedra->estado = 1; // Asegúrate de mantener el estado
+        $catedra->save();
+
+        // Redirigir con un mensaje de éxito
         return redirect()->route('catedras.index')->with('success', 'Cátedra actualizada exitosamente.');
     }
+
 
     public function destroy($id)
     {
@@ -131,19 +170,19 @@ class CatedraController extends Controller
 
     public function getGradosByNivel($nivelId)
     {
-        $grados = Grado::where('idNivel', $nivelId)->get();
+        $grados = Grado::where('idNivel', $nivelId)->where('estado', 1)->get();
         return response()->json($grados);
     }
 
     public function getSeccionesByGrado($gradoId)
     {
-        $secciones = Seccion::where('idGrado', $gradoId)->get();
+        $secciones = Seccion::where('idGrado', $gradoId)->where('estado', 1)->get();
         return response()->json($secciones);
     }
 
     public function getAsignaturasByCurso($cursoId)
     {
-        $asignaturas = Asignatura::where('idCurso', $cursoId)->get();
+        $asignaturas = Asignatura::where('idCurso', $cursoId)->where('estado', 1)->get();
         return response()->json($asignaturas);
     }
 }

@@ -41,6 +41,17 @@ class AsignaturaController extends Controller
                 'idGrado' => 'El grado seleccionado no existe en el nivel seleccionado.'
             ])->withInput();
         }
+        // Verifica que no exista la misma asignatura en el mismo curso, nivel y grado
+        if (Asignatura::where('nombreAsignatura', $request->input('nombreAsignatura'))
+            ->where('idCurso', $request->input('idCurso'))
+            ->where('idGrado', $request->input('idGrado'))
+            ->where('idNivel', $request->input('idNivel'))
+            ->where('estado', 1)
+            ->exists()) {
+            return redirect()->back()->withErrors([
+                'nombreAsignatura' => 'La asignatura ya existe.'
+            ])->withInput();
+        }
 
         Asignatura::create([
             'nombreAsignatura' => $request->input('nombreAsignatura'),
@@ -76,6 +87,18 @@ class AsignaturaController extends Controller
             ->exists()) {
             return redirect()->back()->withErrors([
                 'idGrado' => 'El grado seleccionado no existe en el nivel seleccionado.'
+            ])->withInput();
+        }
+
+        if (Asignatura::where('nombreAsignatura', $request->input('nombreAsignatura'))
+            ->where('idCurso', $request->input('idCurso'))
+            ->where('idGrado', $request->input('idGrado'))
+            ->where('idNivel', $request->input('idNivel'))
+            ->where('estado', 1)
+            ->where('idAsignatura', '!=', $id)
+            ->exists()) {
+            return redirect()->back()->withErrors([
+                'nombreAsignatura' => 'La asignatura ya existe.'
             ])->withInput();
         }
 

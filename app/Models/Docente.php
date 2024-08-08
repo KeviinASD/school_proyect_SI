@@ -24,4 +24,9 @@ class Docente extends Model
     {
         return $this->belongsTo(EstadoCivil::class, 'idEstadoCivil', 'idEstadoCivil');
     }
+
+    public function catedras()
+    {
+        return $this->hasMany(Catedra::class, 'codigo_docente');
+    }
 }

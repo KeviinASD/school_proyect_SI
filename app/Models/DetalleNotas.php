@@ -22,18 +22,15 @@ class DetalleNotas extends Model
 
     public function notasCapacidad()
     {
-        return $this->hasMany(NotaCapacidad::class, [
-            'codigoAlumno', 
-            'idFicha', 
-            'idAsignatura', 
-            'idCurso', 
-            'codigo_Docente'
-        ], [
-            'codigoAlumno', 
-            'idFicha', 
-            'idAsignatura', 
-            'idCurso', 
-            'codigo_Docente'
-        ]);
+        return $this->hasMany(NotaCapacidad::class, 'codigoAlumno', 'codigoAlumno')
+            ->where('idFicha', $this->idFicha)
+            ->where('idAsignatura', $this->idAsignatura)
+            ->where('idCurso', $this->idCurso)
+            ->where('codigo_Docente', $this->codigo_Docente);
+    }
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class, 'codigoAlumno', 'codigoAlumno');
     }
 }

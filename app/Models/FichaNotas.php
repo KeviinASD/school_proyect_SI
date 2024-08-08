@@ -52,7 +52,7 @@ class FichaNotas extends Model
     }
 
     public function detalle_notas(){
-
+        return $this->hasMany(DetalleNotas::class, 'idFicha');
     }
 
     public function asignatura(){
