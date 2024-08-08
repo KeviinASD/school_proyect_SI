@@ -55,11 +55,23 @@ class CapacidadController extends Controller
                 ->withInput(); // Mantener los datos de entrada
         }
 
+        // Verificar si ya existe una capacidad para la asignatura
+        $existingCapacidad = Capacidad::where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('estado', 1)
+            ->first();
+
+        if ($existingCapacidad) {
+            return redirect()->route('capacidades.create')
+                ->withErrors(['idAsignatura' => 'Ya existe una capacidad para la asignatura seleccionada.'])
+                ->withInput();
+        }
+
         // Crear una nueva capacidad si la asignatura es válida
         Capacidad::create($validatedData);
 
         return redirect()->route('capacidades.index')->with('success', 'Capacidad creada correctamente');
     }
+
 
 
     public function edit($id)
@@ -102,6 +114,18 @@ class CapacidadController extends Controller
                 ->withInput();
         }
 
+        // Verificar si ya existe otra capacidad para la misma asignatura
+        $existingCapacidad = Capacidad::where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('estado', 1)
+            ->where('idCapacidad', '!=', $id) // Excluir la capacidad actual
+            ->first();
+
+        if ($existingCapacidad) {
+            return redirect()->route('capacidades.edit', $id)
+                ->withErrors(['idAsignatura' => 'Ya existe una capacidad para la asignatura seleccionada.'])
+                ->withInput();
+        }
+
         // Si la asignatura es válida, actualizar la capacidad con los datos validados
         $capacidad->update([
             'descripcion' => $validatedData['descripcion'],
@@ -113,6 +137,8 @@ class CapacidadController extends Controller
 
         return redirect()->route('capacidades.index')->with('success', 'Capacidad actualizada correctamente');
     }
+
+
 
 
     public function destroy($id)

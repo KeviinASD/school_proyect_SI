@@ -19,23 +19,23 @@ class DetalleNotasController extends Controller
 
     public function index(Request $request)
     {
-        $bimestre = $request->input('bimestre','2');
-        
+        $bimestre = $request->input('bimestre', '2');
+
         $ficha = FichaNotas::where('periodo', $bimestre)->first();
         //dd($ficha);
 
         // Obtener los alumnos matriculados que coinciden con los criterios de la ficha
         $alumnos = Alumno::with('notasCapacidades')
-        ->join('ficha_matriculas', 'alumnos.codigoAlumno', '=', 'ficha_matriculas.codigoAlumno')
-        ->where('ficha_matriculas.idGrado', $ficha->idGrado)
-        ->where('ficha_matriculas.añoEscolar', $ficha->añoEscolar)
-        ->where('ficha_matriculas.idNivel', $ficha->idNivel)
-        ->get();
-        
+            ->join('ficha_matriculas', 'alumnos.codigoAlumno', '=', 'ficha_matriculas.codigoAlumno')
+            ->where('ficha_matriculas.idGrado', $ficha->idGrado)
+            ->where('ficha_matriculas.añoEscolar', $ficha->añoEscolar)
+            ->where('ficha_matriculas.idNivel', $ficha->idNivel)
+            ->get();
+
         $asignatura = $ficha->asignatura;
         $capacidades = $asignatura ? $asignatura->capacidades : collect();
 
-
+        // Procesar los alumnos
         foreach ($alumnos as $alumno) {
             $existe = DetalleNotas::where('codigoAlumno', $alumno->codigoAlumno)
                 ->where('idFicha', $ficha->idFicha)
@@ -43,7 +43,7 @@ class DetalleNotasController extends Controller
                 ->where('idCurso', $ficha->idCurso)
                 ->where('codigo_Docente', $ficha->codigo_Docente)
                 ->first();
-    
+
             if (!$existe) {
                 DetalleNotas::create([
                     'codigoAlumno' => $alumno->codigoAlumno,
@@ -53,32 +53,34 @@ class DetalleNotasController extends Controller
                     'codigo_Docente' => $ficha->codigo_Docente
                 ]);
             }
-
         }
 
+        // Procesar las capacidades
         foreach ($capacidades as $capacidad) {
-            $existeCapacidad = NotaCapacidad::where('idCapacidad', $capacidad->idCapacidad)
-                ->where('codigoAlumno', $alumno->codigoAlumno)
-                ->where('idFicha', $ficha->idFicha)
-                ->where('idAsignatura', $asignatura->idAsignatura)
-                ->where('idCurso', $ficha->idCurso)
-                ->where('codigo_Docente', $ficha->codigo_Docente)
-                ->first();
+            foreach ($alumnos as $alumno) {
+                $existeCapacidad = NotaCapacidad::where('idCapacidad', $capacidad->idCapacidad)
+                    ->where('codigoAlumno', $alumno->codigoAlumno)
+                    ->where('idFicha', $ficha->idFicha)
+                    ->where('idAsignatura', $asignatura->idAsignatura)
+                    ->where('idCurso', $ficha->idCurso)
+                    ->where('codigo_Docente', $ficha->codigo_Docente)
+                    ->first();
 
-            if (!$existeCapacidad) {
-                NotaCapacidad::create([
-                    'idCapacidad' => $capacidad->idCapacidad,
-                    'codigoAlumno' => $alumno->codigoAlumno,
-                    'idFicha' => $ficha->idFicha,
-                    'idAsignatura' => $asignatura->idAsignatura,
-                    'idCurso' => $ficha->idCurso,
-                    'codigo_Docente' => $ficha->codigo_Docente,
-                    'nota' => null
-                ]);
+                if (!$existeCapacidad) {
+                    NotaCapacidad::create([
+                        'idCapacidad' => $capacidad->idCapacidad,
+                        'codigoAlumno' => $alumno->codigoAlumno,
+                        'idFicha' => $ficha->idFicha,
+                        'idAsignatura' => $asignatura->idAsignatura,
+                        'idCurso' => $ficha->idCurso,
+                        'codigo_Docente' => $ficha->codigo_Docente,
+                        'nota' => null
+                    ]);
+                }
             }
         }
-        
-        return view('pages.detalleNotas.index', compact('alumnos','ficha'));
+
+        return view('pages.detalleNotas.index', compact('alumnos', 'ficha'));
     }
 
     /**

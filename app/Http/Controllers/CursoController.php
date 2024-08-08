@@ -25,25 +25,22 @@ class CursoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombreCurso' => 'required|string|max:255',
+            'nombreCurso' => 'required|string|max:255|unique:cursos,nombreCurso',
+        ], [
+            'nombreCurso.unique' => 'El nombre del curso ya existe.',
         ]);
 
         try {
             Curso::create([
                 'nombreCurso' => $validated['nombreCurso'],
-                'estado' => 1, 
+                'estado' => 1,
             ]);
             return redirect()->route('cursos.index')->with('success', 'Curso creado exitosamente.');
         } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() == '23000') {
-                return redirect()->route('cursos.index')
-                    ->with('error', 'Error al crear el curso. Inténtalo de nuevo.');
-            }
             return redirect()->route('cursos.index')
                 ->with('error', 'Error al crear el curso. Inténtalo de nuevo.');
         }
     }
-
     public function edit($idCurso)
     {
         $curso = Curso::findOrFail($idCurso);
@@ -54,7 +51,9 @@ class CursoController extends Controller
     public function update(Request $request, $idCurso)
     {
         $request->validate([
-            'nombreCurso' => 'required|max:255',
+            'nombreCurso' => 'required|max:255|unique:cursos,nombreCurso,' . $idCurso . ',idCurso',
+        ], [
+            'nombreCurso.unique' => 'El nombre del curso ya existe.',
         ]);
 
         $curso = Curso::findOrFail($idCurso);
