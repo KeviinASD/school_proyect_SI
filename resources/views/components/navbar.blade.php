@@ -21,7 +21,7 @@
             <div class="flex items-center gap-2">
                 <img src="{{ asset('img/user.jpg') }}" alt="" class="w-10 rounded-full">
                 <div>
-                    <h1 class="font-semibold">Ivana la Rana</h1>
+                    <h1 class="font-semibold">{{Auth::user()->name}}</h1>
                     <p class=" text-gray-400">Admin</p>
                 </div>
             </div>
