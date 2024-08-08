@@ -72,7 +72,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('cursos.index') }}"
                             class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
 
                             <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="currentColor"
