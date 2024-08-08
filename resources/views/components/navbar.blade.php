@@ -1,3 +1,5 @@
+
+
 <nav class="fixed w-full border-b border-gray-200 py-4 px-4 lg:px-8 z-40">
     <div class="flex justify-between items-center">
         <div class="flex items-center justify-center gap-1">
