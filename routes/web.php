@@ -34,11 +34,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [ResumenXController::class, 'welcome'])->name('welcome');
     Route::get('/detalle-notas', [DetalleNotasController::class, 'index'])->name('detalle-notas.index');
     Route::post('/nota-capacidad', [NotaCapacidadController::class, 'store'])->name('nota-capacidad.store');
-    Route::get('/dashboard', function () {return view('pages.dashboard.index');})->name('dashboard');
+    Route::get('/dashboard', [ResumenXController::class, 'dashboard'])->name('dashboard');
 
 
     Route::get('/gradosYSecciones', [ResumenXController::class, 'index'])->name('gradosYSecciones');
     Route::resource('grados', GradosController::class);
+    Route::get('/api/secciones/{gradoId}', [SeccionesController::class, 'getSeccionesByGrado']);
     Route::get('/api/grados/{nivelId}', [GradosController::class, 'getGradosByNivel']);
     Route::resource('niveles', NivelesController::class);
     Route::resource('secciones', SeccionesController::class);

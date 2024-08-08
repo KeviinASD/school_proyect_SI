@@ -93,7 +93,7 @@
                                                name="notas[{{ $alumno->codigoAlumno }}][{{ $capacidad->idCapacidad }}]" 
                                                class="w-18 py-1 px-2 border border-gray-300 rounded-md" 
                                                placeholder="Nota" min="0" max="20"
-                                               value="{{ $alumno->notasCapacidades->where('idCapacidad', $capacidad->idCapacidad)->first()->nota ?? '' }}">
+                                               value="{{ $alumno->notasCapacidades->where('idCapacidad', $capacidad->idCapacidad)->where('idFicha', $ficha->idFicha)->first()->nota ?? '' }}">
                                     </td>
                                 @endforeach
                             </tr>
