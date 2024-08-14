@@ -107,3 +107,4 @@ Route::post('/reporte-notas', [ReporteNotasController::class, 'reportePorAsignat
 
 Route::get('/docentesByAñoEscolar/{añoEscolar}', [ReporteNotasController::class, 'docentesByAñoEscolar'])->name('docentesByAñoEscolar');
 Route::get('/asignaturasByDocente/{codigoDocente}', [ReporteNotasController::class, 'asignaturasByDocente'])->name('asignaturasByDocente');
+Route::get('/asignaturas-by-nivel-grado/{nivelId}/{gradoId}', [CatedraController::class, 'getAsignaturasByNivelYGrado']);

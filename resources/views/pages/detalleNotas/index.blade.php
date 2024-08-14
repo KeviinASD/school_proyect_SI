@@ -71,7 +71,6 @@
             @csrf
             <input type="hidden" name="fichaId" value="{{ $ficha->idFicha }}">
             <input type="hidden" name="asignatura_id" value="{{ $ficha->idAsignatura }}">
-            <input type="hidden" name="curso_id" value="{{ $ficha->idCurso }}">
             <input type="hidden" name="codigo_Docente" value="{{ $ficha->codigo_Docente }}">
             <div class="overflow-x-auto mt-4">
                 <table class="min-w-full bg-white border border-gray-200">

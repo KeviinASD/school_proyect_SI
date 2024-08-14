@@ -14,8 +14,8 @@ class FichaNotas extends Model
     protected $fillable = [
         'idFicha',
         'idAsignatura',
-        'idCurso',
         'codigo_Docente',
+        
         'fecha',
         'idSeccion',
         'idGrado',

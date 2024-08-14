@@ -28,6 +28,7 @@
                 <th>Nombres</th>
                 <th>Direccion</th>
                 <th>Tipo Docente</th>
+                <th>Año</th>
                 <th>Notas</th>
             </tr>
         </thead>
@@ -40,6 +41,7 @@
                     <td class="p-4 border-l">{{ $docente->nombres }}</td>
                     <td class="p-4 border-l">{{ $docente->direccion }}</td>
                     <td class="p-4 border-l">{{ $docente->tipoDocente->nombreTipo }}</td>
+                    <td class="p-4 border-l">{{ $docente->direccion }}</td>
                     <td class="p-4 border-l">
                         <a href="{{ route('notas.registro', $docente->codigo_docente) }}" class="bg-black-primary-100 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded duration-300 animate-none">Editar Notas</a>
                     </td>

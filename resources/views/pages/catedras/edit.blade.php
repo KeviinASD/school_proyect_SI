@@ -43,6 +43,11 @@
             <label for="idGrado" class="block text-sm font-medium text-gray-700">Grado</label>
             <select id="idGrado" name="idGrado" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione un grado</option>
+                @foreach($grados as $grado)
+                <option value="{{ $grado->idGrado }}" {{ $catedra->idGrado == $grado->idGrado ? 'selected' : '' }}>
+                    {{ $grado->nombreGrado }}
+                </option>
+                @endforeach
             </select>
             @error('idGrado')
             <p class="text-sm text-red-500">{{ $message }}</p>
@@ -53,23 +58,13 @@
             <label for="idSeccion" class="block text-sm font-medium text-gray-700">Sección</label>
             <select id="idSeccion" name="idSeccion" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione una sección</option>
-            </select>
-            @error('idSeccion')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
-            <label for="idCurso" class="block text-sm font-medium text-gray-700">Curso</label>
-            <select id="idCurso" name="idCurso" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">Seleccione un curso</option>
-                @foreach($cursos as $curso)
-                <option value="{{ $curso->idCurso }}" {{ $catedra->idCurso == $curso->idCurso ? 'selected' : '' }}>
-                    {{ $curso->nombreCurso }}
+                @foreach($secciones as $seccion)
+                <option value="{{ $seccion->idSeccion }}" {{ $catedra->idSeccion == $seccion->idSeccion ? 'selected' : '' }}>
+                    {{ $seccion->nombreSeccion }}
                 </option>
                 @endforeach
             </select>
-            @error('idCurso')
+            @error('idSeccion')
             <p class="text-sm text-red-500">{{ $message }}</p>
             @enderror
         </div>
@@ -78,6 +73,11 @@
             <label for="idAsignatura" class="block text-sm font-medium text-gray-700">Asignatura</label>
             <select id="idAsignatura" name="idAsignatura" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione una asignatura</option>
+                @foreach($asignaturas as $asignatura)
+                <option value="{{ $asignatura->idAsignatura }}" {{ $catedra->idAsignatura == $asignatura->idAsignatura ? 'selected' : '' }}>
+                    {{ $asignatura->nombreAsignatura }}
+                </option>
+                @endforeach
             </select>
             @error('idAsignatura')
             <p class="text-sm text-red-500">{{ $message }}</p>
@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const nivelSelect = document.getElementById('idNivel');
     const gradoSelect = document.getElementById('idGrado');
     const seccionSelect = document.getElementById('idSeccion');
-    const cursoSelect = document.getElementById('idCurso');
     const asignaturaSelect = document.getElementById('idAsignatura');
 
     function loadGrados() {
@@ -123,8 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.forEach(grado => {
                         gradoSelect.innerHTML += `<option value="${grado.idGrado}" ${grado.idGrado == '{{ $catedra->idGrado }}' ? 'selected' : ''}>${grado.nombreGrado}</option>`;
                     });
-                    loadSecciones();
+                    loadSecciones(); // Cargar secciones después de cargar grados
                 });
+        } else {
+            // Resetear el grado y sección si no hay nivel
+            gradoSelect.innerHTML = '<option value="">Seleccione un grado</option>';
+            seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
         }
     }
 
@@ -139,13 +142,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         seccionSelect.innerHTML += `<option value="${seccion.idSeccion}" ${seccion.idSeccion == '{{ $catedra->idSeccion }}' ? 'selected' : ''}>${seccion.nombreSeccion}</option>`;
                     });
                 });
+            loadAsignaturas(); // Cargar asignaturas después de cargar secciones
+        } else {
+            // Resetear la sección si no hay grado
+            seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
         }
     }
 
     function loadAsignaturas() {
-        const cursoId = cursoSelect.value;
-        if (cursoId) {
-            fetch(`/asignaturas-by-curso/${cursoId}`)
+        const gradoId = gradoSelect.value;
+        const nivelId = nivelSelect.value;
+
+        if (gradoId && nivelId) {
+            fetch(`/asignaturas-by-nivel-grado/${nivelId}/${gradoId}`)
                 .then(response => response.json())
                 .then(data => {
                     asignaturaSelect.innerHTML = '<option value="">Seleccione una asignatura</option>';
@@ -153,17 +162,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         asignaturaSelect.innerHTML += `<option value="${asignatura.idAsignatura}" ${asignatura.idAsignatura == '{{ $catedra->idAsignatura }}' ? 'selected' : ''}>${asignatura.nombreAsignatura}</option>`;
                     });
                 });
+        } else {
+            // Resetear la asignatura si no hay grado o nivel
+            asignaturaSelect.innerHTML = '<option value="">Seleccione una asignatura</option>';
         }
     }
 
+    // Inicializar al cargar la página
     nivelSelect.addEventListener('change', loadGrados);
     gradoSelect.addEventListener('change', loadSecciones);
-    cursoSelect.addEventListener('change', loadAsignaturas);
 
-    // Initial load
     loadGrados();
-    loadSecciones();
-    loadAsignaturas();
+    loadSecciones(); // Esto puede ser necesario para que se carguen las secciones correctas
+    loadAsignaturas(); // Asegúrate de que esto llame a las asignaturas
 });
 </script>
 @endsection

@@ -12,12 +12,7 @@ class Asignatura extends Model
     protected $table = 'asignaturas';
     protected $primaryKey = 'idAsignatura';
     public $timestamps = false;
-    protected $fillable = ['idCurso', 'idGrado', 'idNivel', 'nombreAsignatura', 'estado'];
-
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
-    }
+    protected $fillable = ['idGrado', 'idNivel', 'nombreAsignatura', 'estado'];
 
     public function grado()
     {

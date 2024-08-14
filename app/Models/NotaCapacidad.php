@@ -9,7 +9,7 @@ class NotaCapacidad extends Model
 {
     protected $table = 'NOTA_CAPACIDAD';
     
-    protected $primaryKey = ['idCapacidad', 'codigoAlumno', 'idFicha', 'idAsignatura', 'idCurso', 'codigo_Docente'];
+    protected $primaryKey = ['idCapacidad', 'codigoAlumno', 'idFicha', 'idAsignatura', 'codigo_Docente'];
     
     public $incrementing = false;
     
@@ -20,7 +20,6 @@ class NotaCapacidad extends Model
         'codigoAlumno',
         'idFicha',
         'idAsignatura',
-        'idCurso',
         'codigo_Docente',
         'nota'
     ];

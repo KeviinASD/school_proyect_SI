@@ -38,4 +38,9 @@ class DocenteProvicional extends Model
     {
         return $query->where('codigo_docente', $codigo)->first();
     }
+
+    public function catedras()
+    {
+        return $this->hasMany(Catedra::class, 'codigo_docente');
+    }
 }

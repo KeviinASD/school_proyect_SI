@@ -12,12 +12,12 @@ class DetalleNotas extends Model
     protected $table = 'detalle_notas';
 
     // Como tenemos una clave primaria compuesta
-    protected $primaryKey = ['codigoAlumno', 'idFicha', 'idAsignatura', 'idCurso', 'codigo_Docente'];
+    protected $primaryKey = ['codigoAlumno', 'idFicha', 'idAsignatura', 'codigo_Docente'];
     public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
-        'codigoAlumno', 'idFicha', 'idAsignatura', 'idCurso', 'codigo_Docente'
+        'codigoAlumno', 'idFicha', 'idAsignatura', 'codigo_Docente'
     ];
 
     public function notasCapacidad()
@@ -25,7 +25,6 @@ class DetalleNotas extends Model
         return $this->hasMany(NotaCapacidad::class, 'codigoAlumno', 'codigoAlumno')
             ->where('idFicha', $this->idFicha)
             ->where('idAsignatura', $this->idAsignatura)
-            ->where('idCurso', $this->idCurso)
             ->where('codigo_Docente', $this->codigo_Docente);
     }
 

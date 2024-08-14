@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnioEscolar;
+use App\Models\AñoEscolar;
 use Illuminate\Http\Request;
 
 class AnioEscolarController extends Controller
@@ -12,7 +13,7 @@ class AnioEscolarController extends Controller
      */
     public function index()
     {
-        $aniosEscolares = AnioEscolar::all();
+        $aniosEscolares = AñoEscolar::all();
         return view('anioEscolar.index', compact('aniosEscolares'));
     }
 
@@ -33,7 +34,7 @@ class AnioEscolarController extends Controller
             'anioEscolar' => 'required|string|max:10|unique:AÑO_ESCOLAR,anioEscolar',
         ]);
 
-        AnioEscolar::create([
+        AñoEscolar::create([
             'anioEscolar' => $request->input('anioEscolar'),
         ]);
 
@@ -43,7 +44,7 @@ class AnioEscolarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AnioEscolar $anioEscolar)
+    public function show(AñoEscolar $anioEscolar)
     {
         return view('anioEscolar.show', compact('anioEscolar'));
     }
@@ -51,7 +52,7 @@ class AnioEscolarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AnioEscolar $anioEscolar)
+    public function edit(AñoEscolar $anioEscolar)
     {
         return view('anioEscolar.edit', compact('anioEscolar'));
     }
@@ -59,7 +60,7 @@ class AnioEscolarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AnioEscolar $anioEscolar)
+    public function update(Request $request, AñoEscolar $anioEscolar)
     {
         $request->validate([
             'anioEscolar' => 'required|string|max:10|unique:AÑO_ESCOLAR,anioEscolar,' . $anioEscolar->anioEscolar,
@@ -75,7 +76,7 @@ class AnioEscolarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AnioEscolar $anioEscolar)
+    public function destroy(AñoEscolar $anioEscolar)
     {
         $anioEscolar->delete();
 

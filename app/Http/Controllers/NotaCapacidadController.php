@@ -47,7 +47,6 @@ class NotaCapacidadController extends Controller
                         ->where('codigoAlumno', $codigoAlumno)
                         ->where('idFicha', $request->input('fichaId'))
                         ->where('idAsignatura', $request->input('asignatura_id'))
-                        ->where('idCurso', $request->input('curso_id'))
                         ->where('codigo_Docente', $request->input('codigo_Docente'))
                         ->update(['nota' => $nota]);
                 }

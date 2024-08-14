@@ -27,7 +27,7 @@ class NotasController extends Controller
         }
     
         $docenteCodes = $query->pluck('codigo_docente')->unique();
-    
+        
         $docentes = DocenteProvicional::whereIn('codigo_docente', $docenteCodes)->paginate(self::PAGINATION);
     
         return view('pages.notas.index', compact('docentes', 'añosEscolares'));
@@ -42,9 +42,10 @@ class NotasController extends Controller
         }
 
         // Obtener años escolares únicos
-        $añosEscolares = Catedra::select('añoEscolar')
+        // Obtener años escolares únicos en los que ha trabajado el docente
+        $añosEscolares = Catedra::where('codigo_docente', $codigo_Docente)
         ->distinct()
-        ->orderBy('añoEscolar', 'desc') // Ordenar de mayor a menor
+        ->orderBy('añoEscolar', 'desc')
         ->pluck('añoEscolar');
         
         $query = Catedra::where('codigo_docente', $codigo_Docente)->where('estado', 1);
@@ -69,7 +70,6 @@ class NotasController extends Controller
     
         // Buscar si ya existen las fichas para los tres periodos
         $fichas = FichaNotas::where('idAsignatura', $catedra->idAsignatura)
-            ->where('idCurso', $catedra->idCurso)
             ->where('codigo_Docente', $catedra->codigo_docente)
             ->where('añoEscolar', $catedra->añoEscolar)
             ->where('estado', 1)
@@ -88,7 +88,6 @@ class NotasController extends Controller
             // Crear los tres periodos de la ficha de notas
             $ficha1 = FichaNotas::create([
                 'idAsignatura' => $catedra->idAsignatura,
-                'idCurso' => $catedra->idCurso,
                 'codigo_Docente' => $catedra->codigo_docente,
                 'fecha' => now(),
                 'idSeccion' => $catedra->idSeccion,
@@ -101,7 +100,6 @@ class NotasController extends Controller
     
             $ficha2 = FichaNotas::create([
                 'idAsignatura' => $catedra->idAsignatura,
-                'idCurso' => $catedra->idCurso,
                 'codigo_Docente' => $catedra->codigo_docente,
                 'fecha' => now(),
                 'idSeccion' => $catedra->idSeccion,
@@ -114,7 +112,6 @@ class NotasController extends Controller
     
             $ficha3 = FichaNotas::create([
                 'idAsignatura' => $catedra->idAsignatura,
-                'idCurso' => $catedra->idCurso,
                 'codigo_Docente' => $catedra->codigo_docente,
                 'fecha' => now(),
                 'idSeccion' => $catedra->idSeccion,

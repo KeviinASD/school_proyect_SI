@@ -59,21 +59,6 @@
         </div>
 
         <div class="mb-4">
-            <label for="idCurso" class="block text-sm font-medium text-gray-700">Curso</label>
-            <select id="idCurso" name="idCurso" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">Seleccione un curso</option>
-                @foreach($cursos as $curso)
-                <option value="{{ $curso->idCurso }}" {{ old('idCurso') == $curso->idCurso ? 'selected' : '' }}>
-                    {{ $curso->nombreCurso }}
-                </option>
-                @endforeach
-            </select>
-            @error('idCurso')
-            <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
             <label for="idAsignatura" class="block text-sm font-medium text-gray-700">Asignatura</label>
             <select id="idAsignatura" name="idAsignatura" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="">Seleccione una asignatura</option>
@@ -109,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const nivelSelect = document.getElementById('idNivel');
     const gradoSelect = document.getElementById('idGrado');
     const seccionSelect = document.getElementById('idSeccion');
-    const cursoSelect = document.getElementById('idCurso');
     const asignaturaSelect = document.getElementById('idAsignatura');
 
     nivelSelect.addEventListener('change', function() {
@@ -140,17 +124,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    cursoSelect.addEventListener('change', function() {
-        const cursoId = this.value;
-        if (cursoId) {
-            fetch(`/asignaturas-by-curso/${cursoId}`)
+    gradoSelect.addEventListener('change', function() {
+        const gradoId = this.value;
+        const nivelId = nivelSelect.value; // Obtenemos el nivel seleccionado
+        if (gradoId) {
+            fetch(`/secciones-by-grado/${gradoId}`)
                 .then(response => response.json())
                 .then(data => {
-                    asignaturaSelect.innerHTML = '<option value="">Seleccione una asignatura</option>';
-                    data.forEach(asignatura => {
-                        asignaturaSelect.innerHTML += `<option value="${asignatura.idAsignatura}">${asignatura.nombreAsignatura}</option>`;
+                    seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
+                    data.forEach(seccion => {
+                        seccionSelect.innerHTML += `<option value="${seccion.idSeccion}">${seccion.nombreSeccion}</option>`;
                     });
                 });
+
+            // Nueva lógica para obtener asignaturas según el grado y nivel
+            if (nivelId) {
+                fetch(`/asignaturas-by-nivel-grado/${nivelId}/${gradoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        asignaturaSelect.innerHTML = '<option value="">Seleccione una asignatura</option>';
+                        data.forEach(asignatura => {
+                            asignaturaSelect.innerHTML += `<option value="${asignatura.idAsignatura}">${asignatura.nombreAsignatura}</option>`;
+                        });
+                    });
+            }
         }
     });
 });

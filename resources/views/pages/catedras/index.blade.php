@@ -17,7 +17,6 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Curso</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asignatura</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Año Escolar</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
             </tr>
@@ -30,7 +29,6 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->seccion->nombreSeccion }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->grado->nombreGrado }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->nivel->nombreNivel }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->curso->nombreCurso }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->asignatura->nombreAsignatura }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $catedra->añoEscolar }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

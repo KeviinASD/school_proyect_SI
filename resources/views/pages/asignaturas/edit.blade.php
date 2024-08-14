@@ -25,22 +25,6 @@
             @enderror
         </div>
 
-        <!-- Campo de Curso -->
-        <div class="mb-4">
-            <label for="idCurso" class="block text-gray-700">Curso</label>
-            <select id="idCurso" name="idCurso" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
-                <option value="" disabled>Seleccionar</option>
-                @foreach($cursos as $curso)
-                    <option value="{{ $curso->idCurso }}" {{ old('idCurso', $asignatura->idCurso) == $curso->idCurso ? 'selected' : '' }}>
-                        {{ $curso->nombreCurso }}
-                    </option>
-                @endforeach
-            </select>
-            @error('idCurso')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
         <!-- Campo de Nivel -->
         <div class="mb-4">
             <label for="idNivel" class="block text-gray-700">Nivel</label>
@@ -61,7 +45,8 @@
         <div class="mb-4">
             <label for="idGrado" class="block text-gray-700">Grado</label>
             <select id="idGrado" name="idGrado" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
-                <option value="" selected>Seleccionar grado</option>
+                <option value="" disabled>Seleccionar grado</option>
+                <!-- Los grados se cargarán aquí dinámicamente -->
             </select>
             @error('idGrado')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -86,14 +71,14 @@
                 fetch(`/api/grados/${nivelId}`)
                     .then(response => response.json())
                     .then(data => {
-                        gradoSelect.innerHTML = '<option value="" selected>Seleccionar grado</option>';
+                        gradoSelect.innerHTML = '<option value="" disabled>Seleccionar grado</option>';
                         data.grados.forEach(grado => {
-                            gradoSelect.innerHTML += `<option value="${grado.idGrado}">${grado.nombreGrado}</option>`;
+                            gradoSelect.innerHTML += `<option value="${grado.idGrado}" ${grado.idGrado == "{{ old('idGrado', $asignatura->idGrado) }}" ? 'selected' : ''}>${grado.nombreGrado}</option>`;
                         });
                     })
                     .catch(error => console.error('Error:', error));
             } else {
-                gradoSelect.innerHTML = '<option value="" selected>Seleccionar grado</option>';
+                gradoSelect.innerHTML = '<option value="" disabled>Seleccionar grado</option>';
             }
         }
 
@@ -101,14 +86,13 @@
             fetchGrados(this.value);
         });
 
-        // Inicializa el campo de grados basado en el nivel seleccionado al cargar la página
+        // Cargar grados si hay un nivel seleccionado al cargar la página
         var nivelId = "{{ old('idNivel', $asignatura->idNivel) }}";
         if (nivelId) {
             fetchGrados(nivelId);
         }
 
-        // Establece el valor seleccionado para los campos
-        nivelSelect.value = "{{ old('idNivel', $asignatura->idNivel) }}";
+        // Establecer el grado seleccionado
         gradoSelect.value = "{{ old('idGrado', $asignatura->idGrado) }}";
 
         // Mensaje de éxito

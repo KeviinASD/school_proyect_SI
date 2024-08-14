@@ -34,9 +34,9 @@
                 <table class="w-full">
                     <thead>
                         <tr>
-                            <th>Asignatura</th>
-                            <th>Curso ID</th>
+                            <th>Curso</th>
                             <th>Año Escolar</th>
+                            <th>Aula</th>
                             {{-- <th>Nivel</th>
                             <th>Grado</th>
                             <th>Seccion</th> --}}
@@ -52,8 +52,8 @@
                         @foreach($catedras as $catedra)
                             <tr>
                                 <td class="p-2 border-l">{{ $catedra->asignatura->nombreAsignatura }}</td>
-                                <td class="p-2 border-l">{{ $catedra->curso->nombreCurso }}</td>
                                 <td class="p-2 border-l">{{ $catedra->añoEscolar }}</td>
+                                <td class="p-2 border-l">{{$catedra->grado->nombreGrado}} - {{$catedra->seccion->nombreSeccion}}</td>
                                 {{-- <td class="p-2 border-l">{{ $catedra->idNivel }}</td>
                                 <td class="p-2 border-l">{{ $catedra->idGrado }}</td>
                                 <td class="p-2 border-l">{{ $catedra->idSeccion }}</td> --}}

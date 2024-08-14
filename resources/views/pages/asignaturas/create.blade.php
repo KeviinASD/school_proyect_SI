@@ -24,22 +24,6 @@
             @enderror
         </div>
 
-        <!-- Campo de Curso -->
-        <div class="mb-4">
-            <label for="idCurso" class="block text-gray-700">Curso</label>
-            <select id="idCurso" name="idCurso" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
-                <option value="" disabled selected>Seleccionar</option>
-                @foreach($cursos as $curso)
-                    <option value="{{ $curso->idCurso }}" {{ old('idCurso') == $curso->idCurso ? 'selected' : '' }}>
-                        {{ $curso->nombreCurso }}
-                    </option>
-                @endforeach
-            </select>
-            @error('idCurso')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
         <!-- Campo de Nivel -->
         <div class="mb-4">
             <label for="idNivel" class="block text-gray-700">Nivel</label>

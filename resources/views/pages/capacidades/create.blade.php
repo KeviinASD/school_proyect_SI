@@ -8,25 +8,14 @@
     <form method="POST" action="{{ route('capacidades.store') }}">
         @csrf
         <div class="space-y-4">
-            <!-- Curso -->
-            <div>
-                <label for="idCurso" class="block text-sm font-medium text-gray-700">Curso</label>
-                <select id="idCurso" name="idCurso" class="mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
-                    <option value="">Selecciona un Curso</option>
-                    @foreach($cursos as $curso)
-                        <option value="{{ $curso->idCurso }}">{{ $curso->nombreCurso }}</option>
-                    @endforeach
-                </select>
-                @error('idCurso')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
             <!-- Asignatura -->
             <div>
                 <label for="idAsignatura" class="block text-sm font-medium text-gray-700">Asignatura</label>
                 <select id="idAsignatura" name="idAsignatura" class="mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
                     <option value="">Selecciona una Asignatura</option>
+                    @foreach($asignaturas as $asignatura)
+                        <option value="{{ $asignatura->idAsignatura }}">{{ $asignatura->nombreAsignatura }}</option>
+                    @endforeach
                 </select>
                 @error('idAsignatura')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -38,6 +27,15 @@
                 <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
                 <input type="text" id="descripcion" name="descripcion" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
                 @error('descripcion')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Abreviatura -->
+            <div>
+                <label for="abreviatura" class="block text-sm font-medium text-gray-700">Abreviatura</label>
+                <input type="text" id="abreviatura" name="abreviatura" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+                @error('abreviatura')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -57,20 +55,4 @@
         </div>
     </form>
 </div>
-
-<script>
-    // Actualiza el listado de asignaturas basado en el curso seleccionado
-    document.getElementById('idCurso').addEventListener('change', function() {
-        const cursoId = this.value;
-        fetch(`/api/asignaturas/${cursoId}`)
-            .then(response => response.json())
-            .then(data => {
-                const asignaturaSelect = document.getElementById('idAsignatura');
-                asignaturaSelect.innerHTML = '<option value="">Selecciona una Asignatura</option>';
-                data.asignaturas.forEach(asignatura => {
-                    asignaturaSelect.innerHTML += `<option value="${asignatura.idAsignatura}">${asignatura.nombreAsignatura}</option>`;
-                });
-            });
-    });
-</script>
 @endsection

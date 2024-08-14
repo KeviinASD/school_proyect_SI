@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
-use App\Models\Curso;
 use App\Models\Grado;
 use App\Models\Nivel;
 use Illuminate\Http\Request;
@@ -13,22 +12,20 @@ class AsignaturaController extends Controller
 {
     public function index()
     {
-        $asignaturas = Asignatura::with(['curso', 'grado', 'nivel'])->where('estado', 1)->get();
+        $asignaturas = Asignatura::with(['grado', 'nivel'])->where('estado', 1)->get();
         return view('pages.asignaturas.index', compact('asignaturas'));
     }
 
     public function create()
     {
         $niveles = Nivel::where('estado', 1)->get();
-        $cursos = Curso::where('estado', 1)->get();
-        return view('pages.asignaturas.create', compact('niveles', 'cursos'));
+        return view('pages.asignaturas.create', compact('niveles'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nombreAsignatura' => 'required|string|max:255',
-            'idCurso' => 'required|exists:cursos,idCurso',
             'idGrado' => 'required|exists:grados,idGrado',
             'idNivel' => 'required|exists:niveles,idNivel',
         ]);
@@ -41,9 +38,9 @@ class AsignaturaController extends Controller
                 'idGrado' => 'El grado seleccionado no existe en el nivel seleccionado.'
             ])->withInput();
         }
-        // Verifica que no exista la misma asignatura en el mismo curso, nivel y grado
+
+        // Verifica que no exista la misma asignatura en el mismo nivel y grado
         if (Asignatura::where('nombreAsignatura', $request->input('nombreAsignatura'))
-            ->where('idCurso', $request->input('idCurso'))
             ->where('idGrado', $request->input('idGrado'))
             ->where('idNivel', $request->input('idNivel'))
             ->where('estado', 1)
@@ -55,7 +52,6 @@ class AsignaturaController extends Controller
 
         Asignatura::create([
             'nombreAsignatura' => $request->input('nombreAsignatura'),
-            'idCurso' => $request->input('idCurso'),
             'idGrado' => $request->input('idGrado'),
             'idNivel' => $request->input('idNivel'),
             'estado' => 1, // Default state
@@ -68,15 +64,13 @@ class AsignaturaController extends Controller
     {
         $asignatura = Asignatura::findOrFail($id);
         $niveles = Nivel::where('estado', 1)->get();
-        $cursos = Curso::where('estado', 1)->get();
-        return view('pages.asignaturas.edit', compact('asignatura', 'niveles', 'cursos'));
+        return view('pages.asignaturas.edit', compact('asignatura', 'niveles'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'nombreAsignatura' => 'required|string|max:255',
-            'idCurso' => 'required|exists:cursos,idCurso',
             'idGrado' => 'required|exists:grados,idGrado',
             'idNivel' => 'required|exists:niveles,idNivel',
         ]);
@@ -90,8 +84,8 @@ class AsignaturaController extends Controller
             ])->withInput();
         }
 
+        // Verifica que no exista la misma asignatura en el mismo nivel y grado
         if (Asignatura::where('nombreAsignatura', $request->input('nombreAsignatura'))
-            ->where('idCurso', $request->input('idCurso'))
             ->where('idGrado', $request->input('idGrado'))
             ->where('idNivel', $request->input('idNivel'))
             ->where('estado', 1)
@@ -106,7 +100,6 @@ class AsignaturaController extends Controller
 
         $asignatura->update([
             'nombreAsignatura' => $request->input('nombreAsignatura'),
-            'idCurso' => $request->input('idCurso'),
             'idGrado' => $request->input('idGrado'),
             'idNivel' => $request->input('idNivel'),
         ]);

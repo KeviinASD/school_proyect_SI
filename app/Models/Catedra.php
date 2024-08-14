@@ -18,7 +18,7 @@ class Catedra extends Model
     public $incrementing = true; // o false si no es autoincrementable
 
     // Añadir el campo de estado a los atributos que son asignables en masa
-    protected $fillable = ['codigo_docente', 'idSeccion', 'idGrado', 'idNivel', 'idCurso', 'idAsignatura', 'idAñoEscolar', 'estado'];
+    protected $fillable = ['codigo_docente', 'idSeccion', 'idGrado', 'idNivel', 'idAsignatura', 'idAñoEscolar', 'estado'];
 
     // Definir el scope para filtrar registros activos
     public function scopeActive($query)
@@ -53,11 +53,6 @@ class Catedra extends Model
     public function seccion()
     {
         return $this->belongsTo(Seccion::class, 'idSeccion');
-    }
-
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class, 'idCurso');
     }
 
     public function asignatura()

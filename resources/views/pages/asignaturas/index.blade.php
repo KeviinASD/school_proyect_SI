@@ -21,10 +21,9 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Curso</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asignatura</th> <!-- Nueva columna -->
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Curso</th> <!-- Nueva columna -->
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
             </thead>
@@ -32,7 +31,6 @@
                 @foreach ($asignaturas as $asignatura)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $asignatura->idAsignatura }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $asignatura->curso->nombreCurso }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $asignatura->grado->nombreGrado }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $asignatura->nivel->nombreNivel }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $asignatura->nombreAsignatura }}</td> <!-- Muestra el nombre de la asignatura -->

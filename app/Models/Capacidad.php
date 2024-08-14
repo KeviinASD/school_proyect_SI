@@ -15,8 +15,7 @@ class Capacidad extends Model
         'descripcion',
         'abreviatura',
         'orden',
-        'idAsignatura',
-        'idCurso'
+        'idAsignatura'
     ];
 
     public function asignatura()
@@ -24,10 +23,6 @@ class Capacidad extends Model
         return $this->belongsTo(Asignatura::class, 'idAsignatura', 'idAsignatura');
     }
 
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class, 'idCurso', 'idCurso');
-    }
 
     public function notasCapacidad()
     {

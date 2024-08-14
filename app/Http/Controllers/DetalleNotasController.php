@@ -17,6 +17,8 @@ class DetalleNotasController extends Controller
      * Display a listing of the resource.
      */
 
+    
+
     public function index(Request $request)
     {
         $bimestre = $request->input('bimestre', '1');
@@ -30,6 +32,7 @@ class DetalleNotasController extends Controller
         } elseif ($bimestre == '3') {
             $idFicha = Session::get('ficha3');
         }
+
 
         $ficha = FichaNotas::where('periodo', $bimestre)->where('idFicha', $idFicha)->first();
         //dd($ficha);
@@ -50,7 +53,6 @@ class DetalleNotasController extends Controller
             $existe = DetalleNotas::where('codigoAlumno', $alumno->codigoAlumno)
                 ->where('idFicha', $ficha->idFicha)
                 ->where('idAsignatura', $asignatura->idAsignatura)
-                ->where('idCurso', $ficha->idCurso)
                 ->where('codigo_Docente', $ficha->codigo_Docente)
                 ->first();
 
@@ -59,7 +61,6 @@ class DetalleNotasController extends Controller
                     'codigoAlumno' => $alumno->codigoAlumno,
                     'idFicha' => $ficha->idFicha,
                     'idAsignatura' => $asignatura->idAsignatura,
-                    'idCurso' => $ficha->idCurso,
                     'codigo_Docente' => $ficha->codigo_Docente
                 ]);
             }
@@ -72,7 +73,6 @@ class DetalleNotasController extends Controller
                     ->where('codigoAlumno', $alumno->codigoAlumno)
                     ->where('idFicha', $ficha->idFicha)
                     ->where('idAsignatura', $asignatura->idAsignatura)
-                    ->where('idCurso', $ficha->idCurso)
                     ->where('codigo_Docente', $ficha->codigo_Docente)
                     ->first();
 
@@ -82,7 +82,6 @@ class DetalleNotasController extends Controller
                         'codigoAlumno' => $alumno->codigoAlumno,
                         'idFicha' => $ficha->idFicha,
                         'idAsignatura' => $asignatura->idAsignatura,
-                        'idCurso' => $ficha->idCurso,
                         'codigo_Docente' => $ficha->codigo_Docente,
                         'nota' => null
                     ]);
