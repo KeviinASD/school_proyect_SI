@@ -60,4 +60,9 @@ class Alumno extends Model
     {
         return $this->hasMany(NotaCapacidad::class, 'codigoAlumno', 'codigoAlumno');
     }
+
+    public function matriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'codigoAlumno', 'codigoAlumno');
+    }
 }

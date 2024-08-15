@@ -100,6 +100,6 @@ class ResumenXController extends Controller
     ];
 }
 
-
+    
 
 }

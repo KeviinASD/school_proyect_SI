@@ -4,8 +4,18 @@
 
 @section('content')
     <div class="container mx-auto px-4">
+        <div>
+            <a href=" {{route('notas.pdf', [
+                'añoEscolar' => $ficha->añoEscolar,
+                'codigo_docente' => $ficha->codigo_Docente,
+                'id_asignatura' => $ficha->idAsignatura,
+                'periodo' => $bimestre
+            ])}} "><button class="px-2 py-2 bg-black-primary-200 text-white">Generar Reporte</button></a>
+        </div>
+
         <div class="grid grid-cols-3 gap-2">
             <!-- Información del curso y docente -->
+            
             <div>
                 <h2 class="text-xl font-semibold mt-4 mb-2">Nivel</h2>
                 <input type="text" readonly name="nivel" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->nivel->nombreNivel }}">
@@ -143,6 +153,8 @@
     }
 
     function valueToLetter($value) {
+        if (!$value) return '';
+
         if ($value == 20) return 'AD';
         if ($value >= 16 && $value <= 19) return 'A';
         if ($value >= 11 && $value <= 15) return 'B';

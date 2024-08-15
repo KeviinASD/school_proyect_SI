@@ -60,7 +60,9 @@
                         <td class="border border-black">{{ $fichaDeNotas->fecha }}</td>
                     </tr>
             </table>
-
+            @php
+                $codigoAlumno = Auth::user()->codigo;
+            @endphp
             <div class="mt-20">
                 <table class="w-full">
                     <thead>
@@ -75,6 +77,7 @@
                     </thead>
                     <tbody>
                         @foreach($detallesDeNotas as $detalle)
+                            @if ($detalle->codigoAlumno == $codigoAlumno)
                             @php
                                 $totalNotas = 0;
                                 $countCapacidades = 0;
@@ -101,6 +104,7 @@
                                     {{ $promedioLetra }}
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

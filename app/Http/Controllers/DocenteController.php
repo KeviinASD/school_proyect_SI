@@ -6,7 +6,9 @@ use App\Models\Docente;
 use App\Models\DocenteProvicional;
 use App\Models\TipoDocente;
 use App\Models\EstadoCivil;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class DocenteController extends Controller
 {
@@ -56,6 +58,14 @@ class DocenteController extends Controller
         $codigo_docente = strtoupper(substr($nombres, 0, 1) . $dni . substr($apellidos, 0, 1));
 
         Docente::create(array_merge($request->all(), ['codigo_docente' => $codigo_docente, 'estado' => 1]));
+
+        $user = User::create([
+            'name' => $dni,
+            'email' => $dni. '@gmail.com', // Correo temporal
+            'password' => Hash::make($request->input('DNI')),
+            'role' => 'docente', // Asignar rol
+            'codigo' => $codigo_docente,
+        ]);
 
         return redirect()->route('docentes.index')
             ->with('success', 'Docente creado exitosamente.');

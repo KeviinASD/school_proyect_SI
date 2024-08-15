@@ -7,6 +7,8 @@ use App\Models\EstadoCivil;
 use App\Models\Sexo;
 use App\Models\Religion;
 use App\Models\Escala;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AlumnoController extends Controller
 {
@@ -108,6 +110,15 @@ class AlumnoController extends Controller
         $alumno->estado = $request->has('estado') ? 1 : 0;
         
         $alumno->save();
+
+        // quiero crear un usario con el DNI del alumno y el codigo del alumno con el role de alumno y su contraseña hash
+        $user = User::create([
+            'name' => $request->DNI,
+            'email' => $request->DNI. '@gmail.com', // Correo temporal
+            'password' => Hash::make($request->input('DNI')),
+            'role' => 'alumno', // Asignar rol
+            'codigo' => $alumno->codigoAlumno,
+        ]);
 
             // Redirigir a la página deseada con un mensaje de éxito
             return redirect()->route('alumnos.index')->with('success', 'Alumno registrado correctamente.');

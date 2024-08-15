@@ -47,6 +47,7 @@ class FichaMatriculasController extends Controller
     // Guardar una nueva ficha de matrícula en la base de datos
     public function store(Request $request)
     {
+        // Validación de los datos de entrada
         $validatedData = $request->validate([
             'codigoAlumno' => 'required|exists:alumnos,codigoAlumno',
             'fechaMatricula' => 'required|date',
@@ -55,18 +56,24 @@ class FichaMatriculasController extends Controller
             'idNivel' => 'required|exists:niveles,idNivel',
             'añoEscolar' => 'required|exists:AÑO_ESCOLAR,añoEscolar'
         ]);
-
-        // Generar nroMatricula
-        $codigoAlumno = $request->input('codigoAlumno');
-        $fechaMatricula = $request->input('fechaMatricula');
-
-        // Extraer solo el año de la fecha de matrícula
-        $anioMatricula = date('Y', strtotime($fechaMatricula));
-
-        $nroMatricula = strtoupper(substr($codigoAlumno, 1, 8) . $anioMatricula);
-
-        FichaMatriculas::create(array_merge($request->all(), ['nroMatricula' => $nroMatricula]));
-
+    
+        // Verificar si ya existe una matrícula con la misma combinación
+        $existingMatricula = FichaMatriculas::where([
+            ['codigoAlumno', '=', $request->input('codigoAlumno')],
+            ['idSeccion', '=', $request->input('idSeccion')],
+            ['idGrado', '=', $request->input('idGrado')],
+            ['idNivel', '=', $request->input('idNivel')],
+            ['añoEscolar', '=', $request->input('añoEscolar')],
+        ])->first();
+    
+        if ($existingMatricula) {
+            // Si ya existe, redirigir con un mensaje de error
+            return redirect()->back()->withErrors(['error' => 'El alumno ya está matriculado en esta combinación de sección, grado, nivel y año escolar.']);
+        }
+    
+        // Crear la ficha de matrícula si no existe una duplicada
+        FichaMatriculas::create($validatedData);
+    
         return redirect()->route('fichaMatriculas.index')->with('success', 'Ficha de Matrícula creada exitosamente.');
     }
 

@@ -17,13 +17,17 @@ class DatabaseSeeder extends Seeder
             'name' => 'kevin',
             'email' => 'test2@example.com',
             'password' => bcrypt('password'),
+            'role' => 'admin',
         ]);
 
         // Llama a otros seeders
         $this->call([
             TipoDocenteSeeder::class,
             EstadoCivilSeeder::class,
-            // Agrega aquí otros seeders si los tienes
+            ReligionSeeder::class,
+            SexoSeeder::class,
+            EscalaSeeder::class,
+            AñoIngreseeder::class,
         ]);
     }
 }

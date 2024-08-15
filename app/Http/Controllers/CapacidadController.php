@@ -41,6 +41,7 @@ class CapacidadController extends Controller
     
         // Verificar si ya existe una capacidad para la asignatura
         $existingCapacidad = Capacidad::where('descripcion', $validatedData['descripcion'])
+            ->where('idAsignatura', $validatedData['idAsignatura'])
             ->where('estado', 1)
             ->first();
     

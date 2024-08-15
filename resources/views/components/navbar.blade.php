@@ -22,7 +22,7 @@
                 <img src="{{ asset('img/user.jpg') }}" alt="" class="w-10 rounded-full">
                 <div>
                     <h1 class="font-semibold">{{Auth::user()->name}}</h1>
-                    <p class=" text-gray-400">Admin</p>
+                    <p class=" text-gray-400">{{Auth::user()->role}}</p>
                 </div>
             </div>
         </div>
