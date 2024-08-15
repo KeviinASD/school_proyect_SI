@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>Registro de Notas</title>
 </head>
 <body>
-    <@php
+    @php
         $count = 0;
     @endphp
     <section class="w-full">
@@ -33,8 +33,8 @@
                 <thead class="w-full">
                     <tr class="">
                         <th class="border border-black">Grado</th>
-                        <th class="border border-black">Seccion</th>
-                        <th class="border border-black">Area</th>
+                        <th class="border border-black">Sección</th>
+                        <th class="border border-black">Área</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +61,6 @@
                     </tr>
             </table>
 
-
             <div class="mt-20">
                 <table class="w-full">
                     <thead>
@@ -71,16 +70,36 @@
                             @foreach($fichaDeNotas->asignatura->capacidades as $capacidad)
                                 <th class="border border-black">{{ $capacidad->abreviatura }}</th>
                             @endforeach
+                            <th class="border border-black">Promedio</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($detallesDeNotas as $detalle)
+                            @php
+                                $totalNotas = 0;
+                                $countCapacidades = 0;
+                            @endphp
                             <tr>
                                 <td class="border border-black">{{ ++$count }}</td>
                                 <td class="border border-black">{{ $detalle->alumno->apellidos }} {{ $detalle->alumno->nombres }}</td>
                                 @foreach($detalle->notasCapacidad as $nota)
-                                    <td class="border border-black">{{ $nota->nota }}</td>
+                                    @php
+                                        $notaValor = $nota->nota;
+                                        $totalNotas += letterToValue($notaValor);
+                                        $countCapacidades++;
+                                    @endphp
+                                    <td class="border border-black">{{ $notaValor }}</td>
                                 @endforeach
+
+                                @php
+                                    // Calcular el promedio
+                                    $promedio = $countCapacidades > 0 ? ($totalNotas / $countCapacidades) : 0;
+                                    $promedioLetra = valueToLetter($promedio);
+                                @endphp
+
+                                <td class="border border-black">
+                                    {{ $promedioLetra }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -90,3 +109,22 @@
     </section>     
 </body>
 </html>
+
+@php
+    function letterToValue($letter) {
+        switch (strtoupper($letter)) {
+            case 'AD': return 20;
+            case 'A':  return 17;
+            case 'B':  return 13;
+            case 'C':  return 8;
+            default:   return 0;
+        }
+    }
+
+    function valueToLetter($value) {
+        if ($value == 20) return 'AD';
+        if ($value >= 16 && $value <= 19) return 'A';
+        if ($value >= 11 && $value <= 15) return 'B';
+        return 'C';
+    }
+@endphp

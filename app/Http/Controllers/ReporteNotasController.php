@@ -35,7 +35,8 @@ class ReporteNotasController extends Controller
             ->where('periodo', $periodo)
             ->where('añoEscolar', $añoEscolar)
             ->first();
-    
+
+
         // Verifica si se encontró la ficha de notas
         if (!$fichaDeNotas) {
             return redirect()->back()->withErrors(['message' => 'No se encontraron notas para este docente y asignatura.']);
@@ -43,9 +44,9 @@ class ReporteNotasController extends Controller
 
         $detallesDeNotas = DetalleNotas::where('idFicha', $fichaDeNotas->idFicha)->get();           
         
-        //return view('pages.reporteDeNota.pdf', compact('fichaDeNotas', 'detallesDeNotas'));
-        $pdf = PDF::loadView('pages.reporteDeNota.pdf', compact('fichaDeNotas', 'detallesDeNotas'));
-        return $pdf->stream('reporte_de_notas.pdf');
+        return view('pages.reporteDeNota.pdf', compact('fichaDeNotas', 'detallesDeNotas'));
+        /* $pdf = PDF::loadView('pages.reporteDeNota.pdf', compact('fichaDeNotas', 'detallesDeNotas'));
+        return $pdf->stream('reporte_de_notas.pdf'); */
     }
 
     public function docentesByAñoEscolar($añoEscolar)

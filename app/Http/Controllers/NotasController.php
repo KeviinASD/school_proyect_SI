@@ -74,15 +74,21 @@ class NotasController extends Controller
             ->where('añoEscolar', $catedra->añoEscolar)
             ->where('estado', 1)
             ->get();
+
     
         if ($fichas->count() === 3) {
             // Si ya existen las fichas, guardarlas en la sesión
+
+            $ficha1 = $fichas->where('periodo', 1)->first();
+            $ficha2 = $fichas->where('periodo', 2)->first();
+            $ficha3 = $fichas->where('periodo', 3)->first();
+
             session([
-                'ficha1' => $fichas->where('periodo', 1)->first()->idFicha,
-                'ficha2' => $fichas->where('periodo', 2)->first()->idFicha,
-                'ficha3' => $fichas->where('periodo', 3)->first()->idFicha,
+                'ficha1' => $ficha1->idFicha,
+                'ficha2' => $ficha2->idFicha,
+                'ficha3' => $ficha3->idFicha,
             ]);
-    
+
             return redirect()->route('detalle-notas.index');
         } else {
             // Crear los tres periodos de la ficha de notas
@@ -128,6 +134,7 @@ class NotasController extends Controller
                 'ficha2' => $ficha2->idFicha,
                 'ficha3' => $ficha3->idFicha,
             ]);
+
     
             return redirect()->route('detalle-notas.index');
         }

@@ -5,6 +5,7 @@
 @section('content')
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-3 gap-2">
+            <!-- Información del curso y docente -->
             <div>
                 <h2 class="text-xl font-semibold mt-4 mb-2">Nivel</h2>
                 <input type="text" readonly name="nivel" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->nivel->nombreNivel }}">
@@ -21,19 +22,18 @@
                 <h2 class="text-xl font-semibold mt-4 mb-2">Año Escolar</h2>
                 <input type="text" readonly name="añoEscolar" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->añoEscolar}}">
             </div>
-            
             <div>
                 <h2 class="text-xl font-semibold mt-4 mb-2">Asignatura</h2>
                 <input type="text" readonly name="asignatura" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->asignatura->nombreAsignatura}}">
             </div>
             <div>
                 <h2 class="text-xl font-semibold mt-4 mb-2">Docente</h2>
-                <input type="text" readonly name="docente" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->docente->nombres}} {{ $ficha->docente->apellidos}}">
+                <input type="text" readonly name="docente" class="w-18 py-1 px-2 border border-gray-300 rounded-md" value="{{ $ficha->docente->nombres }} {{ $ficha->docente->apellidos }}">
             </div>
         </div>
 
-        <h2 class="text-xl font-bold mt-6 mb-2">Capacidades de {{ $ficha->asignatura->nombreAsignatura}}</h2>
-        
+        <h2 class="text-xl font-bold mt-6 mb-2">Capacidades de {{ $ficha->asignatura->nombreAsignatura }}</h2>
+
         <div class="overflow-x-auto mt-4">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
@@ -52,49 +52,75 @@
                 </tbody>
             </table>
         </div>
+
         <div class="grid grid-cols-2 gap-2">
             <h2 class="text-xl font-bold mt-6 mb-2">Alumnos Matriculados</h2>
             <div class="mt-4">
                 <form action="{{ route('detalle-notas.index') }}" method="GET" class="flex items-center">
                     <select id="bimestre" name="bimestre" class="w-full py-2 px-3 border border-gray-300 rounded-md">
-                        <option value="1">I Bimestre</option>
-                        <option value="2" >II Bimestre</option>
-                        <option value="3" >III Bimestre</option>
+                        <option value="1" {{ $bimestre == '1' ? 'selected' : '' }}>I Bimestre</option>
+                        <option value="2" {{ $bimestre == '2' ? 'selected' : '' }}>II Bimestre</option>
+                        <option value="3" {{ $bimestre == '3' ? 'selected' : '' }}>III Bimestre</option>
                     </select>
                     <button type="submit" class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Filtrar</button>
                 </form>
-
             </div>
         </div>
-        
+
         <form action="{{ route('nota-capacidad.store') }}" method="POST">
             @csrf
             <input type="hidden" name="fichaId" value="{{ $ficha->idFicha }}">
             <input type="hidden" name="asignatura_id" value="{{ $ficha->idAsignatura }}">
             <input type="hidden" name="codigo_Docente" value="{{ $ficha->codigo_Docente }}">
+            
             <div class="overflow-x-auto mt-4">
                 <table class="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr>
                             <th class="py-2 px-4 border-b-2 border-gray-200 text-left text-sm font-semibold text-gray-600">Alumnos</th>
                             @foreach($ficha->asignatura->capacidades as $capacidad)
-                                <th class="py-2 px-4 border-b-2 border-gray-200 text-left text-sm font-semibold text-gray-600">{{$capacidad->abreviatura}}</th>
+                                <th class="py-2 px-4 border-b-2 border-gray-200 text-left text-sm font-semibold text-gray-600">{{ $capacidad->abreviatura }}</th>
                             @endforeach
+                            <th class="py-2 px-4 border-b-2 border-gray-200 text-left text-sm font-semibold text-gray-600">Promedio</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($alumnos as $alumno)
                             <tr class="hover:bg-gray-100">
                                 <td class="py-2 px-4 border-b border-gray-200">{{ $alumno->nombres }} {{ $alumno->apellidos }}</td>
+
+                                @php
+                                    $totalNotas = 0;
+                                    $countCapacidades = 0;
+                                @endphp
+
                                 @foreach($ficha->asignatura->capacidades as $capacidad)
+                                    @php
+                                        $nota = $alumno->notasCapacidades->where('idCapacidad', $capacidad->idCapacidad)->where('idFicha', $ficha->idFicha)->first();
+                                        $notaValor = $nota ? $nota->nota : '';
+                                        $totalNotas += letterToValue($notaValor);
+                                        $countCapacidades++;
+                                    @endphp
                                     <td class="py-2 px-4 border-b border-gray-200">
-                                        <input type="number" 
-                                               name="notas[{{ $alumno->codigoAlumno }}][{{ $capacidad->idCapacidad }}]" 
-                                               class="w-18 py-1 px-2 border border-gray-300 rounded-md" 
-                                               placeholder="Nota" min="0" max="20"
-                                               value="{{ $alumno->notasCapacidades->where('idCapacidad', $capacidad->idCapacidad)->where('idFicha', $ficha->idFicha)->first()->nota ?? '' }}">
+                                        <select name="notas[{{ $alumno->codigoAlumno }}][{{ $capacidad->idCapacidad }}]" class="form-select">
+                                            <option value="">Seleccione una nota</option>
+                                            <option value="AD" {{ $notaValor === 'AD' ? 'selected' : '' }}>AD</option>
+                                            <option value="A" {{ $notaValor === 'A' ? 'selected' : '' }}>A</option>
+                                            <option value="B" {{ $notaValor === 'B' ? 'selected' : '' }}>B</option>
+                                            <option value="C" {{ $notaValor === 'C' ? 'selected' : '' }}>C</option>
+                                        </select>
                                     </td>
                                 @endforeach
+
+                                @php
+                                    // Calcular el promedio
+                                    $promedio = $countCapacidades > 0 ? ($totalNotas / $countCapacidades) : 0;
+                                    $promedioLetra = valueToLetter($promedio);
+                                @endphp
+
+                                <td class="py-2 px-4 border-b border-gray-200">
+                                    {{ $promedioLetra }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -103,5 +129,23 @@
             </div>
         </form>
     </div>
-
 @endsection
+
+@php
+    function letterToValue($letter) {
+        switch (strtoupper($letter)) {
+            case 'AD': return 20; // Logro Destacado (Excelente)
+            case 'A':  return 17; // Logro Esperado (Bueno)
+            case 'B':  return 13; // En Proceso (Regular)
+            case 'C':  return 8;  // Deficiente (Reprobado)
+            default:   return 0;
+        }
+    }
+
+    function valueToLetter($value) {
+        if ($value == 20) return 'AD';
+        if ($value >= 16 && $value <= 19) return 'A';
+        if ($value >= 11 && $value <= 15) return 'B';
+        return 'C';
+    }
+@endphp

@@ -33,9 +33,20 @@ class DetalleNotasController extends Controller
             $idFicha = Session::get('ficha3');
         }
 
+        /* $bimestre = $request->input('bimestre', '2');
+     
+         // Obtener los IDs de las fichas desde los parámetros de la solicitud
+         $idFicha1 = $request->input('ficha1');
+         $idFicha2 = $request->input('ficha2');
+         $idFicha3 = $request->input('ficha3');
+     
+         // Determinar el idFicha basado en el bimestre
+         $idFicha = $bimestre === '1' ? $idFicha1 : ($bimestre === '2' ? $idFicha2 : $idFicha3);
+      */
+
 
         $ficha = FichaNotas::where('periodo', $bimestre)->where('idFicha', $idFicha)->first();
-        //dd($ficha);
+        
 
         // Obtener los alumnos matriculados que coinciden con los criterios de la ficha
         $alumnos = Alumno::with('notasCapacidades')
@@ -89,7 +100,7 @@ class DetalleNotasController extends Controller
             }
         }
 
-        return view('pages.detalleNotas.index', compact('alumnos', 'ficha'));
+        return view('pages.detalleNotas.index', compact('alumnos', 'ficha', 'bimestre'));
     }
 
     /**
