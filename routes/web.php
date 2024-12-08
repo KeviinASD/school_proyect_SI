@@ -106,5 +106,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 });
 
-Route::get('/alumno/{codigoAlumno}/matriculas', [ViewRoleAlumnoController::class, 'index'])->name('alumno.matriculas');
+Route::get('/apoderado/{dniApoderado}/', [ViewRoleAlumnoController::class, 'hijos'])->name('apoderado.hijos');
+Route::get('/apoderado/{codigoAlumno}/matriculas', [ViewRoleAlumnoController::class, 'index'])->name('alumno.matriculas');
+
 Route::get('/alumno/notas', [ViewRoleAlumnoController::class, 'irANotas'])->name('alumno.irANotas');

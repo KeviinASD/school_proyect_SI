@@ -20,28 +20,46 @@ class ViewRoleAlumnoController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function hijos(Request $request, $dniApoderado)
+     {
+        $añoEscolarActual = "2024";
+     
+         $alumnos = Alumno::where('dniApoderado', $dniApoderado)
+             ->where('estado', 1)
+             ->get()
+             ->filter(function ($alumno) use ($añoEscolarActual) {
+                 $fichaMatricula = FichaMatriculas::where('codigoAlumno', $alumno->codigoAlumno)
+                     ->where('añoEscolar', $añoEscolarActual)
+                     ->first();
+     
+                 if ($fichaMatricula) {
+                     $alumno->fichaMatricula = $fichaMatricula; // Agregar la ficha al alumno
+                     return true; // Mantener este alumno
+                 }
+     
+                 return false; // Eliminar este alumno
+             });
+     
+        return view('pages.roleApoderado.home', compact('alumnos', 'añoEscolarActual'));
+     }
     
      public function index(Request $request, $codigoAlumno)
      {
          // Obtener el año escolar seleccionado o el más alto por defecto
-        $selectedAnioEscolar = $request->input('añoEscolar', FichaMatriculas::where('codigoAlumno', $codigoAlumno)
-             ->max('añoEscolar'));
-        //quiero obtener los años escolares donde el alumno estuvo matriculado
-        $añosEscolares = FichaMatriculas::where('codigoAlumno', $codigoAlumno)
-            ->distinct('añoEscolar')
-            ->pluck('añoEscolar');
+        $añoEscolarActual = "2024";
         
         $fichaMatricula = FichaMatriculas::where('codigoAlumno', $codigoAlumno)
-            ->where('añoEscolar', $selectedAnioEscolar)
+            ->where('añoEscolar', $añoEscolarActual)
             ->first();
 
         $cursosDeEseAñoC = Catedra::where('idGrado', $fichaMatricula->idGrado)
             ->where('idNivel', $fichaMatricula->idNivel)
-            ->where('añoEscolar', $selectedAnioEscolar)
+            ->where('añoEscolar', $añoEscolarActual)
             ->get();
 
 
-        return view('pages.roleALumno.index', compact('añosEscolares', 'selectedAnioEscolar', 'cursosDeEseAñoC', 'fichaMatricula'));
+        return view('pages.roleApoderado.index', compact('añoEscolarActual', 'cursosDeEseAñoC', 'fichaMatricula'));
     }
 
     public function irANotas(Request $request)
@@ -66,7 +84,7 @@ class ViewRoleAlumnoController extends Controller
             ->get();
 
         
-        return view('pages.roleALumno.notas', compact('fichaDeNotas', 'detallesDeNotas', 'bimestre'));
+        return view('pages.roleApoderado.notas', compact('fichaDeNotas', 'detallesDeNotas', 'bimestre'));
     }
 
     public function reporteDeNotas(Request $request, $codigoAlumno){

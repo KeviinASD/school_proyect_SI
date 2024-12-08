@@ -4,36 +4,45 @@
 
 @section('content')
     <section class="space-y-10">
-        @php
-            $codigoAlumno = Auth::user()->codigo;
-        @endphp
-        <div class="flex justify-between items-center">
-            <h1 class="font-bold">CURSOS MATRICULADOS</h1>
-        <!-- ComboBox para seleccionar el Año Escolar -->
-            <form method="GET" action="{{ route('alumno.matriculas', ['codigoAlumno' => $codigoAlumno]) }}">
-                <div class="form-group">
-                    <label for="añoEscolar">SELECCIONAR AÑO ESCOLAR: </label>
-                    <select name="añoEscolar" id="añoEscolar" class="form-control" onchange="this.form.submit()">
-                        @foreach($añosEscolares as $año)
-                            <option value="{{ $año }}" {{ $año == $selectedAnioEscolar ? 'selected' : '' }}>
-                                {{ $año }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </form>
-        </div>
+        
         {{-- COMO SE COLOCAN LOS ERRORES --}}
         @if ($errors->has('error'))
             <div id="error-message" class="bg-red-500 text-white p-3 rounded mb-4">
                 {{ $errors->first('error') }}
             </div>
         @endif
-        <div class="grid grid-cols-3">
+        <div class="grid grid-cols-3 gap-10">
+            <p>ALUMNO: {{$fichaMatricula->alumno->nombres}}</p>
+            <p>AÑO ESCOLAR: {{$añoEscolarActual}}</p>
             <p class="">NIVEL: {{$fichaMatricula->nivel->nombreNivel}}</p>
             <p>GRADO: {{$fichaMatricula->grado->nombreGrado}}</p>
             <p>SECCION: {{$fichaMatricula->seccion->nombreSeccion}}</p>
         </div>
+
+        <section class="grid grid-cols-3 gap-4">
+            @foreach($cursosDeEseAñoC as $curso)
+            <div class="bg-white shadow-lg  p-4 rounded-lg">
+                <img src="https://i.pinimg.com/736x/0a/69/25/0a69252d89192baa4761610d53225b8e.jpg" class="w-full h-[30svh] object-cover rounded-lg">
+                <div class="my-5">
+                    <p class="font-semibold text-lg">{{ $curso->asignatura->nombreAsignatura }} ( {{$curso->nivel->nombreNivel}} - {{$curso->grado->nombreGrado}} - {{$curso->seccion->nombreSeccion}} )</p>
+                </div>
+                {{-- DATOS DEL PROFESOR --}}
+                <div class="flex gap-4">
+                    <img src="https://i.pinimg.com/736x/de/f4/4e/def44e0cf9c972eb4fe43f833fac8185.jpg" class="w-16 rounded-full">
+                    <div>
+                        <p class="font-semibold">{{ $curso->docente->apellidos." ". $curso->docente->nombres }}</p>
+                        <p class="text-gray-400">Profesor</p>
+                    </div>
+                </div>
+                {{-- ACCIONES --}}
+                <div>
+                    
+                </div>
+            </div>
+            @endforeach
+        </section>
+
+
         <div>
             <table class="w-full">
                 <thead>

@@ -68,6 +68,7 @@ class AlumnoController extends Controller
             'nombres' => 'required|string|max:30',
             'apellidos' => 'required|string|max:30',
             'DNI' => 'required|string|size:8|unique:alumnos,DNI',
+            'dniApoderado' => 'required|string|size:8',
             'fechaNacimiento' => 'nullable|date',
             'añoIngreso' => 'nullable|date',
             'departamento' => 'nullable|string|max:15',
@@ -105,19 +106,28 @@ class AlumnoController extends Controller
         $alumno->idReligion = $request->idReligion;
         $alumno->idEscala = $request->idEscala;
         $alumno->idSexo = $request->idSexo;
+        $alumno->dniApoderado = $request->dniApoderado;
 
         // Asignar estado basado en el checkbox
         $alumno->estado = $request->has('estado') ? 1 : 0;
         
         $alumno->save();
 
+        // Verificar si el apoderado ya existe
+        $email = $request->dniApoderado. '@gmail.com';
+        $existingUser = User::where('email', $email)->first();
+
+        if ($existingUser) {
+            return redirect()->route('alumnos.index')->with('success', 'Alumno registrado correctamente.');
+        }
+
         // quiero crear un usario con el DNI del alumno y el codigo del alumno con el role de alumno y su contraseña hash
         $user = User::create([
-            'name' => $request->DNI,
-            'email' => $request->DNI. '@gmail.com', // Correo temporal
-            'password' => Hash::make($request->input('DNI')),
-            'role' => 'alumno', // Asignar rol
-            'codigo' => $alumno->codigoAlumno,
+            'name' => $request->dniApoderado,
+            'email' => $request->dniApoderado. '@gmail.com', // Correo temporal
+            'password' => Hash::make($request->input('dniApoderado')),
+            'role' => 'apoderado', // Asignar rol
+            'codigo' => $request->dniApoderado,
         ]);
 
             // Redirigir a la página deseada con un mensaje de éxito

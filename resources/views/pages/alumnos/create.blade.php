@@ -199,6 +199,14 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="dniApoderado" class="block text-sm font-medium text-gray-700">DNI Apoderado</label>
+                    <input type="text" id="dniApoderado" name="dniApoderado" value="{{ old('dniApoderado') }}" class="form-input border border-gray-600 w-full h-10 rounded-md p-2 @error('dniApoderado') is-invalid @enderror">
+                    @error('dniApoderado')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label for="estado" class="block text-sm font-medium text-gray-700">Estado Activo</label>
                     <input type="checkbox" id="estado" name="estado" value="1" class="form-checkbox border border-gray-600 h-5 w-5" checked>
                 </div>
