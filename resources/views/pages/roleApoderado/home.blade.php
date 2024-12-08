@@ -12,8 +12,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($alumnos as $alumno)
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="https://i.pinimg.com/736x/da/9a/f1/da9af1c2fc1c1152b2a0fb10e0ad7761.jpg" alt="Foto de {{ $alumno->nombres }}" class="w-full h-[50svh] object-cover">
-                    <div class="py-8 px-4 bg-[#0A0A0A] rounded-lg -translate-y-2">
+                    <img src="https://i.pinimg.com/736x/da/9a/f1/da9af1c2fc1c1152b2a0fb10e0ad7761.jpg" alt="Foto de {{ $alumno->nombres }}" class="w-full h-[45svh] object-cover">
+                    <div class="py-8 px-4 bg-[#1A1D1F] rounded-lg -translate-y-2">
                         <h2 class="text-lg font-semibold text-white">{{ $alumno->nombres }} {{ $alumno->apellidos }}</h2>
                         <p class="text-gray-400 mt-2">
                             <strong>Código:</strong> {{ $alumno->codigoAlumno }}<br>

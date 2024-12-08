@@ -11,6 +11,7 @@ use App\Models\Religion;
 use App\Models\Escala;
 use App\Models\FichaMatriculas;
 use App\Models\FichaNotas;
+use App\Models\NotaCapacidad;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -55,6 +56,7 @@ class ViewRoleAlumnoController extends Controller
 
         $cursosDeEseAñoC = Catedra::where('idGrado', $fichaMatricula->idGrado)
             ->where('idNivel', $fichaMatricula->idNivel)
+            ->where('idSeccion', $fichaMatricula->idSeccion)
             ->where('añoEscolar', $añoEscolarActual)
             ->get();
 
@@ -62,7 +64,7 @@ class ViewRoleAlumnoController extends Controller
         return view('pages.roleApoderado.index', compact('añoEscolarActual', 'cursosDeEseAñoC', 'fichaMatricula'));
     }
 
-    public function irANotas(Request $request)
+    public function irANotas(Request $request, $codigoAlumno)
     {
         $bimestre = $request->input('bimestre', '1');
         $añoEscolar = $request->input('añoEscolar');
@@ -81,15 +83,78 @@ class ViewRoleAlumnoController extends Controller
         }// Retornar una vista con las notas
     
         $detallesDeNotas = DetalleNotas::where('idFicha', $fichaDeNotas->idFicha)
+            ->where('codigoAlumno', $codigoAlumno)
             ->get();
 
         
         return view('pages.roleApoderado.notas', compact('fichaDeNotas', 'detallesDeNotas', 'bimestre'));
     }
 
+    public function todasNotas(Request $request, $codigoAlumno)
+    {
+        $añoEscolarActual = "2024";
+        $periodo = 1;
+    
+        // Obtener ficha de matrícula del alumno
+        $fichaMatricula = FichaMatriculas::where('codigoAlumno', $codigoAlumno)
+            ->where('añoEscolar', $añoEscolarActual)
+            ->first();
+    
+        if (!$fichaMatricula) {
+            return response()->json(['error' => 'Ficha de matrícula no encontrada'], 404);
+        }
+    
+        // Obtener los cursos correspondientes al grado, nivel y sección
+        $cursosDeEseAñoC = Catedra::where('idGrado', $fichaMatricula->idGrado)
+            ->where('idNivel', $fichaMatricula->idNivel)
+            ->where('idSeccion', $fichaMatricula->idSeccion)
+            ->where('añoEscolar', $añoEscolarActual)
+            ->get();
+
+    
+        // Inicializar el array de notas de los cursos
+        $notas_cursos = [];
+    
+        foreach ($cursosDeEseAñoC as $curso) {
+            $idAsignatura = $curso->idAsignatura;
+            $codigoDocente = $curso->codigo_docente;
+
+            $fichaNota = FichaNotas::where('codigo_docente', $codigoDocente)
+                ->where('idAsignatura', $idAsignatura)
+                ->where('periodo', $periodo)
+                ->where('añoEscolar', $añoEscolarActual)
+                ->where('periodo', $periodo)
+                ->where('idSeccion', $fichaMatricula->idSeccion)
+                ->first();
+            
+            // Obtener las notas de las capacidades relacionadas a este curso
+            $notasCapacidades = NotaCapacidad::where('codigoAlumno', $codigoAlumno)
+                ->where('idFicha', $fichaNota->idFicha)
+                ->where('idAsignatura', $idAsignatura)
+                ->where('codigo_Docente', $codigoDocente)
+                ->get();
+            
+            // Construir un array de las capacidades con sus nombres y notas
+            $notas_capacidad = $notasCapacidades->map(function ($notaCapacidad) {
+                return [
+                    'nombre_capacidad' => $notaCapacidad->capacidad->abreviatura ?? 'N/A', // Asegúrate de que la relación 'capacidad' devuelva un nombre
+                    'nota' => $notaCapacidad->nota,
+                ];
+            });
+    
+            // Agregar el curso con sus notas al array de resultados
+            $notas_cursos[] = [
+                'nombre_curso' => $curso->asignatura->nombreAsignatura ?? 'Curso sin nombre', // Asume que el modelo Catedra tiene un campo 'nombre'
+                'notas_capacidad' => $notas_capacidad,
+            ];
+        }
+    
+        return view('pages.roleApoderado.resumen_notas', compact('notas_cursos', 'añoEscolarActual', 'periodo'));
+    }
+
     public function reporteDeNotas(Request $request, $codigoAlumno){
          // Obtener el año escolar seleccionado o el más alto por defecto
-         $selectedAnioEscolar = $request->input('añoEscolar', FichaMatriculas::where('codigoAlumno', $codigoAlumno)
+        $selectedAnioEscolar = $request->input('añoEscolar', FichaMatriculas::where('codigoAlumno', $codigoAlumno)
          ->max('añoEscolar'));
         //quiero obtener los años escolares donde el alumno estuvo matriculado
         $añosEscolares = FichaMatriculas::where('codigoAlumno', $codigoAlumno)

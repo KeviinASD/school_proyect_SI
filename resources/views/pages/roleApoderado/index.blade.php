@@ -11,6 +11,11 @@
                 {{ $errors->first('error') }}
             </div>
         @endif
+        <div>
+            <a href="{{ route('alumno.todasNotas', $fichaMatricula->codigoAlumno ) }}">
+                <button class="bg-black text-white py-2 px-4 rounded-md font-semibold">Resumen Notas</button>
+            </a>
+        </div>
         <div class="grid grid-cols-3 gap-10">
             <p>ALUMNO: {{$fichaMatricula->alumno->nombres}}</p>
             <p>AÑO ESCOLAR: {{$añoEscolarActual}}</p>
@@ -26,63 +31,38 @@
                 <div class="my-5">
                     <p class="font-semibold text-lg">{{ $curso->asignatura->nombreAsignatura }} ( {{$curso->nivel->nombreNivel}} - {{$curso->grado->nombreGrado}} - {{$curso->seccion->nombreSeccion}} )</p>
                 </div>
-                {{-- DATOS DEL PROFESOR --}}
-                <div class="flex gap-4">
-                    <img src="https://i.pinimg.com/736x/de/f4/4e/def44e0cf9c972eb4fe43f833fac8185.jpg" class="w-16 rounded-full">
-                    <div>
-                        <p class="font-semibold">{{ $curso->docente->apellidos." ". $curso->docente->nombres }}</p>
-                        <p class="text-gray-400">Profesor</p>
-                    </div>
-                </div>
+                
                 {{-- ACCIONES --}}
-                <div>
-                    
+                <div class="flex justify-between items-center">
+                    {{-- DATOS DEL PROFESOR --}}
+                    <div class="flex gap-4 mb-4">
+                        <img src="https://i.pinimg.com/736x/de/f4/4e/def44e0cf9c972eb4fe43f833fac8185.jpg" class="w-16 rounded-full">
+                        <div>
+                            <p class="font-semibold">{{ $curso->docente->apellidos." ". $curso->docente->nombres }}</p>
+                            <p class="text-gray-400">Profesor</p>
+                        </div>
+                    </div>
+                    {{-- VER NOTAS PARTICULARES --}}
+                    <form method="GET" action="{{ route('alumno.irANotas', $fichaMatricula->codigoAlumno) }}" class=" border">
+                        <input type="hidden" name="añoEscolar" value="{{ $curso->añoEscolar }}">
+                        <input type="hidden" name="codigoDocente" value="{{ $curso->codigo_docente }}">
+                        <input type="hidden" name="idAsignatura" value="{{ $curso->idAsignatura }}">
+                        <div class="form-group">
+                            <select name="bimestre" id="bimestre" class="form-control" >
+                                <option value="1">Primer Bimestre</option>
+                                <option value="2">Segundo Bimestre</option>
+                                <option value="3">Tercer Bimestre</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="py-1 px-2 rounded-sm bg-black-primary-200 text-white w-full">
+                            Ver Nota
+                        </button>
+                    </form>
                 </div>
             </div>
             @endforeach
         </section>
 
-
-        <div>
-            <table class="w-full">
-                <thead>
-                    <tr>
-                        <th class="text-start">AÑO ESCOLAR</th>
-                        <th class="text-start">ID CURSO</th>
-                        <th class="text-start">NOMBRE DEL CURSO</th>
-                        <th class="text-start">DOCENTE</th>
-                        <th class="text-start">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($cursosDeEseAñoC as $curso)
-                        <tr>
-                            <td>{{ $curso->añoEscolar }}</td>
-                            <td>{{ $curso->idAsignatura }}</td>                            
-                            <td>{{ $curso->asignatura->nombreAsignatura }}</td>
-                            <td>{{ $curso->docente->apellidos." ". $curso->docente->nombres }}</td>
-                            <td>
-                                <form method="GET" action="{{ route('alumno.irANotas') }}">
-                                    <input type="hidden" name="añoEscolar" value="{{ $curso->añoEscolar }}">
-                                    <input type="hidden" name="codigoDocente" value="{{ $curso->codigo_docente }}">
-                                    <input type="hidden" name="idAsignatura" value="{{ $curso->idAsignatura }}">
-                                    <div class="form-group">
-                                        <select name="bimestre" id="bimestre" class="form-control" >
-                                            <option value="1">Primer Bimestre</option>
-                                            <option value="2">Segundo Bimestre</option>
-                                            <option value="3">Tercer Bimestre</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="py-1 px-2 rounded-sm bg-black-primary-200 text-white">
-                                        VER AVANCE DE NOTAS
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
     </section>
 
     <script>

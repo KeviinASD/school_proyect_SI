@@ -108,5 +108,6 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::get('/apoderado/{dniApoderado}/', [ViewRoleAlumnoController::class, 'hijos'])->name('apoderado.hijos');
 Route::get('/apoderado/{codigoAlumno}/matriculas', [ViewRoleAlumnoController::class, 'index'])->name('alumno.matriculas');
+Route::get('/apoderado/{codigoAlumno}/todasNotas', [ViewRoleAlumnoController::class, 'todasNotas'])->name('alumno.todasNotas');
 
-Route::get('/alumno/notas', [ViewRoleAlumnoController::class, 'irANotas'])->name('alumno.irANotas');
+Route::get('/alumno/notas/{codigoAlumno}', [ViewRoleAlumnoController::class, 'irANotas'])->name('alumno.irANotas');
