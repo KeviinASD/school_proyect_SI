@@ -93,7 +93,7 @@ class ViewRoleAlumnoController extends Controller
     public function todasNotas(Request $request, $codigoAlumno)
     {
         $añoEscolarActual = "2024";
-        $periodo = 1;
+        $periodo = $request->input('periodo', '1');
     
         // Obtener ficha de matrícula del alumno
         $fichaMatricula = FichaMatriculas::where('codigoAlumno', $codigoAlumno)
@@ -149,7 +149,7 @@ class ViewRoleAlumnoController extends Controller
             ];
         }
     
-        return view('pages.roleApoderado.resumen_notas', compact('notas_cursos', 'añoEscolarActual', 'periodo'));
+        return view('pages.roleApoderado.resumen_notas', compact('notas_cursos', 'añoEscolarActual', 'periodo', 'codigoAlumno'));
     }
 
     public function reporteDeNotas(Request $request, $codigoAlumno){

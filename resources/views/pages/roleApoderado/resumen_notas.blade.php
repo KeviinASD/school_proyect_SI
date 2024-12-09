@@ -8,7 +8,13 @@
         <h1 class="text-3xl font-bold">Resumen de Notas</h1>
         <p class="text-lg text-gray-600">Año Escolar: {{ $añoEscolarActual }}, Periodo: {{ $periodo }}</p>
     </div>
-
+    <div class="form-group">
+        <select name="bimestre" id="bimestre" class="form-control">
+            <option value="1" {{ $periodo == 1 ? 'selected' : '' }}>Primer Bimestre</option>
+            <option value="2" {{ $periodo == 2 ? 'selected' : '' }}>Segundo Bimestre</option>
+            <option value="3" {{ $periodo == 3 ? 'selected' : '' }}>Tercer Bimestre</option>
+        </select>
+    </div>
     <div class="space-y-6">
         @forelse($notas_cursos as $curso)
             <div class="border border-gray-300 rounded-lg shadow p-6">
@@ -42,4 +48,12 @@
         @endforelse
     </div>
 </section>
+
+<script>
+    document.getElementById('bimestre').addEventListener('change', function () {
+        const selectedPeriodo = this.value;
+        const currentUrl = "{{ route('alumno.todasNotas', $codigoAlumno) }}";
+        window.location.href = `${currentUrl}?periodo=${selectedPeriodo}`;
+    });
+</script>
 @endsection
