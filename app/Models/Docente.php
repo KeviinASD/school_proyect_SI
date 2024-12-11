@@ -12,7 +12,7 @@ class Docente extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'codigo_docente', 'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'idEstadoCivil', 'estado'
+        'codigo_docente', 'DNI', 'apellidos', 'nombres', 'direccion', 'seguroSocial', 'fechaIngreso', 'id_tipo_docente', 'idEstadoCivil', 'imagen_url', 'estado'
     ];
 
     public function tipoDocente()

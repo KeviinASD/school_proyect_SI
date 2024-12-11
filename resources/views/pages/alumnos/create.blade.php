@@ -19,7 +19,9 @@
     
     <form method="POST" action="{{route('alumnos.store')}}" class="flex flex-col items-center">
         @csrf
-
+        <div>
+            <p>IMAGEN PS</p>
+        </div>
         <div class="flex w-full px-28 gap-6">
             <div class="w-1/2">
                 <div class="mb-4">

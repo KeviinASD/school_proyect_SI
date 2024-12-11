@@ -50,23 +50,40 @@ class DocenteController extends Controller
             'fechaIngreso' => 'required|date',
             'id_tipo_docente' => 'required|exists:TIPO_DOCENTE,id_tipo_docente',
             'idEstadoCivil' => 'required|exists:ESTADO_CIVIL,idEstadoCivil',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
-
+    
+        // Código para generar el código del docente
         $nombres = $request->input('nombres');
         $apellidos = $request->input('apellidos');
         $dni = $request->input('DNI');
         $codigo_docente = strtoupper(substr($nombres, 0, 1) . $dni . substr($apellidos, 0, 1));
-
-        Docente::create(array_merge($request->all(), ['codigo_docente' => $codigo_docente, 'estado' => 1]));
-
-        $user = User::create([
+    
+        // Manejo de la imagen
+        $imagenNombre = null;
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $imagenNombre = $imagen->hashName(); // Genera un nombre único
+            $imagen->storeAs('public/docentes', $imagenNombre); // Guarda la imagen
+        }
+        
+        
+        // Crear el docente
+        Docente::create(array_merge($request->all(), [
+            'codigo_docente' => $codigo_docente,
+            'estado' => 1,
+            'imagen_url' => $imagenNombre, // Guardar la URL de la imagen
+        ]));
+    
+        // Crear el usuario
+        User::create([
             'name' => $dni,
-            'email' => $dni. '@gmail.com', // Correo temporal
+            'email' => $dni . '@gmail.com', // Correo temporal
             'password' => Hash::make($request->input('DNI')),
             'role' => 'docente', // Asignar rol
             'codigo' => $codigo_docente,
         ]);
-
+    
         return redirect()->route('docentes.index')
             ->with('success', 'Docente creado exitosamente.');
     }
