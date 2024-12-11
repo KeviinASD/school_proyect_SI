@@ -103,17 +103,8 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="añoEscolar">
                     Año Escolar
                 </label>
-                <select name="añoEscolar" id="añoEscolar" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    <option value="">Seleccione un año escolar</option>
-                    @foreach ($añoEscolares as $añoEscolar)
-                        <option value="{{ $añoEscolar->añoEscolar }}" {{ $fichaMatricula->añoEscolar == $añoEscolar->añoEscolar ? 'selected' : '' }}>
-                            {{ $añoEscolar->añoEscolar }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('añoEscolar')
-                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                @enderror
+
+                <label>{{$añoEscolarActual->año_escolar_id}}</label>
             </div>
 
             <div class="flex items-center justify-between">

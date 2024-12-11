@@ -27,6 +27,7 @@ use App\Models\Catedra;
 use App\Models\Grado;
 use App\Http\Controllers\ReporteNotasController;
 use App\Http\Controllers\ViewRoleAlumnoController;
+use App\Http\Controllers\AñoEscolarActualController;
 
 Route::resource('/alumnos', AlumnoController::class);
 
@@ -97,6 +98,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/docentesByAñoEscolar/{añoEscolar}', [ReporteNotasController::class, 'docentesByAñoEscolar'])->name('docentesByAñoEscolar');
     Route::get('/asignaturasByDocente/{codigoDocente}', [ReporteNotasController::class, 'asignaturasByDocente'])->name('asignaturasByDocente');
     Route::get('/asignaturas-by-nivel-grado/{nivelId}/{gradoId}', [CatedraController::class, 'getAsignaturasByNivelYGrado']);
+
+    Route::get('/año-escolar-actual', [AñoEscolarActualController::class, 'edit'])->middleware('role:admin')->name('año_escolar_actual.edit');
+    Route::put('/año-escolar-actual/update', [AñoEscolarActualController::class, 'update'])->name('año_escolar_actual.update');
 });
 
 // routes when the user is not authenticated

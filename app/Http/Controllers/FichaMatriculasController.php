@@ -7,7 +7,7 @@ use App\Models\Alumno;
 use App\Models\Seccion;
 use App\Models\Grado;
 use App\Models\Nivel;
-use App\Models\AñoEscolar;
+use App\Models\AñoEscolarActual;
 
 use Illuminate\Http\Request;
 
@@ -40,8 +40,8 @@ class FichaMatriculasController extends Controller
         $secciones = Seccion::all();
         $grados = Grado::all();
         $niveles = Nivel::all();
-        $añoEscolares = AñoEscolar::all();
-        return view('pages.fichaMatriculas.create', compact('codigoAlumnos', 'secciones', 'grados', 'niveles', 'añoEscolares'));
+        $añoEscolarActual = AñoEscolarActual::first();
+        return view('pages.fichaMatriculas.create', compact('codigoAlumnos', 'secciones', 'grados', 'niveles', 'añoEscolarActual'));
     }
 
     // Guardar una nueva ficha de matrícula en la base de datos
@@ -54,8 +54,8 @@ class FichaMatriculasController extends Controller
             'idSeccion' => 'required|exists:secciones,idSeccion',
             'idGrado' => 'required|exists:grados,idGrado',
             'idNivel' => 'required|exists:niveles,idNivel',
-            'añoEscolar' => 'required|exists:AÑO_ESCOLAR,añoEscolar'
         ]);
+        $validatedData['añoEscolar'] = AñoEscolarActual::first()->año_escolar_id;
     
         // Verificar si ya existe una matrícula con la misma combinación
         $existingMatricula = FichaMatriculas::where([
@@ -63,7 +63,7 @@ class FichaMatriculasController extends Controller
             ['idSeccion', '=', $request->input('idSeccion')],
             ['idGrado', '=', $request->input('idGrado')],
             ['idNivel', '=', $request->input('idNivel')],
-            ['añoEscolar', '=', $request->input('añoEscolar')],
+            ['añoEscolar', '=', AñoEscolarActual::first()->año_escolar_id],
         ])->first();
     
         if ($existingMatricula) {
@@ -84,8 +84,8 @@ class FichaMatriculasController extends Controller
         $secciones = Seccion::all();
         $grados = Grado::all();
         $niveles = Nivel::all();
-        $añoEscolares = AñoEscolar::all();
-        return view('pages.fichaMatriculas.edit', compact('fichaMatricula', 'codigoAlumnos', 'secciones', 'grados', 'niveles', 'añoEscolares'));
+        $añoEscolarActual = AñoEscolarActual::first();
+        return view('pages.fichaMatriculas.edit', compact('fichaMatricula', 'codigoAlumnos', 'secciones', 'grados', 'niveles', 'añoEscolarActual'));
     }
 
     // Actualizar una ficha de matrícula específica en la base de datos
@@ -97,10 +97,9 @@ class FichaMatriculasController extends Controller
             'idSeccion' => 'required|exists:secciones,idSeccion',
             'idGrado' => 'required|exists:grados,idGrado',
             'idNivel' => 'required|exists:niveles,idNivel',
-            'añoEscolar' => 'required|exists:AÑO_ESCOLAR,añoEscolar'
         ]);
-
-        $fichaMatricula->update($request->all());
+        $validatedData['añoEscolar'] = AñoEscolarActual::first()->año_escolar_id;
+        $fichaMatricula->update($validatedData);
 
         return redirect()->route('fichaMatriculas.index')->with('success', 'Ficha de Matrícula actualizada exitosamente.');
     }

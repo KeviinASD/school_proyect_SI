@@ -70,14 +70,7 @@
 
         <div class="mb-4">
             <label for="añoEscolar" class="block text-sm font-medium text-gray-700">Año Escolar</label>
-            <select id="añoEscolar" name="añoEscolar" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">Seleccione un año escolar</option>
-                @foreach($añosEscolares as $añoEscolar)
-                <option value="{{ $añoEscolar->añoEscolar }}" {{ old('añoEscolar') == $añoEscolar->añoEscolar ? 'selected' : '' }}>
-                    {{ $añoEscolar->añoEscolar }}
-                </option>
-                @endforeach
-            </select>
+            <label>{{$añoEscolarActual->año_escolar_id}}</label>
             @error('añoEscolar')
             <p class="text-sm text-red-500">{{ $message }}</p>
             @enderror
