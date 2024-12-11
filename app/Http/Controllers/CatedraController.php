@@ -7,7 +7,7 @@ use App\Models\Seccion;
 use App\Models\Grado;
 use App\Models\Nivel;
 use App\Models\Asignatura;
-use App\Models\AñoEscolar;
+use App\Models\AñoEscolarActual;
 use App\Models\Docente;
 use App\Models\DocenteProvicional;
 use Illuminate\Http\Request;
@@ -27,9 +27,9 @@ class CatedraController extends Controller
         $grados = Grado::where('estado', 1)->get();
         $niveles = Nivel::where('estado', 1)->get();
         $asignaturas = Asignatura::where('estado', 1)->get();
-        $añosEscolares = AñoEscolar::where('estado', 1)->get();
+        $añoEscolarActual = AñoEscolarActual::first();
 
-        return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'asignaturas', 'añoEscolarActual'));
     }
 
     public function buscarDocente(Request $request)
@@ -62,9 +62,9 @@ class CatedraController extends Controller
             'idGrado' => 'required|integer',
             'idNivel' => 'required|integer',
             'idAsignatura' => 'required|integer',
-            'añoEscolar' => 'required|string',
+            
         ]);
-
+        $validated['añoEscolar'] = AñoEscolarActual::first()->año_escolar_id;
         // Verificar si ya existe una cátedra con el mismo docente, sección y asignatura
         $exists = Catedra::where('codigo_docente', $validated['codigo_docente'])
             ->where('idSeccion', $validated['idSeccion'])
@@ -101,9 +101,9 @@ class CatedraController extends Controller
         $grados = Grado::all(); // Asegúrate de que esto devuelva todos los grados
         $secciones = Seccion::all(); // Asegúrate de que esto devuelva todas las secciones
         $asignaturas = Asignatura::all(); // Asegúrate de que esto devuelva todas las asignaturas
-        $añosEscolares = AñoEscolar::all();
+        $añoEscolarActual = AñoEscolarActual::first();
     
-        return view('pages.catedras.edit', compact('catedra', 'docentes', 'niveles', 'grados', 'secciones', 'asignaturas', 'añosEscolares'));
+        return view('pages.catedras.edit', compact('catedra', 'docentes', 'niveles', 'grados', 'secciones', 'asignaturas', 'añoEscolarActual'));
     }
 
     public function update(Request $request, $id)
@@ -115,9 +115,9 @@ class CatedraController extends Controller
             'idGrado' => 'required|integer',
             'idNivel' => 'required|integer',
             'idAsignatura' => 'required|integer',
-            'añoEscolar' => 'required|string',
+            
         ]);
-
+        $validated['añoEscolar'] = AñoEscolarActual::first()->año_escolar_id;
         // Obtener la cátedra que se está editando
         $catedra = Catedra::find($id);
 
