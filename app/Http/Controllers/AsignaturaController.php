@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
+use App\Models\Capacidad;
 use App\Models\Grado;
 use App\Models\Nivel;
 use Illuminate\Http\Request;
@@ -123,5 +124,17 @@ class AsignaturaController extends Controller
     {
         $grados = Grado::where('idNivel', $nivelId)->where('estado', 1)->get(['idGrado', 'nombreGrado']);
         return response()->json(['grados' => $grados]);
+    }
+
+    public function vistaJerarquica()
+    {
+        // Obtener asignaturas con sus capacidades
+        $asignaturas = Asignatura::with('capacidades')->get();
+    
+        // Obtener todas las capacidades para contarlas
+        $capacidades = $asignaturas->flatMap->capacidades;
+    
+        // Retornar la vista con los datos
+        return view('pages.asignaturas.vista_jerarquica', compact('asignaturas', 'capacidades'));
     }
 }

@@ -115,3 +115,6 @@ Route::get('/apoderado/{codigoAlumno}/matriculas', [ViewRoleAlumnoController::cl
 Route::get('/apoderado/{codigoAlumno}/todasNotas', [ViewRoleAlumnoController::class, 'todasNotas'])->name('alumno.todasNotas');
 
 Route::get('/alumno/notas/{codigoAlumno}', [ViewRoleAlumnoController::class, 'irANotas'])->name('alumno.irANotas');
+
+
+Route::get('/vista-jerarquica', [AsignaturaController::class, 'vistaJerarquica'])->name('vista.jerarquica');

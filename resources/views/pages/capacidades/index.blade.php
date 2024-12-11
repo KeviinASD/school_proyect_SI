@@ -4,6 +4,14 @@
 
 @section('content')
 <div class="bg-white border border-gray-200 shadow-lg p-6 rounded-lg">
+    <!-- Menú de navegación -->
+    <nav class="">
+        <ul class="flex gap-8 border-b py-4">
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('vista.jerarquica') }}">RESUMEN</a></li>
+            <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('asignaturas.index') }}">ASIGNATURAS</a></li>
+            <li class="text-red-700 font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('capacidades.index') }}">CAPACIDADES</a></li>
+        </ul>
+    </nav>
     <h2 class="text-2xl font-semibold mb-4">Lista de Capacidades</h2>
     <a href="{{ route('capacidades.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-medium text-white uppercase hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
         Crear Nueva Capacidad

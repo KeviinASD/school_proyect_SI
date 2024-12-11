@@ -112,13 +112,15 @@
                                         $countCapacidades++;
                                     @endphp
                                     <td class="py-2 px-4 border-b border-gray-200">
-                                        <select name="notas[{{ $alumno->codigoAlumno }}][{{ $capacidad->idCapacidad }}]" class="form-select">
-                                            <option value="">Seleccione una nota</option>
-                                            <option value="AD" {{ $notaValor === 'AD' ? 'selected' : '' }}>AD</option>
-                                            <option value="A" {{ $notaValor === 'A' ? 'selected' : '' }}>A</option>
-                                            <option value="B" {{ $notaValor === 'B' ? 'selected' : '' }}>B</option>
-                                            <option value="C" {{ $notaValor === 'C' ? 'selected' : '' }}>C</option>
-                                        </select>
+                                        <input type="text" 
+                                           name="notas[{{ $alumno->codigoAlumno }}][{{ $capacidad->idCapacidad }}]" 
+                                           value="{{ old('notas.' . $alumno->codigoAlumno . '.' . $capacidad->idCapacidad, $notaValor) }}" 
+                                           class="form-input" 
+                                           placeholder="Ingrese una nota" 
+                                           maxlength="2" 
+                                           oninput="validarNota(this)"
+                                           >
+
                                     </td>
                                 @endforeach
 
@@ -140,6 +142,24 @@
         </form>
     </div>
 @endsection
+
+<script>
+    function validarNota(input) {
+        // Obtener el valor ingresado y convertirlo a mayúsculas
+        const valor = input.value.toUpperCase();
+        
+        // Las combinaciones válidas
+        const combinacionesValidas = ['AD', 'A', 'B', 'C'];
+        // Si el valor es válido, lo dejamos tal como está
+        if (combinacionesValidas.includes(valor)) {
+            return;
+        }
+        // Si el valor no es válido, ajustamos el valor a una entrada vacía o al último valor válido
+        input.value = ''; // Limpiar el valor si es inválido
+    }
+</script>
+
+
 
 @php
     function letterToValue($letter) {

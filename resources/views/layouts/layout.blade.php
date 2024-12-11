@@ -92,21 +92,11 @@
                             COURSES 
                         </div>
                         <li>
-                            <a href="{{ route('asignaturas.index') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
+                            <a href="{{ route('vista.jerarquica') }}" class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                     <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
                                 </svg>                              
                                 <span class="ml-3">CURSOS</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('capacidades.index') }}"
-                                class="text-base text-gray-400 font-normal rounded-lg flex items-center p-2 hover:bg-[#272B30] hover:text-white group hover:scale-105 group transition duration-150 ease-in-out">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                    <path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm6.905 9.97a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72V18a.75.75 0 0 0 1.5 0v-4.19l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z" clip-rule="evenodd" />
-                                    <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
-                                </svg>                              
-                                <span class="ml-3">Capacidades</span>
                             </a>
                         </li>
     
