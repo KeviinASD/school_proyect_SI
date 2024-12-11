@@ -36,7 +36,7 @@
                 <div class="flex justify-between items-center">
                     {{-- DATOS DEL PROFESOR --}}
                     <div class="flex gap-4 mb-4">
-                        <img src="https://i.pinimg.com/736x/de/f4/4e/def44e0cf9c972eb4fe43f833fac8185.jpg" class="w-16 rounded-full">
+                        <img src="{{ asset('storage/docentes/' . $curso->docente->imagen_url) }}" class="w-16 rounded-full">
                         <div>
                             <p class="font-semibold">{{ $curso->docente->apellidos." ". $curso->docente->nombres }}</p>
                             <p class="text-gray-400">Profesor</p>

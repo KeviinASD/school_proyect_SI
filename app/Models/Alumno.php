@@ -33,6 +33,7 @@ class Alumno extends Model
         'idEscala',
         'idSexo',
         'estado',
+        'imagen_url',
         'dniApoderado',
     ];
     protected $primaryKey = 'codigoAlumno';

@@ -9,6 +9,7 @@ use App\Models\Religion;
 use App\Models\Escala;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AlumnoController extends Controller
 {
@@ -85,6 +86,7 @@ class AlumnoController extends Controller
             'idEscala' => 'nullable|integer|exists:escala,idEscala',
             'idSexo' => 'nullable|integer|exists:sexo,idSexo',
             'estado' => 'nullable|boolean',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
         $alumno = new Alumno();
@@ -110,6 +112,16 @@ class AlumnoController extends Controller
 
         // Asignar estado basado en el checkbox
         $alumno->estado = $request->has('estado') ? 1 : 0;
+
+        // Manejo de la imagen
+        $imagenNombre = null;
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $imagenNombre = $imagen->hashName(); // Genera un nombre único
+            $imagen->storeAs('public/alumnos', $imagenNombre); // Guarda la imagen
+        }
+
+        $alumno->imagen_url = $imagenNombre;
         
         $alumno->save();
 
@@ -182,9 +194,27 @@ class AlumnoController extends Controller
             'idEscala' => 'nullable|integer|exists:escala,idEscala',
             'idSexo' => 'nullable|integer|exists:sexo,idSexo',
             'estado' => 'nullable|boolean',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
+
         $alumno = Alumno::where('codigoAlumno', $codigoAlumno)->firstOrFail();
+
+        // Mantener la imagen actual por defecto
+        $imagenNombre = $alumno->imagen_url;
+    
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $imagenNombre = $imagen->hashName();
+            $imagen->storeAs('public/alumnos', $imagenNombre);
+    
+            // Eliminar la imagen anterior si existe
+            if ($alumno->imagen_url) {
+                Storage::delete('public/alumnos/' . $alumno->imagen_url);
+            }
+        }
+
+
         $alumno->nombres = $request->nombres;
         $alumno->apellidos = $request->apellidos;
         $alumno->DNI = $request->DNI;
@@ -203,6 +233,8 @@ class AlumnoController extends Controller
         $alumno->idReligion = $request->idReligion;
         $alumno->idEscala = $request->idEscala;
         $alumno->idSexo = $request->idSexo;
+        $alumno->imagen_url = $imagenNombre;
+
 
         $alumno->save();
 

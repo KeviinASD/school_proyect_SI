@@ -21,6 +21,7 @@
                 <th class="px-4 py-2">Nombre</th>
                 <th class="px-4 py-2">DNI</th>
                 <th class="px-4 py-2">Sexo</th>
+                <th class="px-4 py-2">Imagen</th> <!-- Nueva columna de imagen -->
                 <th class="px-4 py-2">Opciones</th>
             </tr>
         </thead>
@@ -31,6 +32,14 @@
                 <td class="border px-4 py-2">{{ $alumno->nombres }} {{ $alumno->apellidos }}</td>
                 <td class="border px-4 py-2">{{ $alumno->DNI }}</td>
                 <td class="border px-4 py-2">{{ $alumno->sexo?->nombreSexo ?? 'No Especifica'}}</td>
+                <td class="border px-4 py-2">
+                    <!-- Verificar si el alumno tiene imagen -->
+                    @if($alumno->imagen_url)
+                        <img src="{{ asset('storage/alumnos/' . $alumno->imagen_url) }}" alt="Imagen de {{ $alumno->nombres }}" class="w-16 h-16 rounded-full">
+                    @else
+                        <img src="https://i.pinimg.com/736x/61/f7/5e/61f75ea9a680def2ed1c6929fe75aeee.jpg" alt="" class="w-16 h-16 rounded-full">
+                    @endif
+                </td>
                 <td class="border px-4 py-2">
                     <a href="{{ route('alumnos.edit', $alumno->codigoAlumno) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                         <i class="fas fa-edit"></i> Editar

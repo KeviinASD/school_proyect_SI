@@ -53,7 +53,13 @@
                                     <td class="py-3 px-4">{{ $docente->DNI }}</td>
                                     <td class="py-3 px-4">{{ $docente->apellidos }}</td>
                                     <td class="py-3 px-4">{{ $docente->nombres }}</td>
-                                    <td class="py-3 px-4">{{ $docente->direccion }}</td>
+                                    <td class="py-3 px-4">
+                                        @if ($docente->imagen_url)
+                                            <img src="{{ asset('storage/docentes/' . $docente->imagen_url) }}" alt="Imagen del Docente" class="w-20 h-20 object-cover rounded-full">
+                                        @else
+                                        <img src="https://i.pinimg.com/736x/61/f7/5e/61f75ea9a680def2ed1c6929fe75aeee.jpg" alt="" class="w-20 h-20 object-cover rounded-full">
+                                        @endif
+                                    </td>
                                     <td class="py-3 px-4">{{ $docente->fechaIngreso }}</td>
                                     <td class="py-3 px-4">{{ $docente->tipoDocente->nombreTipo }}</td>
                                     <td class="py-3 px-4">{{ $docente->estadoCivil->nombreEstadoCivil }}</td>

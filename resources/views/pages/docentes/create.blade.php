@@ -8,10 +8,9 @@
 
         <form action="{{ route('docentes.store') }}" method="POST" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             @csrf
-            <img src="{{ asset('storage/docentes/VmbMI5QeENB3zooPlnz83zPpVEmSFtVk2pJP6ASO.png') }}" alt="Imagen de" class="w-32 h-32 object-cover">
-            <div class="form-group">
-                <label for="imagen" class="block text-gray-700 text-sm font-bold mb-2">Subir Imagen</label>
-                <input type="file" name="imagen" id="imagen" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <div class="mb-4">
+                <label for="imagen" class="block text-gray-700 text-sm font-bold mb-2">Foto Docente</label>
+                <input type="file" name="imagen" id="imagen" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="DNI">

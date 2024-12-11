@@ -6,9 +6,23 @@
     <div class="container mx-auto py-8">
         <h2 class="text-2xl font-semibold mb-4">Editar Docente</h2>
 
-        <form action="{{ route('docentes.update', $docente->codigo_docente) }}" method="POST" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form action="{{ route('docentes.update', $docente->codigo_docente) }}" enctype="multipart/form-data" method="POST" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             @csrf
             @method('PUT')
+
+            <div class="mb-4">
+                <label for="imagen" class="block text-gray-700 text-sm font-bold mb-2">Foto Docente</label>
+                <input type="file" name="imagen" id="imagen" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        
+                @if ($docente->imagen_url)
+                    <div class="mt-2">
+                        <p class="text-gray-700 text-sm font-bold mb-2">Imagen actual:</p>
+                        <img src="{{ asset('storage/docentes/' . $docente->imagen_url) }}" alt="Imagen del docente" class="w-32 h-32 object-cover rounded mx-auto">
+                    </div>
+                @endif
+            </div>
+
+
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="DNI">
                     DNI

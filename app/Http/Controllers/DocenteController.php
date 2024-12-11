@@ -9,6 +9,7 @@ use App\Models\EstadoCivil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DocenteController extends Controller
 {
@@ -67,13 +68,21 @@ class DocenteController extends Controller
             $imagen->storeAs('public/docentes', $imagenNombre); // Guarda la imagen
         }
         
-        
-        // Crear el docente
-        Docente::create(array_merge($request->all(), [
-            'codigo_docente' => $codigo_docente,
-            'estado' => 1,
-            'imagen_url' => $imagenNombre, // Guardar la URL de la imagen
-        ]));
+
+        $docente = new Docente();
+        $docente->nombres = $request->nombres;
+        $docente->apellidos = $request->apellidos;
+        $docente->DNI = $request->DNI;
+        $docente->direccion = $request->direccion;
+        $docente->seguroSocial = $request->seguroSocial;
+        $docente->fechaIngreso = $request->fechaIngreso;
+        $docente->id_tipo_docente = $request->id_tipo_docente;
+        $docente->idEstadoCivil = $request->idEstadoCivil;
+        $docente->imagen_url = $imagenNombre;
+        $docente->codigo_docente = $codigo_docente;
+        $docente->estado = 1;
+
+        $docente->save();
     
         // Crear el usuario
         User::create([
@@ -106,13 +115,41 @@ class DocenteController extends Controller
             'fechaIngreso' => 'required|date',
             'id_tipo_docente' => 'required|exists:TIPO_DOCENTE,id_tipo_docente',
             'idEstadoCivil' => 'required|exists:ESTADO_CIVIL,idEstadoCivil',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
-
-        $docente->update($request->all());
-
+    
+        // Mantener la imagen actual por defecto
+        $imagenNombre = $docente->imagen_url;
+    
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $imagenNombre = $imagen->hashName();
+            $imagen->storeAs('public/docentes', $imagenNombre);
+    
+            // Eliminar la imagen anterior si existe
+            if ($docente->imagen_url) {
+                Storage::delete('public/docentes/' . $docente->imagen_url);
+            }
+        }
+    
+        // Asignar los valores directamente a las propiedades del modelo
+        $docente->DNI = $request->DNI;
+        $docente->apellidos = $request->apellidos;
+        $docente->nombres = $request->nombres;
+        $docente->direccion = $request->direccion;
+        $docente->seguroSocial = $request->seguroSocial;
+        $docente->fechaIngreso = $request->fechaIngreso;
+        $docente->id_tipo_docente = $request->id_tipo_docente;
+        $docente->idEstadoCivil = $request->idEstadoCivil;
+        $docente->imagen_url = $imagenNombre;
+    
+        // Guardar los cambios
+        $docente->save();
+    
         return redirect()->route('docentes.index')
             ->with('success', 'Docente actualizado exitosamente.');
     }
+    
 
     public function destroy(DocenteProvicional $docente)
     {

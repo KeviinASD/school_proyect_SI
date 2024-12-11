@@ -4,9 +4,21 @@
 <div class="container mx-auto py-8">
     <h1 class="text-2xl font-bold mb-6 text-center">Editar Alumno</h1>
 
-    <form method="POST" action="{{ route('alumnos.update', $alumno->codigoAlumno) }}" class="flex flex-col items-center">
+    <form method="POST" action="{{ route('alumnos.update', $alumno->codigoAlumno) }}" enctype="multipart/form-data" class="flex flex-col items-center">
         @csrf
         @method('PUT')
+
+        <div class="mb-4">
+            <label for="imagen" class="block text-gray-700 text-sm font-bold mb-2">Foto Alumno</label>
+            <input type="file" name="imagen" id="imagen" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    
+            @if ($alumno->imagen_url)
+                <div class="mt-2">
+                    <p class="text-gray-700 text-sm font-bold mb-2">Imagen actual:</p>
+                    <img src="{{ asset('storage/alumnos/' . $alumno->imagen_url) }}" alt="Imagen del docente" class="w-32 h-32 object-cover rounded mx-auto">
+                </div>
+            @endif
+        </div>
 
         <div class="flex w-full px-28 gap-6">
             <div class="w-1/2">

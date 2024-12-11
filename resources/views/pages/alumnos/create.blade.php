@@ -17,10 +17,14 @@
         </div>
     </div>
     
-    <form method="POST" action="{{route('alumnos.store')}}" class="flex flex-col items-center">
+    <form method="POST" action="{{route('alumnos.store')}}" enctype="multipart/form-data" class="flex flex-col items-center">
         @csrf
-        <div>
-            <p>IMAGEN PS</p>
+        <div class=" w-full px-28 gap-6">
+            <label for="imagen" class="block text-sm font-medium text-gray-700">Foto Alumno</label>
+            <input type="file" name="imagen" id="imagen" class="form-input border border-gray-600 w-full h-10 rounded-md p-2 flex @error('imagen') is-invalid @enderror" >
+            @error('imagen')
+               <p class="text-red-500 text-xs italic">{{ $message }}</p>
+            @enderror
         </div>
         <div class="flex w-full px-28 gap-6">
             <div class="w-1/2">
