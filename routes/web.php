@@ -28,6 +28,7 @@ use App\Models\Grado;
 use App\Http\Controllers\ReporteNotasController;
 use App\Http\Controllers\ViewRoleAlumnoController;
 use App\Http\Controllers\AñoEscolarActualController;
+use App\Http\Controllers\UserController;
 
 Route::resource('/alumnos', AlumnoController::class);
 
@@ -118,3 +119,5 @@ Route::get('/alumno/notas/{codigoAlumno}', [ViewRoleAlumnoController::class, 'ir
 
 
 Route::get('/vista-jerarquica', [AsignaturaController::class, 'vistaJerarquica'])->name('vista.jerarquica');
+
+Route::resource('users', UserController::class);
