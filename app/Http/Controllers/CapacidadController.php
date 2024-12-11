@@ -2,48 +2,120 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Capacidad;
+use App\Models\Asignatura;
 use Illuminate\Http\Request;
+use App\Models\Capacidad;
+use App\Models\Curso;
 
 class CapacidadController extends Controller
 {
     public function index()
     {
-        $capacidades = Capacidad::all();
-        return view('capacidades.index', compact('capacidades'));
+        // Obtener todas las capacidades activas
+        $capacidades = Capacidad::where('estado', 1)->get();
+        return view('pages.capacidades.index', compact('capacidades'));
     }
 
     public function create()
     {
-        return view('capacidades.create');
+        // Obtener todas las asignaturas para el dropdown
+        $asignaturas = Asignatura::where('estado', 1)->get();
+        
+        return view('pages.capacidades.create', compact('asignaturas'));
     }
-
     public function store(Request $request)
     {
-        Capacidad::create($request->all());
-        return redirect()->route('capacidades.index');
+        // Validar los datos
+        $validatedData = $request->validate([
+            'descripcion' => 'required|string|max:255',
+            'abreviatura' => 'required|string|max:10', // Agregar validación para abreviatura
+            'idAsignatura' => 'required|integer',
+            'orden' => 'required|integer',
+            'estado' => 'nullable|boolean'
+        ]);
+    
+        // Establecer el estado por defecto a 1 si no está presente
+        if (!isset($validatedData['estado'])) {
+            $validatedData['estado'] = 1;
+        }
+    
+        // Verificar si ya existe una capacidad para la asignatura
+        $existingCapacidad = Capacidad::where('descripcion', $validatedData['descripcion'])
+            ->where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('estado', 1)
+            ->first();
+    
+        if ($existingCapacidad) {
+            return redirect()->route('capacidades.create')
+                ->withErrors(['idAsignatura' => 'Ya existe una capacidad para la asignatura seleccionada.'])
+                ->withInput();
+        }
+    
+        // Crear una nueva capacidad si la asignatura es válida
+        Capacidad::create($validatedData);
+    
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad creada correctamente');
     }
 
-    public function show(Capacidad $capacidad)
+    public function edit($id)
     {
-        return view('capacidades.show', compact('capacidad'));
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
+    
+        // Obtener todas las asignaturas para el dropdown
+        $asignaturas = Asignatura::where('estado', 1)->get();
+    
+        // Pasar las variables a la vista
+        return view('pages.capacidades.edit', compact('capacidad', 'asignaturas'));
+    }
+    
+    public function update(Request $request, $id)
+    {
+        // Validar los datos
+        $validatedData = $request->validate([
+            'descripcion' => 'required|string|max:255',
+            'abreviatura' => 'required|string|max:10', // Agregar validación para abreviatura
+            'idAsignatura' => 'required|integer',
+            'orden' => 'required|integer',
+            'estado' => 'nullable|boolean'
+        ]);
+    
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
+    
+        // Verificar si ya existe otra capacidad para la misma asignatura
+        $existingCapacidad = Capacidad::where('idAsignatura', $validatedData['idAsignatura'])
+            ->where('estado', 1)
+            ->where('idCapacidad', '!=', $id) // Excluir la capacidad actual
+            ->first();
+    
+        if ($existingCapacidad) {
+            return redirect()->route('capacidades.edit', $id)
+                ->withErrors(['idAsignatura' => 'Ya existe una capacidad para la asignatura seleccionada.'])
+                ->withInput();
+        }
+    
+        // Si la asignatura es válida, actualizar la capacidad con los datos validados
+        $capacidad->update([
+            'descripcion' => $validatedData['descripcion'],
+            'abreviatura' => $validatedData['abreviatura'], // Actualizar el campo de abreviatura
+            'idAsignatura' => $validatedData['idAsignatura'],
+            'orden' => $validatedData['orden'],
+            'estado' => $validatedData['estado'] ?? $capacidad->estado,
+        ]);
+    
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad actualizada correctamente');
     }
 
-    public function edit(Capacidad $capacidad)
+    public function destroy($id)
     {
-        return view('capacidades.edit', compact('capacidad'));
-    }
+        // Obtener la capacidad por su ID
+        $capacidad = Capacidad::findOrFail($id);
 
-    public function update(Request $request, Capacidad $capacidad)
-    {
-        $capacidad->update($request->all());
-        return redirect()->route('capacidades.index');
-    }
+        // Cambiar el estado a 0 (inactivo) en lugar de eliminar
+        $capacidad->estado = 0;
+        $capacidad->save();
 
-    public function destroy(Capacidad $capacidad)
-    {
-        $capacidad->delete();
-        return redirect()->route('capacidades.index');
+        return redirect()->route('capacidades.index')->with('success', 'Capacidad eliminada correctamente');
     }
 }
-

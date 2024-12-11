@@ -11,16 +11,19 @@ class GradosController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    const PAGINATION = 10;
+
     public function index(Request $request)
     {
-        $niveles = Nivel::all();
+        $niveles = Nivel::where('estado', 1)->get();
         $query = Grado::query(); 
-
         if ($request->has('nivel_id') && $request->nivel_id != '') {
             $query->where('idNivel', $request->nivel_id);
         }
 
-        $grados = $query->get();
+        $query->where('estado', 1);
+        $grados = $query->paginate(self::PAGINATION);
 
         return view('pages.gradosYSecciones.grado_index', compact('grados', 'niveles'));
     }
@@ -30,7 +33,7 @@ class GradosController extends Controller
      */
     public function create()
     {
-        $niveles = Nivel::all();
+        $niveles = Nivel::where('estado', 1)->get();
         return view('pages.gradosYSecciones.grado_create', compact('niveles'));
     }
 
@@ -43,6 +46,13 @@ class GradosController extends Controller
             'nombreGrado' => 'required',
             'idNivel' => 'required',
         ]);
+        
+        $gradoFound = Grado::where('nombreGrado', $validatedData['nombreGrado'])->where('estado', 1)->where('idNivel', $validatedData['idNivel'])->first();
+
+        if ($gradoFound) {
+            return redirect()->route('grados.index')->with('error', 'El grado ya existe');
+        }
+        
         //Creamos nuevo grado
         $grado = new Grado();
         $grado->nombreGrado = $validatedData['nombreGrado'];
@@ -80,6 +90,12 @@ class GradosController extends Controller
             'idNivel' => 'required',
         ]);
 
+        $gradoFound = Grado::where('nombreGrado', $validatedData['nombreGrado'])->where('estado', 1)->first();
+
+        if ($gradoFound) {
+            return redirect()->route('grados.index')->with('error', 'El grado ya existe');
+        }
+
         $grado = Grado::findOrFail($idGrado);
         $grado->nombreGrado = $validatedData['nombreGrado'];
         $grado->idNivel = $validatedData['idNivel'];
@@ -94,13 +110,14 @@ class GradosController extends Controller
     public function destroy($idGrado)
     {
         $grado = Grado::find($idGrado);
-        $grado->delete();
+        $grado->estado = 0;
+        $grado->save();
         return redirect()->route('grados.index')->with('success', 'Grado eliminado exitosamente');
     }
 
     public function getGradosByNivel($nivelId)
     {
-        $grados = Grado::where('idNivel', $nivelId)->get();
+        $grados = Grado::where('idNivel', $nivelId)->where('estado', 1)->get();
         return response()->json(['grados' => $grados]);
     }
 }

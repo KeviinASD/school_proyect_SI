@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Agregar el campo role aquí
+        'codigo', // Agregar el campo codigo aquí
     ];
 
     /**
@@ -43,5 +45,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Verifica si el usuario tiene un rol específico.
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Verifica si el usuario tiene uno de los roles especificados.
+     */
+    public function hasAnyRole(array $roles)
+    {
+        return in_array($this->role, $roles);
     }
 }

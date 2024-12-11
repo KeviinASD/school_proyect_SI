@@ -32,7 +32,9 @@ class Alumno extends Model
         'idReligion',
         'idEscala',
         'idSexo',
+        'estado',
     ];
+    protected $primaryKey = 'codigoAlumno';
 
     public function sexo()
     {
@@ -53,5 +55,14 @@ class Alumno extends Model
     public function escala()
     {
         return $this->belongsTo(Escala::class, 'idEscala');
+    }
+    public function notasCapacidades()
+    {
+        return $this->hasMany(NotaCapacidad::class, 'codigoAlumno', 'codigoAlumno');
+    }
+
+    public function matriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'codigoAlumno', 'codigoAlumno');
     }
 }

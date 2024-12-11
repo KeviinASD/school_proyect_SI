@@ -8,18 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Grado extends Model
 {
     use HasFactory;
+
     protected $table = 'grados';
     protected $primaryKey = 'idGrado';
-    protected $fillable = ['idNivel', 'nombreGrado'];
+    protected $keyType = 'int';
+    protected $fillable = [
+        'idGrado',
+        'idNivel',
+        'nombreGrado',
+        'estado'
+    ];
+
     public $timestamps = false;
 
     public function nivel()
     {
-        return $this->hasOne(Nivel::class, 'idNivel', 'idNivel');
+        return $this->belongsTo(Nivel::class, 'idNivel', 'idNivel');
     }
 
     public function secciones()
     {
-        return $this->hasMany(Seccion::class, 'idGrado');
+        return $this->hasMany(Seccion::class, 'idGrado', 'idGrado')->where('estado', 1);
+    }
+
+    public function asignaturas()
+    {
+        return $this->hasMany(Asignatura::class, 'idGrado', 'idGrado')->where('estado', 1);
+    }
+
+    public function fichaMatriculas()
+    {
+        return $this->hasMany(FichaMatriculas::class, 'idGrado', 'idGrado');
     }
 }

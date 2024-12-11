@@ -1,3 +1,5 @@
+
+
 <nav class="fixed w-full border-b border-gray-200 py-4 px-4 lg:px-8 z-40">
     <div class="flex justify-between items-center">
         <div class="flex items-center justify-center gap-1">
@@ -19,8 +21,8 @@
             <div class="flex items-center gap-2">
                 <img src="{{ asset('img/user.jpg') }}" alt="" class="w-10 rounded-full">
                 <div>
-                    <h1 class="font-semibold">Ivana la Rana</h1>
-                    <p class=" text-gray-400">Admin</p>
+                    <h1 class="font-semibold">{{Auth::user()->name}}</h1>
+                    <p class=" text-gray-400">{{Auth::user()->role}}</p>
                 </div>
             </div>
         </div>

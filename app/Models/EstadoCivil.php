@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EstadoCivil extends Model
 {
-    use HasFactory;
-
-    protected $table = 'estado_civil';
-    protected $fillable = [
-        'idEstadoCivil',
-        'nombreEstadoCivil',
-    ];
+    public $timestamps = false;
+    protected $table = 'ESTADO_CIVIL';
     protected $primaryKey = 'idEstadoCivil';
 
-    public function alumnos()
+    public function docentes()
     {
-        return $this->hasMany(Alumno::class, 'idEstadoCivil');
+        return $this->hasMany(Docente::class, 'idEstadoCivil', 'idEstadoCivil');
     }
 }
