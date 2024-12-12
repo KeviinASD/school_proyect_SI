@@ -121,3 +121,5 @@ Route::get('/alumno/notas/{codigoAlumno}', [ViewRoleAlumnoController::class, 'ir
 Route::get('/vista-jerarquica', [AsignaturaController::class, 'vistaJerarquica'])->name('vista.jerarquica');
 
 Route::resource('users', UserController::class);
+Route::get('/capacidades/asignatura/{idAsignatura}', [CapacidadController::class, 'getCapacidadesPorAsignatura'])->name('capacidades.porAsignatura');
+Route::get('/alumnos-matriculados/reporte/{idNivel}/{idGrado}/{idSeccion}', [AlumnosMatriculadosController::class, 'reporte'])->name('alumnosMatriculados.reporte');

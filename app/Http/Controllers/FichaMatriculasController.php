@@ -17,10 +17,14 @@ class FichaMatriculasController extends Controller
     public function index(Request $request)
     {
         // Obtener el término de búsqueda
+        $añosActual = AñoEscolarActual::first()->año_escolar_id;
+
         $buscarPor = $request->input('buscarpor');
 
+        
         // Construir la consulta
         $query = FichaMatriculas::query();
+        $query->where('añoEscolar', $añosActual);
 
         // Filtrar por código de alumno si se proporciona un término de búsqueda
         if ($buscarPor) {

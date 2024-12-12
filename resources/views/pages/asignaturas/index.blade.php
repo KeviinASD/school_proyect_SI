@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Asignaturas')
+@section('title', 'Cursos')
 
 @section('content')
 <div class="bg-white border border-gray-200 shadow-sm rounded-lg p-6">
@@ -12,9 +12,15 @@
             <li class="font-semibold hover:text-[#434343] transition duration-300"><a href="{{ route('capacidades.index') }}">CAPACIDADES</a></li>
         </ul>
     </nav>
-    <h2 class="text-2xl font-semibold mb-6">Lista de Asignaturas</h2>
-    <a href="{{ route('asignaturas.create') }}" class="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-800 focus:ring focus:ring-blue-200 transition">
-        Crear Nueva Asignatura
+    <div class="flex justify-between items-center my-4">
+        <h2 class="text-2xl font-semibold mb-6">Lista de Cursos</h2>
+        <form class="flex items-center" method="GET" action="{{ route('asignaturas.index') }}">
+            <input name="buscarpor" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500" type="search" placeholder="Búsqueda por nombre" aria-label="Search" value="{{ request()->input('buscarpor') }}">
+            <button class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Buscar</button>
+        </form>
+    </div>
+    <a href="{{ route('asignaturas.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-800 focus:ring focus:ring-blue-200 transition">
+        Crear Nuevo Curso
     </a>
 
     <!-- Mensaje de éxito -->

@@ -11,9 +11,21 @@ use Illuminate\Validation\ValidationException;
 
 class AsignaturaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $asignaturas = Asignatura::with(['grado', 'nivel'])->where('estado', 1)->get();
+
+        $search = $request->input('buscarpor');
+
+        $asignaturasQuery = Asignatura::with(['grado', 'nivel'])->where('estado', 1);
+
+        if ($search) {
+            $asignaturasQuery->where(function ($query) use ($search) {
+                $query->where('nombreAsignatura', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $asignaturas = $asignaturasQuery->paginate(8);
+        
         return view('pages.asignaturas.index', compact('asignaturas'));
     }
 

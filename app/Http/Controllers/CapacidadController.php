@@ -9,10 +9,23 @@ use App\Models\Curso;
 
 class CapacidadController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Obtener todas las capacidades activas
-        $capacidades = Capacidad::where('estado', 1)->get();
+        $search = $request->input('buscarpor');
+    
+        $capacidadesQuery = Capacidad::with('asignatura')->where('estado', 1);
+    
+        if ($search) {
+            $capacidadesQuery->where(function ($query) use ($search) {
+                $query->where('descripcion', 'LIKE', "%{$search}%")
+                      // Nueva condición para buscar por nombre de asignatura
+                      ->orWhereHas('asignatura', function ($query) use ($search) {
+                          $query->where('nombreAsignatura', 'LIKE', "%{$search}%");
+                      });
+            });
+        }
+    
+        $capacidades = $capacidadesQuery->paginate(8);
         return view('pages.capacidades.index', compact('capacidades'));
     }
 
@@ -117,5 +130,11 @@ class CapacidadController extends Controller
         $capacidad->save();
 
         return redirect()->route('capacidades.index')->with('success', 'Capacidad eliminada correctamente');
+    }
+
+    public function getCapacidadesPorAsignatura($idAsignatura)
+    {
+        $capacidades = Capacidad::where('idAsignatura', $idAsignatura)->get();
+        return response()->json($capacidades);
     }
 }

@@ -14,12 +14,20 @@
                 <select id="idAsignatura" name="idAsignatura" class="mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
                     <option value="">Selecciona una Asignatura</option>
                     @foreach($asignaturas as $asignatura)
-                        <option value="{{ $asignatura->idAsignatura }}">{{ $asignatura->nombreAsignatura }}</option>
+                        <option value="{{ $asignatura->idAsignatura }}">{{$asignatura->nivel->nombreNivel}} - {{$asignatura->grado->nombreGrado}} -  {{ $asignatura->nombreAsignatura }}</option>
                     @endforeach
                 </select>
                 @error('idAsignatura')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
+            </div>
+
+            <!-- Capacidades existentes -->
+            <div class="py-4 px-3 rounded border">
+                <label class="block text-sm font-medium text-gray-700">Capacidades existentes</label>
+                <ul id="capacidadesList" class="mt-1 list-disc list-inside text-gray-700">
+                    <li class="text-gray-500">Selecciona una asignatura para ver sus capacidades.</li>
+                </ul>
             </div>
 
             <!-- Descripción -->
@@ -55,4 +63,36 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('idAsignatura').addEventListener('change', function() {
+        const idAsignatura = this.value;
+        const capacidadesList = document.getElementById('capacidadesList');
+
+        // Limpiar la lista de capacidades
+        capacidadesList.innerHTML = '';
+
+        if (idAsignatura) {
+            fetch(`/capacidades/asignatura/${idAsignatura}`)
+                .then(response => response.json())
+                .then(capacidades => {
+                    if (capacidades.length > 0) {
+                        capacidades.forEach(capacidad => {
+                            const li = document.createElement('li');
+                            li.textContent = `${capacidad.descripcion} (Abreviatura: ${capacidad.abreviatura}, Orden: ${capacidad.orden})`;
+                            capacidadesList.appendChild(li);
+                        });
+                    } else {
+                        capacidadesList.innerHTML = '<li class="text-gray-500">No hay capacidades registradas para esta asignatura.</li>';
+                    }
+                })
+                .catch(error => {
+                    capacidadesList.innerHTML = '<li class="text-red-500">Error al cargar las capacidades.</li>';
+                });
+        } else {
+            capacidadesList.innerHTML = '<li class="text-gray-500">Selecciona una asignatura para ver sus capacidades.</li>';
+        }
+    });
+</script>
+
 @endsection

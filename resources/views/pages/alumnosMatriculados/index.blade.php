@@ -20,15 +20,12 @@
                 <div class="font-medium">LISTADO DE ALUMNOS MATRICULADOS</div>
                 <form class="flex items-center space-x-2" method="GET" action="{{ route('alumnosMatriculados.index') }}">
                     <select name="añoEscolar" id="añoEscolar" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500 h-[32.8px] w-[120px]">
-                        <option value="">Año Escolar</option>
-                        @foreach($añosEscolares as $año)
-                            <option value="{{ $año->añoEscolar }}" {{ request()->input('añoEscolar') == $año->añoEscolar ? 'selected' : '' }}>{{ $año->añoEscolar }}</option>
-                        @endforeach
+                        <option value="{{$añoActual}}">{{$añoActual}}</option>
                     </select>
                     <select name="idNivel" id="idNivel" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500 h-[32.8px] w-[110px]">
                         <option value="">Nivel</option>
                         @foreach($niveles as $nivel)
-                            <option value="{{ $nivel->idNivel }}" {{ request()->input('idNivel') == $nivel->idNivel ? 'selected' : '' }}>{{ $nivel->nombreNivel }}</option>
+                            <option value="{{ $nivel->idNivel }}">{{ $nivel->nombreNivel }}</option>
                         @endforeach
                     </select>
                     <select name="idGrado" id="idGrado" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500 h-[32.8px] w-[150px]">
@@ -39,6 +36,17 @@
                     </select>
                     <button class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Filtrar</button>
                 </form>
+            </div>
+            <div>
+                @if($nameNivel)
+                    <div class="text-sm text-gray-500">Nivel: {{ $nameNivel }}</div>
+                @endif
+                @if($nameGrado)
+                    <div class="text-sm text-gray-500">Grado: {{ $nameGrado }}</div>
+                @endif
+                @if($nameSeccion)
+                    <div class="text-sm text-gray-500">Sección: {{ $nameSeccion }}</div>
+                @endif
             </div>
             <div class="overflow-x-auto">
                 @if ($fichasMatriculas->isEmpty())
@@ -71,6 +79,10 @@
                         </tbody>
                     </table>
                 @endif
+            </div>
+
+            <div>
+                <a href="{{ route('alumnosMatriculados.reporte', ['idNivel' => $idNivel, 'idGrado' => $idGrado, 'idSeccion' => $idSeccion]) }}" class="px-4 py-2 bg-black rounded text-white">Generar Reporte</a>
             </div>
         </div>
     </div>
