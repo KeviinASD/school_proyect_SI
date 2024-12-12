@@ -58,6 +58,7 @@
                     <tr class="rounded-md">
                         <th class="border border-black">Nro Matrícula</th>
                         <th class="border border-black">Código Alumno</th>
+                        <th class="border border-black">Nombres</th>
                         <th class="border border-black">Fecha Matrícula</th>
                         <th class="border border-black">Sección</th>
                         <th class="border border-black">Grado</th>
@@ -70,6 +71,7 @@
                     <tr class="">
                         <td class="border border-black">{{ $ficha->nroMatricula }}</td>
                         <td class="border border-black py-2">{{ $ficha->codigoAlumno }}</td>
+                        <td class="border border-black py-2">{{ $ficha->alumno->nombres }}</td>
                         <td class="border border-black py-2">{{ $ficha->fechaMatricula }}</td>
                         <td class="border border-black py-2">{{ $ficha->seccion->nombreSeccion }}</td>
                         <td class="border border-black py-2">{{ $ficha->grado->nombreGrado }}</td>

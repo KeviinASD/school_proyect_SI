@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Alumno;
+use App\Models\AñoEscolarActual;
 use App\Models\Catedra;
 use App\Models\DetalleNotas;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ViewRoleAlumnoController extends Controller
 
      public function hijos(Request $request, $dniApoderado)
      {
-        $añoEscolarActual = "2024";
+        $añoEscolarActual = AñoEscolarActual::first()->año_escolar_id;
      
          $alumnos = Alumno::where('dniApoderado', $dniApoderado)
              ->where('estado', 1)

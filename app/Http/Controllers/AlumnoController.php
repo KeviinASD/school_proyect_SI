@@ -178,6 +178,7 @@ class AlumnoController extends Controller
             'nombres' => 'required|string|max:30',
             'apellidos' => 'required|string|max:30',
             'DNI' => 'required|digits:8',
+            'dniApoderado' => 'required|string|size:8',
             'fechaNacimiento' => 'nullable|date',
             'añoIngreso' => 'nullable|date',
             'departamento' => 'nullable|string|max:15',
@@ -233,6 +234,7 @@ class AlumnoController extends Controller
         $alumno->idReligion = $request->idReligion;
         $alumno->idEscala = $request->idEscala;
         $alumno->idSexo = $request->idSexo;
+        $alumno->dniApoderado = $request->dniApoderado;
         $alumno->imagen_url = $imagenNombre;
 
 

@@ -190,6 +190,13 @@
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="mb-4">
+                    <label for="dniApoderado" class="block text-sm font-medium text-gray-700">DNI Apoderado</label>
+                    <input type="text" id="dniApoderado" name="dniApoderado" value="{{ old('dniApoderado', $alumno->dniApoderado) }}" class="form-input border border-gray-600 w-full h-10 rounded-md p-2 @error('dniApoderado') is-invalid @enderror">
+                    @error('dniApoderado')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
 
             </div>
         </div>

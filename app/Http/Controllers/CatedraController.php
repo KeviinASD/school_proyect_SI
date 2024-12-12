@@ -16,18 +16,22 @@ class CatedraController extends Controller
 {
     public function index()
     {
-        $catedras = Catedra::where('estado', 1)->get();
+        $añosActual = AñoEscolarActual::first()->año_escolar_id;
+
+        $catedras = Catedra::where('estado', 1)
+            ->where('añoEscolar', $añosActual)
+            ->get();
         return view('pages.catedras.index', compact('catedras'));
     }
 
     public function create()
     {
+        $añoEscolarActual = AñoEscolarActual::first();
         $docentes = DocenteProvicional::where('estado', 1)->get();
         $secciones = Seccion::where('estado', 1)->get();
         $grados = Grado::where('estado', 1)->get();
         $niveles = Nivel::where('estado', 1)->get();
         $asignaturas = Asignatura::where('estado', 1)->get();
-        $añoEscolarActual = AñoEscolarActual::first();
 
         return view('pages.catedras.create', compact('docentes', 'secciones', 'grados', 'niveles', 'asignaturas', 'añoEscolarActual'));
     }

@@ -37,6 +37,7 @@
                             <tr class="rounded-md">
                                 <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left rounded-tl-md rounded-bl-md">Nro Matrícula</th>
                                 <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left">Código Alumno</th>
+                                <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left">Nombres</th>
                                 <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left">Fecha Matrícula</th>
                                 <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left">Sección</th>
                                 <th class="text-[12px] uppercase tracking-wide font-medium text-gray-500 py-2 px-4 bg-gray-100 text-left">Grado</th>
@@ -50,6 +51,7 @@
                                 <tr class="border-b border-b-gray-50">
                                     <td class="py-3 px-4">{{ $fichaMatricula->nroMatricula }}</td>
                                     <td class="py-3 px-4">{{ $fichaMatricula->codigoAlumno }}</td>
+                                    <td class="py-3 px-4">{{ $fichaMatricula->alumno->nombres }}</td>
                                     <td class="py-3 px-4">{{ $fichaMatricula->fechaMatricula }}</td>
                                     <td class="py-3 px-4">{{ $fichaMatricula->seccion->nombreSeccion }}</td>
                                     <td class="py-3 px-4">{{ $fichaMatricula->grado->nombreGrado }}</td>

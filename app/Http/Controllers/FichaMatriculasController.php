@@ -40,13 +40,28 @@ class FichaMatriculasController extends Controller
     // Mostrar el formulario para crear una nueva ficha de matrícula
     public function create()
     {
-        $codigoAlumnos = Alumno::all();
+        // Obtener el año escolar actual
+        $añoEscolarActual = AñoEscolarActual::first();
+        if (!$añoEscolarActual) {
+            return redirect()->back()->with('error', 'No se ha configurado un año escolar actual.');
+        }
+    
+        $añoEscolarId = $añoEscolarActual->año_escolar_id;
+    
+        // Obtener los alumnos que no están matriculados en el año escolar actual
+        $codigoAlumnos = Alumno::whereDoesntHave('matriculas', function ($query) use ($añoEscolarId) {
+            $query->where('añoEscolar', $añoEscolarId);
+        })->get();
+    
+        // Obtener las demás entidades necesarias para la vista
         $secciones = Seccion::all();
         $grados = Grado::all();
         $niveles = Nivel::all();
-        $añoEscolarActual = AñoEscolarActual::first();
+    
+        // Retornar la vista con los datos necesarios
         return view('pages.fichaMatriculas.create', compact('codigoAlumnos', 'secciones', 'grados', 'niveles', 'añoEscolarActual'));
     }
+    
 
     // Guardar una nueva ficha de matrícula en la base de datos
     public function store(Request $request)
