@@ -49,7 +49,7 @@ class ViewRoleAlumnoController extends Controller
      public function index(Request $request, $codigoAlumno)
      {
          // Obtener el año escolar seleccionado o el más alto por defecto
-        $añoEscolarActual = "2024";
+         $añoEscolarActual = AñoEscolarActual::first()->año_escolar_id;
         
         $fichaMatricula = FichaMatriculas::where('codigoAlumno', $codigoAlumno)
             ->where('añoEscolar', $añoEscolarActual)
@@ -93,7 +93,7 @@ class ViewRoleAlumnoController extends Controller
 
     public function todasNotas(Request $request, $codigoAlumno)
     {
-        $añoEscolarActual = "2024";
+        $añoEscolarActual = AñoEscolarActual::first()->año_escolar_id;
         $periodo = $request->input('periodo', '1');
     
         // Obtener ficha de matrícula del alumno
