@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/detalle-notas', [DetalleNotasController::class, 'index'])->name('detalle-notas.index');
     Route::post('/nota-capacidad', [NotaCapacidadController::class, 'store'])->name('nota-capacidad.store');
     Route::get('/dashboard', [ResumenXController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard/director', [ResumenXController::class, 'director'])->name('director');
 
 
     Route::get('/gradosYSecciones', [ResumenXController::class, 'index'])->name('gradosYSecciones');

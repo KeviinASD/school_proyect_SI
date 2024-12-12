@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Asignatura;
 use App\Models\Catedra;
 use App\Models\Docente;
+use App\Models\EstadoCivil;
 use App\Models\Grado;
 use App\Models\Nivel;
 use App\Models\Seccion;
@@ -34,6 +35,51 @@ class ResumenXController extends Controller
 
 
         return view('welcome', compact('ficha1', 'ficha2', 'ficha3'));
+    }
+
+    public function director() {
+        $profesores = count(Docente::where('estado', 1)->get());
+        $asignaturas = count(Asignatura::where('estado', 1)->get());
+
+        $profesContratados = Catedra::select('añoEscolar', DB::raw('count(distinct codigo_docente) as total'))
+            ->groupBy('añoEscolar')
+            ->orderBy('añoEscolar', 'asc')
+            ->get();
+        $labelsAños = $profesContratados->pluck('añoEscolar')->toArray();
+        $dataProfesTotal = $profesContratados->pluck('total')->toArray();
+
+        // Datos para el gráfico de asignaturas por nivel
+        $asignaturasPorNivel = Asignatura::select('idNivel', DB::raw('count(*) as total'))
+        ->where('estado', 1)
+        ->groupBy('idNivel')
+        ->get();
+
+        $niveles = Nivel::whereIn('idNivel', $asignaturasPorNivel->pluck('idNivel'))->get()->keyBy('idNivel');
+
+        $labelsNiveles = $asignaturasPorNivel->map(function ($item) use ($niveles) {
+            return $niveles[$item->idNivel]->nombreNivel ?? 'Desconocido';
+        })->toArray();
+
+        $dataAsignaturas = $asignaturasPorNivel->pluck('total')->toArray();
+
+        // Datos para el gráfico de docentes por estado civil
+        $docentesPorEstadoCivil = EstadoCivil::withCount('docentes')->get();
+        $labelsEstadosCiviles = $docentesPorEstadoCivil->pluck('nombreEstadoCivil')->toArray(); // Ajusta el campo según tu base de datos
+        $dataEstadosCiviles = $docentesPorEstadoCivil->pluck('docentes_count')->toArray();
+
+        return view('pages.dashboard.director', [
+            'profesores' => $profesores,
+            'asignaturas' => $asignaturas,
+
+            'labelsAños' => $labelsAños,
+            'dataProfesTotal' => $dataProfesTotal,
+
+            'labelsNiveles' => $labelsNiveles,
+            'dataAsignaturas' => $dataAsignaturas,
+
+            'labelsEstadosCiviles' => $labelsEstadosCiviles,
+            'dataEstadosCiviles' => $dataEstadosCiviles,
+        ]);
     }
 
     public function dashboard() {
