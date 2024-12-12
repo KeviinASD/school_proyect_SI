@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AñoEscolarActual;
 use App\Models\Catedra;
 use App\Models\DocenteProvicional;
 use App\Models\FichaNotas;
@@ -16,21 +17,15 @@ class NotasController extends Controller
     public function index(Request $request)
     {
         $query = Catedra::where('estado', 1);
-        
-        $añosEscolares = Catedra::select('añoEscolar')
-            ->distinct()
-            ->orderBy('añoEscolar', 'desc') // Ordenar de mayor a menor
-            ->pluck('añoEscolar');
-        
-        if ($request->has('añoEscolar') && $request->añoEscolar != '') {
-            $query->where('añoEscolar', $request->añoEscolar);
-        }
+        $añoEscolarActual = AñoEscolarActual::first()->año_escolar_id;
+
+        $query->where('añoEscolar', $añoEscolarActual);
     
         $docenteCodes = $query->pluck('codigo_docente')->unique();
         
         $docentes = DocenteProvicional::whereIn('codigo_docente', $docenteCodes)->paginate(self::PAGINATION);
     
-        return view('pages.notas.index', compact('docentes', 'añosEscolares'));
+        return view('pages.notas.index', compact('docentes', 'añoEscolarActual'));
     }
                                     
     public function registro(Request $request, $codigo_Docente)
@@ -43,21 +38,15 @@ class NotasController extends Controller
 
         // Obtener años escolares únicos
         // Obtener años escolares únicos en los que ha trabajado el docente
-        $añosEscolares = Catedra::where('codigo_docente', $codigo_Docente)
-        ->distinct()
-        ->orderBy('añoEscolar', 'desc')
-        ->pluck('añoEscolar');
-        
-        $query = Catedra::where('codigo_docente', $codigo_Docente)->where('estado', 1);
 
+        $añoEscolarActual = AñoEscolarActual::first()->año_escolar_id;
+        $query = Catedra::where('codigo_docente', $codigo_Docente)->where('estado', 1);
+        $query->where('añoEscolar', $añoEscolarActual);
         // Filtrar por añoEscolar si se pasa como parámetro
-        if ($request->has('añoEscolar') && $request->añoEscolar != '') {
-            $query->where('añoEscolar', $request->añoEscolar);
-        }
 
         $catedras = $query->get(); // Puedes usar paginate() si lo necesitas
 
-        return view('pages.notas.registro', compact('docente', 'catedras', 'añosEscolares'));
+        return view('pages.notas.registro', compact('docente', 'catedras', 'añoEscolarActual'));
     }
 
     public function crear_ficha_notas(Request $request, $idCatedra)

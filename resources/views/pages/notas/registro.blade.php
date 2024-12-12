@@ -8,12 +8,7 @@
         <div>
             <form action="{{ route('notas.registro', $docente->codigo_docente) }}" method="GET" class="flex items-center">
                 <select name="añoEscolar" class="border border-gray-300 py-1 px-2 rounded focus:outline-none focus:ring-red-500">
-                    <option value="">Todos los Años Escolares</option>
-                    @foreach ($añosEscolares as $año)
-                        <option value="{{ $año }}" {{ request('añoEscolar') == $año ? 'selected' : '' }}>
-                            {{ $año }}
-                        </option>
-                    @endforeach
+                    <option value="">{{$añoEscolarActual}}</option>
                 </select>
                 <button type="submit" class="ml-2 px-4 py-1 rounded bg-blue-500 text-white">Filtrar</button>
             </form>
