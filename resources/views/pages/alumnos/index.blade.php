@@ -21,6 +21,7 @@
                 <th class="px-4 py-2">Nombre</th>
                 <th class="px-4 py-2">DNI</th>
                 <th class="px-4 py-2">Sexo</th>
+                <th class="px-4 py-2">DNI Apoderado</th>
                 <th class="px-4 py-2">Imagen</th> <!-- Nueva columna de imagen -->
                 <th class="px-4 py-2">Opciones</th>
             </tr>
@@ -32,6 +33,7 @@
                 <td class="border px-4 py-2">{{ $alumno->nombres }} {{ $alumno->apellidos }}</td>
                 <td class="border px-4 py-2">{{ $alumno->DNI }}</td>
                 <td class="border px-4 py-2">{{ $alumno->sexo?->nombreSexo ?? 'No Especifica'}}</td>
+                <td class="border px-4 py-2">{{ $alumno->dniApoderado }}</td>
                 <td class="border px-4 py-2">
                     <!-- Verificar si el alumno tiene imagen -->
                     @if($alumno->imagen_url)
